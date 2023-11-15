@@ -1,0 +1,404 @@
+// .form {
+//   width: 450px;
+//   min-height: 500px;
+//   height: auto;
+//   border-radius: 5px;
+//   margin: 2% auto;
+//   box-shadow: 0 9px 50px hsla(20, 67%, 75%, 0.31);
+//   padding: 2%;
+//   background-image: linear-gradient(-225deg, #E3FDF5 50%, #FFE6FA 50%);
+// }
+
+.form-input {
+  width: 93%;
+  height: 20px;
+
+  /* margin-left: 10%; */
+  margin-top: 2%;
+  padding: 15px;
+  
+  font-size: 16px;
+  font-family: 'Abel', sans-serif;
+  color: #5E6472;
+
+  outline: none;
+  border: none;
+
+  border-radius: 0px 5px 5px 0px;
+  transition: 0.2s linear;
+  
+}
+
+// .textarea{
+//   width: 93%;
+//   height: 20px;
+
+//   /* margin-left: 10%; */
+//   margin-top: 2%;
+//   padding: 15px;
+  
+//   font-size: 16px;
+//   font-family: 'Abel', sans-serif;
+//   color: #5E6472;
+
+//   outline: none;
+//   border: none;
+
+//   border-radius: 0px 5px 5px 0px;
+//   transition: 0.2s linear;
+  
+// }
+// .getImage{
+//   width: 92%;
+//   height: 20px;
+
+//   /* margin-left: 10%; */
+//   margin-top: 2%;
+//   padding: 15px;
+  
+//   font-size: 16px;
+//   font-family: 'Abel', sans-serif;
+//   color: #5E6472;
+
+//   outline: none;
+//   border: #5E6472 double 3px;
+
+//   border-radius: 5px 5px 5px 5px;
+//   transition: 0.2s linear;
+  
+// }
+
+// header {
+//   margin: 2% auto 10% auto;
+//   text-align: center;
+// }
+/* Login title form form */
+// header h2 {
+//   font-size: 250%;
+//   font-family: 'Playfair Display', serif;
+//   color: #3e403f;
+// }
+// header h4 {
+//   font-size: 130%;
+//   font-family: 'Playfair Display', serif;
+//   color: #3e403f;
+// }
+
+// header h6 {
+//   font-size: 90%;
+//   font-family: 'Playfair Display', serif;
+//   color: #3e403f;
+// }
+// h5 {
+//   font-size: 90%;
+//   font-family: 'Playfair Display', serif;
+//   color: #3e403f;
+//   direction: rtl;
+// }
+
+// h4 {
+//   font-size: 130%;
+//   font-family: 'Playfair Display', serif;
+//   color: #3e403f;
+//   direction: rtl;
+// }
+
+// .p {
+//   font-size: 90%;
+//   font-family: 'Playfair Display', serif;
+//   color: #3e403f;
+//   direction: rtl;
+// }
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  
+}
+
+.disabledUpdateButton {
+  // background-color: inherit;
+  float: right;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  direction: rtl;
+  // color: #607d8b;
+}
+
+/* Style the buttons inside the tab */
+.tab .updateButton {
+  background-color: inherit;
+  float: right;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  direction: rtl;
+  color: #607d8b;
+}
+
+/* Change background color of buttons on hover */
+.tab .updateButton:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab .updateButton.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  // display: flex;
+  // justify-content: center;
+  font-family: 'Abel', sans-serif;
+  text-align: center;
+  vertical-align: middle;
+  direction: rtl;
+  display: none;
+  padding: 6px 12px;
+  -webkit-animation: fadeEffect 1s;
+  animation: fadeEffect 1s;
+}
+
+/* Fade in tabs */
+@-webkit-keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* buttons hover */
+.updateButton:hover {
+  transform: translatey(3px);
+  box-shadow: none;
+}
+
+/* buttons hover Animation */
+.updateButton:hover {
+  animation: ani9 0.4s ease-in-out infinite alternate;
+}
+@keyframes ani9 {
+  0% {
+      transform: translateY(3px);
+  }
+  100% {
+      transform: translateY(5px);
+  }
+}
+
+// .su {
+//   /* display: inline-block; */
+//   color: #252537;
+//   font-family: 'Playfair Display', serif;
+//   font-size: 110%;
+//   /* width: 280px; */
+//   /* width: 250px; */
+//   height: 50px;
+
+//   /* margin-top: 2%; */
+//   padding: 15px;
+//   /* padding: 0 20px; */
+//   /* background: #fff; */
+//   border-radius: 5px;
+  
+//   outline: none;
+//   border: none;
+
+//   cursor: pointer;
+//   text-align: center;
+//   transition: all 0.2s linear;
+  
+//   margin: 7% auto;
+//   letter-spacing: 0.05em;
+
+//   width: 40%;
+//   /* display: block; */
+//   display: inline-block;
+//   /* float: left; */
+//   /* display: flex; */
+//   margin-left: 6.5%;
+//   background: #B8F2E6;
+//   /* position: absolute; */
+// }
+
+
+
+
+
+
+@import url(https://fonts.googleapis.com/css?family=Exo+2:400,700,500,300);
+
+body {
+  background: #ebeff2;
+  font-family: "Exo 2";
+}
+
+.upload {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: pink;
+  width: 80%;
+  height: 50%;
+  border: 5px dashed white;
+  text-align: center;
+  color: white;
+  // z-index: -1;
+  transition: all 0.3s ease-out;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .05), inset 0 0 .25em 0 rgba(0, 0, 0, .25);
+}
+
+.zone {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: pink;
+  width: 80%;
+  height: 50%;
+  border: 5px dashed white;
+  text-align: center;
+  color: white;
+  z-index: -1;
+  transition: all 0.3s ease-out;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .05), inset 0 0 .25em 0 rgba(0, 0, 0, .25);
+
+  #file {
+    z-index: 2;
+    background-color: black;
+  }
+
+  .btnCompression {
+    // .btn {
+
+    // } 
+    .active {
+      background: #EB6A5A;
+      color: white;
+    }
+  }
+
+  // i {
+  //   text-align: center;
+  //   font-size: 10em;
+  //   color: #fff;
+  //   margin-top: 50px;
+  // }
+
+  .selectFile {
+    height: 50px;
+    margin: 20px auto;
+    position: relative;
+    width: 200px;
+  }
+
+  .FileUpdateInput {
+    cursor: pointer;
+    display: block;
+    height: 50px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    border-radius: 5px;
+  }
+
+  // label {
+  //   background: #fff;
+  //   color: #EB6A5A;
+  //   display: inline-block;
+  //   font-size: 1.2em;
+  //   line-height: 50px;
+  //   padding: 0;
+  //   text-align: center;
+  //   white-space: nowrap;
+  //   text-transform: uppercase;
+  //   font-weight: 400;
+  //   box-shadow: 0 1px 1px gray;
+  // }
+
+  // input[type=file] {
+  //   opacity: 0;
+  // }
+
+}
+
+.zone.in {
+  color: white;
+  border-color: white;
+  background: radial-gradient(ellipse at center, #EB6A5A 0, #c9402f 100%);
+
+  // i {
+  //   color: #fff;
+  // }
+
+  // label {
+  //   background: #fff;
+  //   color: #EB6A5A;
+  // }
+}
+
+.zone.hover {
+  color: gray;
+  border-color: white;
+  background: #fff;
+  border: 5px dashed gray;
+
+  // i {
+  //   color: #EB6A5A;
+  // }
+
+  // label {
+  //   background: #fff;
+  //   color: #EB6A5A;
+  // }
+}
+
+.zone.fade {
+  transition: all 0.3s ease-out;
+  opacity: 1;
+}
+
+// .centerDiv {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   bottom: 0;
+//   right: 0;
+// }
+
+.tabcontent {
+  width: fit-content;
+  font-family: 'Abel', sans-serif;
+  text-align: center;
+  direction: rtl;
+  display: none;
+  margin: 1% auto;
+  -webkit-animation: fadeEffect 1s;
+  animation: fadeEffect 1s; 
+}

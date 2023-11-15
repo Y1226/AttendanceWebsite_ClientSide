@@ -1,0 +1,109 @@
+/* @import url("https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900"); */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+.mainDiv {
+    display: flex;
+    position: relative;
+    display: flex;
+    float: right; 
+    width: 8rem;
+    height: 8rem;
+    background-image: url("../../../public/SignInPictures/Logo.gif");
+    min-height: 100%;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    margin: 20%;
+}
+
+.content {
+    position: relative;
+    
+}
+
+.content1 {
+    transform: rotate(-28deg);
+    top: -0.6rem;
+    left: -2rem;
+}
+
+.content2 {
+    transform: rotate(-28deg);
+    top: 0.9rem;
+    left: -1.3rem;
+}
+
+.content3 {
+    transform: rotate(-28deg);
+    top: 0.4rem;
+    left: -3.5rem;
+}
+
+.content h2 {
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.content1 h2 {
+    font-size: 1.6rem;
+}
+
+.content2 h2 {
+    font-size: 1.8rem;
+
+}
+
+.content3 h2 {
+    font-size: 2.4rem;
+}
+
+.content h2:nth-child(1) {
+    color: transparent;
+    -webkit-text-stroke: 1px #497081;
+}
+
+.content3 h2:nth-child(1) {
+    color: #ffffff;
+    -webkit-text-stroke: 1px #497081;
+    filter: blur(0.2px);
+}
+
+.content h2:nth-child(2) {
+    color: #497081;
+    animation: animate 4s ease-in-out infinite;
+}
+
+@keyframes animate {
+
+    0%,
+    100% {
+        clip-path: polygon(0% 45%,
+                16% 44%,
+                33% 50%,
+                54% 60%,
+                70% 61%,
+                84% 59%,
+                100% 52%,
+                100% 100%,
+                0% 100%);
+    }
+
+    50% {
+        clip-path: polygon(0% 60%,
+                15% 65%,
+                34% 66%,
+                51% 62%,
+                67% 50%,
+                84% 45%,
+                100% 46%,
+                100% 100%,
+                0% 100%);
+    }
+}

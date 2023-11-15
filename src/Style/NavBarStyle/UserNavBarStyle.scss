@@ -1,0 +1,70 @@
+.accountTextContainer {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    float: left;
+}
+
+.profile {
+    width: 30%;
+    height: 100%;
+    display: flex;
+}
+
+.profile:hover {
+    .logoutText {
+    display: block;
+}
+} 
+
+.accountText {
+    color: #497081;
+    font-weight: bold;
+    font-size: x-large;
+    font-family: "Open Sans", sans-serif;
+    visibility: visible;
+}
+
+.logoutText {
+    &:hover{
+        color: #b0bec5;
+        text-shadow: 0px 0px 5px #497081;
+        font-size: x-large;
+        cursor: pointer;
+    }
+    display: none;
+    color: #497081;
+    font-weight: bold;
+    font-size: x-large !important;
+    font-family: "Open Sans", sans-serif;
+    // visibility: visible;
+}
+
+#backButton {
+    // width: 50%;
+    // height: 100%;
+    // display: flex;
+    // align-items: center;
+    // text-align: center;
+    // justify-content: center;
+    float: left;
+    padding-top: 15px;
+    cursor: pointer;
+}
+
+.imgDiv {
+    width: fit-content;
+    height: 100%;
+    padding: 2% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: left;
+}
+
+.img {
+    height: 5rem;
+}

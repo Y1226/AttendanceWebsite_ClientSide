@@ -1,0 +1,159 @@
+// $one: #fce1e1;
+// $two: #ffb8b8;
+// $three: #ff9191;
+// $four: #ff5e5e;
+// $five: #ff4040;
+// $six: #ff0000;
+// $w: white;
+
+// // * {
+// //     margin: 0;
+// //     // padding: 0;
+// // }
+
+// // .triangle-left {
+// // 	width: 0;
+// // 	height: 0;
+// // 	border-top: 45px solid transparent;
+// // 	border-bottom: 45px solid transparent;
+// //     float: right;
+// // }
+
+// // body {
+// //     display: grid;
+// //     grid-template-areas: 
+// //         'nav'
+// //         'article';
+// //     grid-template-columns: 100%;
+// //     // grid-template-rows: 60px 1fr;
+// //     // text-align: center;
+// // }
+// // nav {
+// //     grid-area: nav;
+// // }
+// // article {
+// //     grid-area: article;
+// // }
+
+// nav {
+//     display: grid;
+//     grid-template-areas:
+//         'one two three four five six';
+//     grid-template-columns: 16.66% 16.66% 16.66% 16.66% 16.66% 16.66%;
+//     grid-template-rows: 1fr;
+//     // align-items: center;
+// }
+
+// .square {
+//     height: 0px;
+//     // width: 228px;
+//     // float: right;
+//     // font-size: 1.25vw;
+//     text-align: center;
+//     align-content: center;
+//     border-top: 60px solid transparent;
+//     border-bottom: 60px solid transparent;
+//     // padding-bottom: 0px;
+//     // padding-bottom: 0.2rem;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+// }
+
+// // .square>h2 {
+
+// // }
+
+// .oneBefore {
+//     grid-area: six;
+//     background-color: $one;
+// }
+
+// .twoBefore {
+//     grid-area: five;
+//     background-color: $w;
+//     border-right: 30px solid $one
+// }
+
+// .threeBefore {
+//     grid-area: four;
+//     background-color: $w;
+//     border-right: 30px solid $two
+// }
+
+// .fourBefore {
+//     grid-area: three;
+//     background-color: $w;
+//     border-right: 30px solid $three
+// }
+
+// .fiveBefore {
+//     grid-area: two;
+//     background-color: $w;
+//     border-right: 30px solid $four
+// }
+
+// .sixBefore {
+//     grid-area: one;
+//     background-color: $w;
+//     border-right: 30px solid $five
+// }
+
+// // .oneAfter {
+// //     grid-area: six;
+// //     background-color: $one;
+// // }
+// .twoAfter {
+//     grid-area: five;
+//     background-color: $two;
+//     border-right: 30px solid $one
+// }
+
+// .threeAfter {
+//     grid-area: four;
+//     background-color: $three;
+//     border-right: 30px solid $two
+// }
+
+// .fourAfter {
+//     grid-area: three;
+//     background-color: $four;
+//     border-right: 30px solid $three
+// }
+
+// .fiveAfter {
+//     grid-area: two;
+//     background-color: $five;
+//     border-right: 30px solid $four
+// }
+
+// .sixAfter {
+//     grid-area: one;
+//     background-color: $six;
+//     border-right: 30px solid $five
+// }
+
+// .allBefore {
+//     background-color: white;
+//     border-right: 30px solid white
+// }
+
+// // #two #three #four #five #six {
+// //     background-color: white;
+// // }
+
+// #previous {
+//     position: absolute;
+//     bottom: 5%;
+//     left: 5%;
+// }
+
+// #next {
+//     position: absolute;
+//     bottom: 5%;
+//     right: 5%;
+// }
+
+// .new {
+//     background-color: white;
+// }

@@ -1,0 +1,13 @@
+.div{
+    position: absolute;
+    width: 100%;
+    height: 124px;
+    text-align: center;
+    flex-wrap: wrap;
+        flex-direction: row-reverse;
+        /* הצמדה מבחינת רוחב */
+        justify-content: center;
+        /* הצמדה מבחינת גובה */
+        align-items: center;
+    /* background-position: center center; */
+}

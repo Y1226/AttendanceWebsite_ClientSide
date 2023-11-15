@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great|Zilla+Slab:300,400');
+$white: #fff;
+$main-color: #b0bec5;
+// $main-color: linear-gradient(
+//     135deg,
+//     #cfd8dc 0%,
+//     #607d8b 100%,
+//     #b0bec5 100%
+//   );
+
+// body {
+//     background: #497081;
+// }
+
+.wrapFrame{
+  width: 100%;
+  top: 120px;
+  bottom: 0;
+  position: absolute;
+  background-color: #497081;
+  display: flex;
+  justify-content: center;
+  * {
+    margin: 0px auto;
+    padding: 0px;
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+  }
+}
+
+.frame {
+  position: absolute;
+  top: 50%;
+  width: 75%;
+  height: 400px;
+  margin: auto;
+  margin-top: -200px;
+  border-radius: 2px;
+  box-shadow: .5rem .5rem 1rem rgba(0, 0, 0, 0.6);
+  background: $main-color;
+  color: #497081;
+  font-family: 'zilla slab',
+  serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: .9rem;
+}
+
+.list {
+  position: absolute;
+  width: 75%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: $white;
+  box-shadow: 1rem 1rem .5rem rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+.list .headStudentTable {
+  padding: 20px 0;
+  margin: 0 30px;
+  border-bottom: 1px solid #497081;
+}
+
+.list .title {
+  font-family: 'fredericka the great', cursive;
+  font-weight: 500;
+  text-align: center;
+  font-size: 2.5rem;
+  color: #497081;
+}
+
+.list .subtitle {
+  font-size: .8rem;
+  text-align: center;
+  letter-spacing: .5px;
+  color: #497081;
+  margin-top: 2%;
+}
+
+.list .StudentTableUl {
+  list-style: none;
+  padding: 4px 0;
+  margin: 0 30px;
+  font-weight: 300;
+}
+
+.list .StudentTableUl .StudentTableLi {
+  position: relative;
+  display: block;
+  margin: 24px 0;
+  height: 14px;
+}
+
+.list .StudentTableUl .text {
+  float: left;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+
+.StudentTableUl .StudentTableLi:nth-of-type(2) {
+  animation: slide-up 1s;
+}
+
+.StudentTableUl .StudentTableLi:nth-of-type(3) {
+  animation: slide-up 1.5s;
+}
+
+.StudentTableUl .StudentTableLi:nth-of-type(4) {
+  animation: slide-up 2s;
+}
+
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(5rem);
+  }
+}
+
+.list .StudentTableUl .button {
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  float: right;
+  width: 20px;
+  height: 20px;
+  border: 1px solid fade-out($main-color, .5);
+  // border: $main-color;; 
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+
+.list .StudentTableUl .checkmark {
+  position: absolute;
+  stroke: #497081;
+  fill: none;
+  stroke-dashoffset: 340;
+  stroke-dasharray: 360;
+}
+
+.list .StudentTableUl .StudentTableInput {
+  display: none;
+}
+
+.StudentTableUl .StudentTableLi .wrapper {
+  position: absolute;
+  width: 20px;
+  right: 0;
+}
+
+.list .StudentTableUl .StudentTableInput:checked~ {
+  .text {
+    color: $main-color;
+  }
+
+  .wrapper .checkmark {
+    animation: dash .5s ease-out forwards;
+    opacity: 1;
+  }
+
+  .button {
+    opacity: 0;
+  }
+}
+
+.checkmark {
+  display: block;
+  stroke-width: 8;
+  opacity: 0;
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 340;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.StudentTableButton {
+  &:hover {
+    background-color: #b0bec5;
+    color: white;
+  }
+
+  // box-shadow: .3rem .2rem 1rem rgba(0, 0, 0, 0.6);
+  background-color: white;
+  color: #497081;
+  border: 0.5px solid #497081;
+  border-radius: 5%;
+  margin-bottom: 2%;
+  padding: 5px;
+  margin-bottom: 10px;
+}

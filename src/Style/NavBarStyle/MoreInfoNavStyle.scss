@@ -1,0 +1,56 @@
+    // .accountTextContainer {
+    //     width: 50%;
+    //     height: 100%;
+    //     display: flex;
+    //     align-items: center;
+    //     text-align: center;
+    //     justify-content: center;
+    //     float: left;
+    // }
+
+    // .profile {
+    //     width: 30%;
+    //     height: 100%;
+    // }
+
+// .profile:hover {
+//     .logoutText {
+//     display: block;
+// }
+// } 
+
+// .accountText {
+//     color: #497081;
+//     font-weight: bold;
+//     font-size: x-large;
+//     font-family: "Open Sans", sans-serif;
+//     visibility: visible;
+// }
+
+.logoutText {
+    &:hover{
+        color: #b0bec5;
+        text-shadow: 0px 0px 5px #497081;
+        font-size: small;
+        cursor: pointer;
+    }
+    display: none;
+    color: #497081;
+    font-weight: bold;
+    font-size: small;
+    font-family: "Open Sans", sans-serif;
+    // visibility: visible;
+}
+
+#backButton {
+    // width: 50%;
+    // height: 100%;
+    // display: flex;
+    // align-items: center;
+    // text-align: center;
+    // justify-content: center;
+    float: left;
+    padding-top: 15px;
+    margin-right: 15vh;
+    cursor: pointer;
+}

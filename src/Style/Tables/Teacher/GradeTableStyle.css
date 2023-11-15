@@ -1,0 +1,6 @@
+.chooseStyle {
+    display: block;
+    padding: 10px;
+    font-size: larger;
+    cursor: pointer;
+}

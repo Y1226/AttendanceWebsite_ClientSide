@@ -1,0 +1,49 @@
+// table {
+//   margin-top: 5%; 
+//   border-collapse: collapse;
+//   width: 100%;
+// }
+
+// th, td {
+//   padding: 8px;
+//   text-align: left;
+//   border-bottom: 1px solid #ddd;
+// }
+// thead {
+//   background: linear-gradient(
+//     135deg,
+//     #cfd8dc 0%,
+//     #607d8b 100%,
+//     #b0bec5 100%
+//   );
+// }
+// tbody:hover {
+//   // background-color: #cfd8dc;
+//   background: linear-gradient(
+//     135deg,
+//     #cfd8dc 0%,
+//     #607d8b 100%,
+//     #b0bec5 100%
+//   );
+// }
+
+// .table {
+// 	display: none;
+// }
+
+// .MuiPaper-root {
+//   color: pink;
+// }
+#tableWrapper {
+    color: white;
+    text-align: center;
+}
+#tableWrapper.tableContainer {
+    position: relative;
+    z-index: -1;
+}
+
+// .MuiToolbar-root{
+//     position: absolute;
+//     z-index: -1;
+// }
