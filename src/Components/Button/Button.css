@@ -1,0 +1,41 @@
+.buttonComponent {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    /* position: absolute; */
+    margin: auto;
+    outline: none;
+    cursor: pointer;
+    width: 180px;
+    height: 32px;
+    /* background: linear-gradient(135deg,
+                #cfd8dc 0%,
+                #607d8b 100%,
+                #b0bec5 100%); */
+    /* background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%); */
+    background-image: linear-gradient(to top, #607d8b -10%, #b0bec5 50%, #cfd8dc 80%);
+    border-radius: 4px;
+    border: 1px solid #8f928f;
+    transition: all 0.2s ease;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #606060;
+    text-shadow: 0 1px #fff;
+    text-rendering: auto;
+    border-bottom: 4px solid #607d8b;
+}
+
+button.buttonComponent:hover {
+    /* box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 3px 3px #CECFD1; */
+    box-shadow: 0 4px 3px 1px #cfd8dc;
+}
+
+button.buttonComponent:active {
+    /* box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa; */
+    transform: scale(0.95, 0.95) !important;
+}
+
+/* button.buttonComponent:focus {
+    box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
+} */

@@ -3,7 +3,8 @@ import '../../Style/WebSetupStyle/RemainingDetails.scss'
 // import emailjs from 'emailjs-com'
 import axios from 'axios'
 import { useRef, useState } from 'react'
-import { UploadLogo } from './UploadLogo'
+// import { UploadLogo } from './UploadLogo'
+import { FileUpload } from '../File Upload/FileUpload'
 // import $ from 'jquery'
 
 export const RemainingDetails = () => {
@@ -42,7 +43,8 @@ export const RemainingDetails = () => {
     }
 
     return <>
-    <UploadLogo></UploadLogo>
+        {/* <UploadLogo></UploadLogo> */}
+        <FileUpload />
         <div className="detailsForm">
             <div className='detailsFormContent'>
                 <form /*onSubmit={sendEmail}*/>
@@ -54,7 +56,7 @@ export const RemainingDetails = () => {
                     <input type="text" style={{ width: '25vh' }} value={JSON.parse(localStorage.getItem('newSeminar')).seminarLocationCity} id="SeminarCity" readOnly /><br />
                     <input type="text" placeholder="SeminarPhoneNumber" id="SeminarPhoneNumber" ref={seminarPhoneNumber}/><br />
                     <input type="text" placeholder="SeminarFaxNumber" id="SeminarFaxNumber" ref={seminarFaxNumber}/><br />
-                    <input type="text" value={code} id="password" name='code' hidden readOnly/><br />
+                    <input type="text" value={code} id="password" name='code' hidden readOnly /><br />
                     <input type='submit' value='NEXT' /*readOnly*/ onClick={()=>VerifyCode()}/>
                 </form>
             </div>
