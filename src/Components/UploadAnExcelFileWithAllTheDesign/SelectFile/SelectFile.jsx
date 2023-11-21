@@ -15,7 +15,7 @@ export const SelectFile = (props) => {
                 <div className="cloud-center"></div>
                 <div className="cloud-left"></div>
             </div> */}
-                <Arrow2></Arrow2>
+                {/* <Arrow2></Arrow2> */}
                 <input type="file" multiple onChange={(e) => { props.setFileName(e.target.files[0].name) }} />
                 {/* <br /> */}
                 {/* <br /><br /> */}

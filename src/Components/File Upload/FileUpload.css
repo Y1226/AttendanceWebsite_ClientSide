@@ -6,13 +6,6 @@
 }
 
 .FileUploadForm {
-    /* background: linear-gradient(135deg,
-                #cfd8dc 0%,
-                #607d8b 100%,
-                #b0bec5 100%); */
-    /* background-color: #cfd8dc; */
-    /* background-color: #607d8b; */
-    /* background-color: #b0bec5; */
     background-color: #cfd8dc;
     position: relative;
     width: 100% - 8px;
@@ -55,7 +48,7 @@
     text-overflow: ellipsis;
 }
 
-button {
+button.FileUploadButton {
     display: block;
     align-items: center;
     justify-content: center;
@@ -77,10 +70,10 @@ button {
     border-bottom: 4px solid #607d8b;
 }
 
-button :hover {
+button.FileUploadButton:hover {
     box-shadow: 0 4px 3px 1px #cfd8dc;
 }
 
-button :active {
+button.FileUploadButton:active {
     transform: scale(0.95, 0.95) !important;
 }

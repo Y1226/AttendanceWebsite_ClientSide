@@ -57,7 +57,7 @@ export const RemainingDetails = () => {
                     <input type="text" placeholder="SeminarPhoneNumber" id="SeminarPhoneNumber" ref={seminarPhoneNumber}/><br />
                     <input type="text" placeholder="SeminarFaxNumber" id="SeminarFaxNumber" ref={seminarFaxNumber}/><br />
                     <input type="text" value={code} id="password" name='code' hidden readOnly /><br />
-                    <input type='submit' value='NEXT' /*readOnly*/ onClick={()=>VerifyCode()}/>
+                    <input type='submit' value='NEXT' /*readOnly*/ onClick={() => VerifyCode()} />
                 </form>
             </div>
         </div>
