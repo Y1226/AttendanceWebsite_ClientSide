@@ -3,7 +3,7 @@ import { useState } from "react";
 import './FileUpload.css'
 import { Pencile } from "../Pencile/Pencile";
 
-export const FileUpload = () => {
+export const FileUpload = (props) => {
     const fileSelected = useState();
     const [fileName, setFileName] = useState("")
     const [fileUpload, setFileUpload] = useState(false)
@@ -14,7 +14,7 @@ export const FileUpload = () => {
         formData.append("file", fileSelected);
         try {
             setFileUpload(true)
-            await axios.post("https://localhost:44367/api/Staff/UploadFileExcel/1", formData);
+            await axios.post(`https://localhost:44367/api/${props.id}/UploadFileExcel/1`, formData);
         } catch (ex) {
             console.log(ex);
         }
