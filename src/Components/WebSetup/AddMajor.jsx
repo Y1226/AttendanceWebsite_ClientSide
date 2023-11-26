@@ -27,11 +27,14 @@ export const AddMajor = () => {
     const ShowInputs = () => {
         let checked = document.getElementById('other').checked
         let otherInput = document.getElementById('addedInput')
-        if (checked === true)
+        if (checked === true) {
             otherInput.removeAttribute('hidden')
-        else
+            AddInputs()
+        }
+        else {
             otherInput.setAttribute('hidden', true)
-
+            RemoveInput()
+        }
     }
 
     const AddInputs = () => {
@@ -42,7 +45,29 @@ export const AddMajor = () => {
         newInput.setAttribute('placeholder', 'שם מסלול')
         a.appendChild(newInput)
 
+        newInput = document.createElement('select')
+        newInput.setAttribute('class', 'selectCoordinator')
+        let newOption = document.createElement('option')
+        newOption.setAttribute('hidden', true)
+        newOption.text = 'בחרי רכזת מסלול'
+        newInput.appendChild(newOption)
+        for (let i = 0; i < staff.length; i++) {
+            newOption = document.createElement('option')
+            newOption.text = staff[i].userFirstName + staff[i].userLastName
+            newInput.appendChild(newOption)
+        }
+        a.appendChild(newInput)
         a.appendChild(document.createElement('br'))
+    }
+
+    const RemoveInput = () => {
+        debugger
+        let newMajors = document.getElementsByClassName('major_new')
+        newMajors[newMajors.length-1].remove()
+        let newSelect = document.getElementsByClassName('selectCoordinator')
+        newSelect[newSelect.length-1].remove()
+        let br = document.getElementsByTagName('br')
+        br[br.length-1].remove()
     }
 
     const SaveMajors = () => {
@@ -78,17 +103,9 @@ export const AddMajor = () => {
         }
         <input type="checkbox" id="other" onChange={() => ShowInputs()} /><label>אחר</label> <br />
         <div id="addedInput" hidden>
-            <input className="major_new" type="text" placeholder="שם מסלול" />
-            <select>
-                <option hidden>בחרי רכזת מסלול</option>
-                {
-                    staff.map(x => <option>
-                        {x.userFirstName} {x.userLastName}
-                    </option>)
-                }
-            </select>
             <div id="inputPlace"></div>
             <button style={{ backgroundColor: 'darkslateblue', padding: '5px' }} onClick={() => AddInputs()}>+</button>
+            <button style={{ backgroundColor: 'lightblue', padding: '5px' }} onClick={() => RemoveInput()}>-</button>
         </div>
         <button style={{ backgroundColor: 'pink', padding: '5px' }} onClick={() => SaveMajors()}>הבא</button>
     </div>
