@@ -1,7 +1,7 @@
 // import '../../Style/WebSetupStyle/AddMajorStyle.scss'
 
 import axios from "axios"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
@@ -13,6 +13,7 @@ export const AddMajor = () => {
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
     let navigate = useNavigate()
     let dispatch = useDispatch()
+    let other = useRef()
 
     useEffect(() => {
         async function fetchData() {
@@ -53,7 +54,7 @@ export const AddMajor = () => {
         newInput.appendChild(newOption)
         for (let i = 0; i < staff.length; i++) {
             newOption = document.createElement('option')
-            newOption.text = staff[i].userFirstName + staff[i].userLastName
+            newOption.text = staff[i].userFirstName + ' ' + staff[i].userLastName
             newInput.appendChild(newOption)
         }
         a.appendChild(newInput)
@@ -62,16 +63,19 @@ export const AddMajor = () => {
 
     const RemoveInput = () => {
         debugger
-        let newMajors = document.getElementsByClassName('major_new')
-        newMajors[newMajors.length-1].remove()
-        let newSelect = document.getElementsByClassName('selectCoordinator')
-        newSelect[newSelect.length-1].remove()
-        let br = document.getElementsByTagName('br')
-        br[br.length-1].remove()
+        try {
+            let newMajors = document.getElementsByClassName('major_new')
+            newMajors[newMajors.length - 1].remove()
+            let newSelect = document.getElementsByClassName('selectCoordinator')
+            newSelect[newSelect.length - 1].remove()
+            let br = document.getElementsByTagName('br')
+            br[br.length - 1].remove()
+        } catch (error) {
+            return 0
+        }
     }
 
     const SaveMajors = () => {
-        debugger
         let chosenMajor = document.getElementsByClassName('major_checkbox')
         let chosenLabel = document.getElementsByClassName('major_label')
         let majorList = []
@@ -80,13 +84,19 @@ export const AddMajor = () => {
                 majorList.push(chosenLabel[i].innerText)
         }
         localStorage.setItem('chosenExistingMajor', majorList)
-        if (document.getElementById('other').checked === true) {
+        if (other.current.checked === true) {
+            // if (document.getElementById('other').checked === true) {
             chosenMajor = document.getElementsByClassName('major_new')
-            majorList = []
+            let chosenMajorCoordinator = document.getElementsByClassName('selectCoordinator')
+            majorList = {}
             for (let i = 0; i < chosenMajor.length; i++) {
-                majorList.push(chosenMajor[i].value) //add as an object {maslulName: rakezet}.
+                majorList[chosenMajor[i].value] = chosenMajorCoordinator[i].value
+                let index = chosenMajorCoordinator[i].value.split(' ')
+                let majorCodeCoordinator = staff.find(x => x.userFirstName === index[0] && x.userLastName === index[1])
+                let majorElement = {majorName: chosenMajor[i].value, majorCodeCoordinator: majorCodeCoordinator.staffCode, seminarCode: '1'}
+                axios.post('https://localhost:44367/api/Major/AddMajor', majorElement)
             }
-            localStorage.setItem('chosenNewMajor', majorList)
+            localStorage.setItem('chosenNewMajor', JSON.stringify(majorList))
         }
 
         navigate('../addCourseToMajor')
@@ -101,7 +111,7 @@ export const AddMajor = () => {
                 <br />
             </>)
         }
-        <input type="checkbox" id="other" onChange={() => ShowInputs()} /><label>אחר</label> <br />
+        <input type="checkbox" id="other" ref={other} onChange={() => ShowInputs()} /><label>אחר</label> <br />
         <div id="addedInput" hidden>
             <div id="inputPlace"></div>
             <button style={{ backgroundColor: 'darkslateblue', padding: '5px' }} onClick={() => AddInputs()}>+</button>
