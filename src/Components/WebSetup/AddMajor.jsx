@@ -1,11 +1,7 @@
 import '../../Style/WebSetupStyle/AddMajorStyle.scss'
 
 import axios from "axios"
-<<<<<<< HEAD
 import { React, useEffect, useRef, useState } from "react"
-=======
-import { useEffect, useRef } from "react"
->>>>>>> 8ebe57118de4b222e6fd8a829d0998f8355072a6
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
@@ -19,7 +15,6 @@ export const AddMajor = () => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
     let other = useRef()
-<<<<<<< HEAD
     let [isOtherChecked, setIsOtherChecked] = useState(false)
     let [number, setNumber] = useState(1)
 
@@ -30,8 +25,6 @@ export const AddMajor = () => {
     ]
     const [animal, setAnimal] = useState(null)
     const [addMajor, setAddMajor] = useState("שם מסלול")
-=======
->>>>>>> 8ebe57118de4b222e6fd8a829d0998f8355072a6
 
     useEffect(() => {
         async function fetchData() {
@@ -88,25 +81,12 @@ export const AddMajor = () => {
 
     const RemoveInput = () => {
         debugger
-<<<<<<< HEAD
         let newMajors = document.getElementsByClassName('major_new')
         newMajors[newMajors.length - 1].remove()
         let newSelect = document.getElementsByClassName('selectCoordinator')
         newSelect[newSelect.length - 1].remove()
         let br = document.getElementsByTagName('br')
         br[br.length - 1].remove()
-=======
-        try {
-            let newMajors = document.getElementsByClassName('major_new')
-            newMajors[newMajors.length - 1].remove()
-            let newSelect = document.getElementsByClassName('selectCoordinator')
-            newSelect[newSelect.length - 1].remove()
-            let br = document.getElementsByTagName('br')
-            br[br.length - 1].remove()
-        } catch (error) {
-            return 0
-        }
->>>>>>> 8ebe57118de4b222e6fd8a829d0998f8355072a6
     }
 
     const SaveMajors = () => {
@@ -119,10 +99,6 @@ export const AddMajor = () => {
         }
         localStorage.setItem('chosenExistingMajor', majorList)
         if (other.current.checked === true) {
-<<<<<<< HEAD
-=======
-            // if (document.getElementById('other').checked === true) {
->>>>>>> 8ebe57118de4b222e6fd8a829d0998f8355072a6
             chosenMajor = document.getElementsByClassName('major_new')
             let chosenMajorCoordinator = document.getElementsByClassName('selectCoordinator')
             majorList = {}
@@ -130,7 +106,7 @@ export const AddMajor = () => {
                 majorList[chosenMajor[i].value] = chosenMajorCoordinator[i].value
                 let index = chosenMajorCoordinator[i].value.split(' ')
                 let majorCodeCoordinator = staff.find(x => x.userFirstName === index[0] && x.userLastName === index[1])
-                let majorElement = {majorName: chosenMajor[i].value, majorCodeCoordinator: majorCodeCoordinator.staffCode, seminarCode: '1'}
+                let majorElement = { majorName: chosenMajor[i].value, majorCodeCoordinator: majorCodeCoordinator.staffCode, seminarCode: '1' }
                 axios.post('https://localhost:44367/api/Major/AddMajor', majorElement)
             }
             localStorage.setItem('chosenNewMajor', JSON.stringify(majorList))
