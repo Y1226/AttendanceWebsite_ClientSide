@@ -1,9 +1,13 @@
 import axios from "axios"
 import { useCallback } from "react"
 import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
 
 export const AddCourseToMajor = () => {
 
+    let dispatch = useDispatch()
+    let majors = useSelector(x => x.ManagerMajorTableReducer.MajorList)
     let currentSeminar = JSON.parse(localStorage.getItem('newSeminar')).seminarManagerPassword
     currentSeminar = axios.get(`getseminarbypassword/${currentSeminar}`).then(x => x.data) //fix to use the store with useSelector.
 
@@ -16,10 +20,10 @@ export const AddCourseToMajor = () => {
         else
             a = document.getElementById("addedInput14")
         let newInput = document.createElement('input')
-        newInput.setAttribute('type', 'text')
-        newInput.setAttribute('class', 'newMajor')
-        newInput.setAttribute('placeholder', 'majorName')
-        a.appendChild(newInput)
+        // newInput.setAttribute('type', 'text')
+        // newInput.setAttribute('class', 'newMajor')
+        // newInput.setAttribute('placeholder', 'majorName')
+        // a.appendChild(newInput)
 
         newInput = document.createElement('input')
         newInput.setAttribute('type', 'text')
@@ -48,9 +52,14 @@ export const AddCourseToMajor = () => {
 
     useEffect(() => {
         debugger
-        AddInputBox(13)
-        AddInputBox(14)
-    }, [AddInputBox])
+        async function fetchData() {
+            let m = await axios.get(`https://localhost:44367/api/Major/GetMajorBySeminarCode/1`) //${} - when I know the seminar code.
+            dispatch(FillMajorData(m.data))
+        }
+        fetchData()
+        // AddInputBox(13)
+        // AddInputBox(14)
+    }, [AddInputBox, dispatch])
 
     const AddMajorToDatabase = () => {
 
@@ -66,9 +75,19 @@ export const AddCourseToMajor = () => {
     return <>
         <p>:הכנס שם מסלול</p>
         <p>יג</p>
-        <div id="addedInput13"></div>
-        <button style={{ backgroundColor: 'darkslateblue', padding: '5px' }} onClick={() => AddInputBox(13)}>+</button> <br />
+        {
+            majors.map(x => <> 
+                <h4>{x.majorName}</h4>
+                <div id="addedInput13"></div>
+                <button style={{ backgroundColor: 'darkslateblue', padding: '5px' }} onClick={() => AddInputBox(13)}>+</button> <br />
+            </>)
+        }
         <p>יד</p>
+        {
+            majors.map(x => <h4>
+                {x.majorName}
+            </h4>)
+        }
         {/* <input type="text" className="newMajor" name="text4"></input> */}
         <div id="addedInput14"></div>
         <button style={{ backgroundColor: 'darkslateblue', padding: '5px' }} onClick={() => AddInputBox(14)}>+</button>
