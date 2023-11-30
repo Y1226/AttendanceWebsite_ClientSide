@@ -1,29 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Arrow2 } from "../Arrow/Arrow2";
 import { Pencile } from './Pencile'
 import '../../UploadAnExcelFileWithAllTheDesign/SelectFile/SelectFile.css'
 import '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload.scss'
 import { StaffTable } from "../HeaderTables/Staff";
 import { StudentTable } from "../HeaderTables/Student";
 import { useNavigate } from "react-router-dom";
-import { FileUploadCopy } from "./FileUpload copy";
+import '../../File Upload/FileUpload.css'
 
 
-export const FileUpload = (props) => {
+export const FileUploadCopy = (props) => {
 
     let navigate = useNavigate()
 
-    const [fileSelected, setFileSelected] = useState();
+    const fileSelected= useState();
     const [fileUpload, setFileUpload] = useState(false);
     const [fileName, setFileName] = useState('')
-
-    const saveFileSelected = (e) => {
-        //in case you want to print the file selected
-        //console.log(e.target.files[0]);
-        setFileSelected(e.target.files[0]);
-        setFileName(e.target.files[0].name)
-    };
 
     const importFile = async (e) => {
         debugger
@@ -53,29 +45,36 @@ export const FileUpload = (props) => {
     };
 
     return (
-        // <>
-        //         <div className="main">
-        //             <form className="form">
-        //                 <Arrow2></Arrow2>
-        //                 <input className="FileUpdateInput" type="file" accept=".xlsx" multiple onChange={saveFileSelected} />
-        //             </form>
-        //             <p className="FileUploadP">{fileName}</p>
-        //         </div>
-                
-        //     {!fileUpload && <button type="submit" className="ButtonUpdate" onClick={importFile} disabled={fileName === '' ? true : false}>Upload</button>}
-        //     {fileUpload && <Pencile></Pencile>}
-        //     <br />
+        <>
+            <div className="FileUploadMain">
+                <form className="FileUploadForm">
+                    <div className='FileUploadSvgDiv'>
+                        <svg viewBox="0 -20 640 512" fill="white" height="90%">
+                            <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z">
+                            </path>
+                        </svg>
+                    </div>
+                    <input className="FileUploadInput" type="file" accept=".xlsx" multiple onChange={(e) => { setFileName(e.target.files[0].name) }} />
+                </form>
+                <p className="FileUploadP">{fileName}</p>
+            </div>
+            {!fileUpload && <button className="FileUploadButton" type="submit" onClick={importFile}>Upload</button>}
+            {fileUpload &&<Pencile></Pencile>}
+            <br />
 
-        //     <div className="instructionDiv">
-        //         <h3>מלאי והעלי קובץ אקסל לפי הכותרות הבאות:</h3>
-        //         {props.id === "Staff" ? <StaffTable></StaffTable> : <StudentTable></StudentTable>}
-        //         <br />
-        //         <h4>בהצלחה רבה והמון סיעתא דשמיא!</h4>
-        //     </div>
-        // </>
-        <FileUploadCopy />
+            <div className="instructionDiv">
+                <h3>מלאי והעלי קובץ אקסל לפי הכותרות הבאות:</h3>
+                {props.id === "Staff" ? <StaffTable></StaffTable> : <StudentTable></StudentTable>}
+                <br />
+                <h4>בהצלחה רבה והמון סיעתא דשמיא!</h4>
+            </div>
+        </>
     );
 };
+
+// FileUploadCopy.defaultProps = {
+//     id: "Staff"
+// }
 
 
 

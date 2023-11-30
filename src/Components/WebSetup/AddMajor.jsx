@@ -1,11 +1,12 @@
-// import '../../Style/WebSetupStyle/AddMajorStyle.scss'
+import '../../Style/WebSetupStyle/AddMajorStyle.scss'
 
 import axios from "axios"
-import { useEffect, useRef } from "react"
+import { React, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
 import { FillStaffData } from "../../Redux/Actions/TableActions/Manager/TeacherTableAction"
+import Select from 'react-select'
 
 export const AddMajor = () => {
 
@@ -14,6 +15,16 @@ export const AddMajor = () => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
     let other = useRef()
+    let [isOtherChecked, setIsOtherChecked] = useState(false)
+    let [number, setNumber] = useState(1)
+
+    const options = [
+        { code: 1, value: 'chocolate', label: 'Chocolate' },
+        { code: 2, value: 'strawberry', label: 'Strawberry' },
+        { code: 3, value: 'vanilla', label: 'Vanilla' }
+    ]
+    const [animal, setAnimal] = useState(null)
+    const [addMajor, setAddMajor] = useState("שם מסלול")
 
     useEffect(() => {
         async function fetchData() {
@@ -25,7 +36,14 @@ export const AddMajor = () => {
         fetchData()
     }, [dispatch])
 
+    const handleChange = (value) => {
+        console.log("value:", value);
+        alert("code: " + value.code + ", value: " + value.value)
+        setAnimal(value);
+    };
+
     const ShowInputs = () => {
+        setIsOtherChecked(other.current.checked)
         let checked = document.getElementById('other').checked
         let otherInput = document.getElementById('addedInput')
         if (checked === true) {
@@ -63,16 +81,12 @@ export const AddMajor = () => {
 
     const RemoveInput = () => {
         debugger
-        try {
-            let newMajors = document.getElementsByClassName('major_new')
-            newMajors[newMajors.length - 1].remove()
-            let newSelect = document.getElementsByClassName('selectCoordinator')
-            newSelect[newSelect.length - 1].remove()
-            let br = document.getElementsByTagName('br')
-            br[br.length - 1].remove()
-        } catch (error) {
-            return 0
-        }
+        let newMajors = document.getElementsByClassName('major_new')
+        newMajors[newMajors.length - 1].remove()
+        let newSelect = document.getElementsByClassName('selectCoordinator')
+        newSelect[newSelect.length - 1].remove()
+        let br = document.getElementsByTagName('br')
+        br[br.length - 1].remove()
     }
 
     const SaveMajors = () => {
@@ -85,7 +99,6 @@ export const AddMajor = () => {
         }
         localStorage.setItem('chosenExistingMajor', majorList)
         if (other.current.checked === true) {
-            // if (document.getElementById('other').checked === true) {
             chosenMajor = document.getElementsByClassName('major_new')
             let chosenMajorCoordinator = document.getElementsByClassName('selectCoordinator')
             majorList = {}
@@ -93,7 +106,7 @@ export const AddMajor = () => {
                 majorList[chosenMajor[i].value] = chosenMajorCoordinator[i].value
                 let index = chosenMajorCoordinator[i].value.split(' ')
                 let majorCodeCoordinator = staff.find(x => x.userFirstName === index[0] && x.userLastName === index[1])
-                let majorElement = {majorName: chosenMajor[i].value, majorCodeCoordinator: majorCodeCoordinator.staffCode, seminarCode: '1'}
+                let majorElement = { majorName: chosenMajor[i].value, majorCodeCoordinator: majorCodeCoordinator.staffCode, seminarCode: '1' }
                 axios.post('https://localhost:44367/api/Major/AddMajor', majorElement)
             }
             localStorage.setItem('chosenNewMajor', JSON.stringify(majorList))
@@ -102,21 +115,60 @@ export const AddMajor = () => {
         navigate('../addCourseToMajor')
     }
 
-    return <div>
-        <h1>:בחר את המסלולים בסמינר</h1>
-        {
-            majors.map(x => <>
-                <input className="major_checkbox" type="checkbox" />
-                <label className="major_label">{x.majorName}</label>
-                <br />
-            </>)
-        }
-        <input type="checkbox" id="other" ref={other} onChange={() => ShowInputs()} /><label>אחר</label> <br />
-        <div id="addedInput" hidden>
-            <div id="inputPlace"></div>
-            <button style={{ backgroundColor: 'darkslateblue', padding: '5px' }} onClick={() => AddInputs()}>+</button>
-            <button style={{ backgroundColor: 'lightblue', padding: '5px' }} onClick={() => RemoveInput()}>-</button>
+    return <>
+        <div>
+            <h1>:בחר את המסלולים בסמינר</h1>
+            {
+                majors.map(x => <>
+                    <input className="major_checkbox" type="checkbox" />
+                    <label className="major_label">{x.majorName}</label>
+                    <br />
+                </>)
+            }
+            {/* <input type="checkbox" id="other" ref={other} onChange={() => { setIsOtherChecked(other.current.checked) }}/><label>אחר</label> <br /> */}
+            <input type="checkbox" id="other" ref={other} onChange={() => ShowInputs()} /><label>אחר</label> <br />
+            {/*  */}
+            {isOtherChecked &&
+                <div>
+                    <div className='plusMinus'>
+                        <div className="col-3 input-effect">
+                            <input className="effect-19" type="text" placeholder={addMajor} onFocus={() => setAddMajor("")} onBlur={() => setAddMajor("שם מסלול")} />
+                            <label>שם מסלול</label>
+                            <span className="focus-border">
+                                <i></i>
+                            </span>
+                        </div>
+                        <div className='SelectComponent'>
+                            <Select placeholder="בחרי רכזת מסלול" value={animal} onChange={handleChange} options={options} />
+                        </div>
+                    </div>
+                    <div className='plusMinus'>
+                        <div tabindex="0" className="plusButton">
+                            <svg className="plusIcon" viewBox="0 0 30 30">
+                                <path d="M13.75 23.75V16.25H6.25V13.75H13.75V6.25H16.25V13.75H23.75V16.25H16.25V23.75H13.75Z"></path>
+                            </svg>
+                        </div>
+                        <div tabindex="0" className="plusButton">
+                            <svg className="plusIcon" viewBox="0 0 30 30">
+                                <path d="M13.75 23.75V16.25H6.25V13.25V13.75H23.75V16.25H16.75H13.75Z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div id="addedInput" hidden>
+                <div id="inputPlace"></div>
+                <button style={{ backgroundColor: 'darkslateblue', padding: '5px' }} onClick={() => AddInputs()}>+</button>
+                <button style={{ backgroundColor: 'lightblue', padding: '5px' }} onClick={() => RemoveInput()}>-</button>
+            </div>
+            <button style={{ backgroundColor: 'pink', padding: '5px' }} onClick={() => SaveMajors()}>הבא</button>
         </div>
-        <button style={{ backgroundColor: 'pink', padding: '5px' }} onClick={() => SaveMajors()}>הבא</button>
-    </div>
+        {/*  */}
+        {/* {[...Array(number)].map((e, i) => {
+            return <li key={i}>{i}</li>
+        })}
+        <input type="button" value="plus" onClick={()=> {setNumber(number+1)}}/>
+        <br />
+        <input type="button" value="minus" onClick={() => { setNumber(number - 1) }} /> */}
+    </>
 }
