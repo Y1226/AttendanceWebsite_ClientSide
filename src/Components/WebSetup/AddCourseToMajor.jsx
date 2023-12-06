@@ -1,6 +1,6 @@
 import axios from "axios"
 // import { useCallback } from "react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
 
@@ -12,6 +12,8 @@ export const AddCourseToMajor = () => {
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
     //let currentSeminar = JSON.parse(localStorage.getItem('newSeminar')).seminarManagerPassword
     //currentSeminar = axios.get(`getseminarbypassword/${currentSeminar}`).then(x => x.data) //fix to use the store with useSelector.
+
+    //const [major, setMajor] = useState()
 
     const AddInputBox = (x, major) => {
         debugger
@@ -88,11 +90,19 @@ export const AddCourseToMajor = () => {
     const AddMajorToDatabase = () => {
 
         let majorsToAdd = document.getElementsByClassName('majorToAdd')
-
+        // fetch('http://localhost:8080/posts')
+        // .then(function(response){ return response.json(); })
+        // .then(function(data) {
+        //     const items = data;
+        //     console.log(items)
+        // })
         for (let i = 0; i < majorsToAdd.length; i++) {
-            let major = axios.get(`https://localhost:44367/api/Major/GetMajorByMajorName/${majorsToAdd[i].classList[1]}`).then(x => x)
-            console.log(major.data);
-
+            axios.get(`https://localhost:44367/api/Major/GetMajorByMajorName/${majorsToAdd[i].classList[1]}`)
+            .then(x => {
+                let major = x.data;
+                console.log(major);
+            })
+            
         }
 
         //https://localhost:44367/api/MajorCourses/AddAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode/{MajorCode}/{CourseGrade}/{CourseName}/{CourseTeacherCode}
