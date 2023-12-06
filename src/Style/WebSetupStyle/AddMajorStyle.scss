@@ -270,10 +270,6 @@ input[type="text"] {
     align-items: center;
 }
 
-.plusMinus {
-    margin-top: 130px;
-}
-
 .plusButton {
     --plus_sideLength: 2.5rem;
     --plus_topRightTriangleSideLength: 0.9rem;
@@ -320,7 +316,6 @@ input[type="text"] {
     fill: white;
     width: calc(var(--plus_sideLength) * 0.7);
     height: calc(var(--plus_sideLength) * 0.7);
-    z-index: 1;
     transition-timing-function: ease-in-out;
     transition-duration: 0.2s;
 }

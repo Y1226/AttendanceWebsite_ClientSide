@@ -154,7 +154,7 @@ export const AddMajor = () => {
                 </div>
             })}
             {isOtherChecked &&
-                <div className='spaces plusMinus'>
+                <div className='spaces'>
                     <div tabindex="0" className="plusButton" onClick={() => { setNumber(number + 1) }}>
                         <svg className="plusIcon" viewBox="0 0 30 30">
                             <path d="M13.75 23.75V16.25H6.25V13.75H13.75V6.25H16.25V13.75H23.75V16.25H16.25V23.75H13.75Z"></path>
