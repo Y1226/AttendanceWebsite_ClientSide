@@ -320,7 +320,6 @@ input[type="text"] {
     fill: white;
     width: calc(var(--plus_sideLength) * 0.7);
     height: calc(var(--plus_sideLength) * 0.7);
-    z-index: 1;
     transition-timing-function: ease-in-out;
     transition-duration: 0.2s;
 }

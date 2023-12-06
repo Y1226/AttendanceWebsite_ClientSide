@@ -42,67 +42,79 @@ export const AddMajor = () => {
         setAnimal(value);
     };
 
-    const ShowInputs = () => {
-        setIsOtherChecked(other.current.checked)
-        let checked = document.getElementById('other').checked
-        let otherInput = document.getElementById('addedInput')
-        if (checked === true) {
-            otherInput.removeAttribute('hidden')
-            AddInputs()
-        }
-        else {
-            otherInput.setAttribute('hidden', true)
-            RemoveInput()
-        }
-    }
+    // const ShowInputs = () => {
+    //     setIsOtherChecked(other.current.checked)
+    //     let checked = document.getElementById('other').checked
+    //     let otherInput = document.getElementById('addedInput')
+    //     if (checked === true) {
+    //         otherInput.removeAttribute('hidden')
+    //         AddInputs()
+    //     }
+    //     else {
+    //         otherInput.setAttribute('hidden', true)
+    //         RemoveInput()
+    //     }
+    // }
 
-    const AddInputs = () => {
-        let a = document.getElementById("inputPlace")
-        let newInput = document.createElement('input')
-        newInput.setAttribute('type', 'text')
-        newInput.setAttribute('class', 'major_new')
-        newInput.setAttribute('placeholder', 'שם מסלול')
-        a.appendChild(newInput)
+    // const AddInputs = () => {
+    //     let a = document.getElementById("inputPlace")
+    //     let newInput = document.createElement('input')
+    //     newInput.setAttribute('type', 'text')
+    //     newInput.setAttribute('class', 'major_new')
+    //     newInput.setAttribute('placeholder', 'שם מסלול')
+    //     a.appendChild(newInput)
 
-        newInput = document.createElement('select')
-        newInput.setAttribute('class', 'selectCoordinator')
-        let newOption = document.createElement('option')
-        newOption.setAttribute('hidden', true)
-        newOption.text = 'בחרי רכזת מסלול'
-        newInput.appendChild(newOption)
-        for (let i = 0; i < staff.length; i++) {
-            newOption = document.createElement('option')
-            newOption.text = staff[i].userFirstName + ' ' + staff[i].userLastName
-            newInput.appendChild(newOption)
-        }
-        a.appendChild(newInput)
-        a.appendChild(document.createElement('br'))
-    }
+    //     newInput = document.createElement('select')
+    //     newInput.setAttribute('class', 'selectCoordinator')
+    //     let newOption = document.createElement('option')
+    //     newOption.setAttribute('hidden', true)
+    //     newOption.text = 'בחרי רכזת מסלול'
+    //     newInput.appendChild(newOption)
+    //     for (let i = 0; i < staff.length; i++) {
+    //         newOption = document.createElement('option')
+    //         newOption.text = staff[i].userFirstName + ' ' + staff[i].userLastName
+    //         newInput.appendChild(newOption)
+    //     }
+    //     a.appendChild(newInput)
+    //     a.appendChild(document.createElement('br'))
+    // }
 
-        const RemoveInput = () => {
-            debugger
-            let newMajors = document.getElementsByClassName('major_new')
-            newMajors[newMajors.length - 1].remove()
-            let newSelect = document.getElementsByClassName('selectCoordinator')
-            newSelect[newSelect.length - 1].remove()
-            let br = document.getElementsByTagName('br')
-            br[br.length - 1].remove()
-        }
+    //     const RemoveInput = () => {
+    //         debugger
+    //         let newMajors = document.getElementsByClassName('major_new')
+    //         newMajors[newMajors.length - 1].remove()
+    //         let newSelect = document.getElementsByClassName('selectCoordinator')
+    //         newSelect[newSelect.length - 1].remove()
+    //         let br = document.getElementsByTagName('br')
+    //         br[br.length - 1].remove()
+    //     }
 
     const SaveMajors = () => {
-        let chosenMajor = document.getElementsByClassName('major_checkbox')
-        let chosenLabel = document.getElementsByClassName('major_label')
+        debugger
+        // let chosenMajor = document.getElementsByClassName('major_checkbox')
+        let chosenMajor = document.getElementsByClassName('checkbox')
+        // let chosenLabel = document.getElementsByClassName('major_label')
+        // let chosenLabel = document.getElementsByClassName('label')
+        let chosenLabel = document.getElementsByClassName('divCheckbox')
         let majorList = []
-        for (let i = 0; i < chosenMajor.length; i++) {
-            if (chosenMajor[i].checked === true)
-                majorList.push({'major': chosenLabel[i].innerText})
+        for (let i = 0; i < chosenLabel.length; i++) {
+            debugger
+            if(chosenLabel[i].getElementsByClassName('checkbox')[0].checked)
+                majorList.push({'major': chosenLabel[i].getElementsByClassName('label')[0].innerHTML})
+            // if (chosenLabel[0].checked === true)
+            //     majorList.push({'major': chosenLabel[i].innerText})
         }
+        // for (let i = 0; i < chosenMajor.length; i++) {
+        //     if (chosenMajor[i].checked === true)
+        //         majorList.push({'major': chosenLabel[i].innerText})
+        // }
         localStorage.setItem('chosenExistingMajor', JSON.stringify(majorList))
-        if (other.current.checked === true) {
+        if (other.current.checked) {
             chosenMajor = document.getElementsByClassName('major_new')
             let chosenMajorCoordinator = document.getElementsByClassName('selectCoordinator')
             majorList = {}
             for (let i = 0; i < chosenMajor.length; i++) {
+                debugger
                 // let majorItem = {}
                 majorList[chosenMajor[i].value] = chosenMajorCoordinator[i].value
                 // majorList.push(majorItem)
@@ -154,7 +166,7 @@ export const AddMajor = () => {
                 </div>
             })}
             {isOtherChecked &&
-                <div className='spaces plusMinus'>
+                <div className='spaces'>
                     <div tabindex="0" className="plusButton" onClick={() => { setNumber(number + 1) }}>
                         <svg className="plusIcon" viewBox="0 0 30 30">
                             <path d="M13.75 23.75V16.25H6.25V13.75H13.75V6.25H16.25V13.75H23.75V16.25H16.25V23.75H13.75Z"></path>
@@ -168,11 +180,11 @@ export const AddMajor = () => {
                 </div>
             }
             {/* ****************************************** */}
-            <div id="addedInput" hidden>
+            {/* <div id="addedInput" hidden>
                 <div id="inputPlace"></div>
                 <button style={{ backgroundColor: 'darkslateblue', padding: '5px' }} onClick={() => AddInputs()}>+</button>
                 <button style={{ backgroundColor: 'lightblue', padding: '5px' }} onClick={() => RemoveInput()}>-</button>
-            </div>
+            </div> */}
             <button style={{ backgroundColor: 'pink', padding: '5px' }} onClick={() => SaveMajors()}>הבא</button>
         </div>
         {/*  */}
