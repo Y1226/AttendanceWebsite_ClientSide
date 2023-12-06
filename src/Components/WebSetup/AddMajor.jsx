@@ -79,15 +79,15 @@ export const AddMajor = () => {
         a.appendChild(document.createElement('br'))
     }
 
-    const RemoveInput = () => {
-        debugger
-        let newMajors = document.getElementsByClassName('major_new')
-        newMajors[newMajors.length - 1].remove()
-        let newSelect = document.getElementsByClassName('selectCoordinator')
-        newSelect[newSelect.length - 1].remove()
-        let br = document.getElementsByTagName('br')
-        br[br.length - 1].remove()
-    }
+        const RemoveInput = () => {
+            debugger
+            let newMajors = document.getElementsByClassName('major_new')
+            newMajors[newMajors.length - 1].remove()
+            let newSelect = document.getElementsByClassName('selectCoordinator')
+            newSelect[newSelect.length - 1].remove()
+            let br = document.getElementsByTagName('br')
+            br[br.length - 1].remove()
+        }
 
     const SaveMajors = () => {
         let chosenMajor = document.getElementsByClassName('major_checkbox')
@@ -95,15 +95,17 @@ export const AddMajor = () => {
         let majorList = []
         for (let i = 0; i < chosenMajor.length; i++) {
             if (chosenMajor[i].checked === true)
-                majorList.push(chosenLabel[i].innerText)
+                majorList.push({'major': chosenLabel[i].innerText})
         }
-        localStorage.setItem('chosenExistingMajor', majorList)
+        localStorage.setItem('chosenExistingMajor', JSON.stringify(majorList))
         if (other.current.checked === true) {
             chosenMajor = document.getElementsByClassName('major_new')
             let chosenMajorCoordinator = document.getElementsByClassName('selectCoordinator')
             majorList = {}
             for (let i = 0; i < chosenMajor.length; i++) {
+                // let majorItem = {}
                 majorList[chosenMajor[i].value] = chosenMajorCoordinator[i].value
+                // majorList.push(majorItem)
                 let index = chosenMajorCoordinator[i].value.split(' ')
                 let majorCodeCoordinator = staff.find(x => x.userFirstName === index[0] && x.userLastName === index[1])
                 let majorElement = { majorName: chosenMajor[i].value, majorCodeCoordinator: majorCodeCoordinator.staffCode, seminarCode: '1' }
