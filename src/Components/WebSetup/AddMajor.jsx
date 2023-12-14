@@ -136,8 +136,9 @@ export const AddMajor = () => {
             })
         }
         if (other.current.checked) {
-            chosenMajor = document.getElementsByClassName('spaces')
-            let chosenMajorCoordinator = document.getElementsByClassName('selectCoordinator')
+            chosenMajor = document.getElementsByClassName('newMajorName')
+            let chosenMajorCoordinator = listSelectStaff
+            // let chosenMajorCoordinator = document.getElementsByClassName('SelectComponent')
             majorList = {}
             for (let i = 0; i < chosenMajor.length; i++) {
                 debugger
@@ -146,7 +147,7 @@ export const AddMajor = () => {
                 // majorList.push(majorItem)
                 let index = chosenMajorCoordinator[i].value.split(' ')
                 let majorCodeCoordinator = staff.find(x => x.userFirstName === index[0] && x.userLastName === index[1])
-                let majorElement = { majorName: chosenMajor[i].value, majorCodeCoordinator: majorCodeCoordinator.staffCode, seminarCode: '1' }
+                let majorElement = { majorName: `N'${chosenMajor[i].value}'`, majorCodeCoordinator: majorCodeCoordinator.staffCode, seminarCode: '1' }
                 axios.post('https://localhost:44367/api/Major/AddMajor', majorElement)
             }
             localStorage.setItem('chosenNewMajor', JSON.stringify(majorList))
@@ -182,7 +183,7 @@ export const AddMajor = () => {
             {isOtherChecked && [...Array(number)].map((e, i) => {
                 return <div key={i} className='spaces'>
                     <div className="col-3 input-effect">
-                        <input className="effect-19" type="text" placeholder={"שם מסלול"} onFocus={(e) => e.target.placeholder = ""} onBlur={(e) => e.target.placeholder = "שם מסלול"} />
+                        <input className="effect-19 newMajorName" type="text" placeholder={"שם מסלול"} onFocus={(e) => e.target.placeholder = ""} onBlur={(e) => e.target.placeholder = "שם מסלול"} />
                         <label>שם מסלול</label>
                         <span className="focus-border">
                             <i></i>
