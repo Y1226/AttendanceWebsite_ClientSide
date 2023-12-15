@@ -14,6 +14,7 @@ export const ManagerStudentTable = () => {
     const students = useSelector(x => x.ManagerStudentTableReducer.StudentList)
 
     useEffect(() => {
+        debugger
         let currentUser = JSON.parse(localStorage.getItem('CurrentUser'))
         async function fetchData() {
             let s = await axios.get(`https://localhost:44367/api/Students/GetFullStudentsDataBySeminarCode/${currentUser.seminarCode}`)
