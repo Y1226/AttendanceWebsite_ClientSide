@@ -123,7 +123,7 @@ const TeacherTable = () => {
               onClick={handleExportData}
               startIcon={<FileDownloadIcon />}
             >
-              Export All Data
+              הורדה לקובץ אקסל
             </Button>
             {/* <Button
               disabled={table.getPrePaginationRowModel().rows.length === 0}
