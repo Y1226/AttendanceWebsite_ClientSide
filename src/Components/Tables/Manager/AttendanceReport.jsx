@@ -33,20 +33,20 @@ export const AttendanceReport = () => {
                     <div key={y} className="thumb"></div>
                     <div key={`${y}0`} className="infos">
                         <h2 key={`${y}1`} className="title">{x.studentFirstName} {x.studentLastName}<span className="flag"></span></h2>
-                        <h3 key={`${y}2`} className="date">Grade: {x.studentGrade}</h3>
-                        <h3 key={`${y}3`} className="major date">Major #1: {x.firstMajorName}</h3>
+                        <h3 key={`${y}2`} className="date">מחזור: {x.studentGrade}</h3>
+                        <h3 key={`${y}3`} className="major date">מסלול #1: {x.firstMajorName}</h3>
                         <h3 key={`${y}4`} className="major date">|</h3>
-                        <h3 key={`${y}5`} className="major date">Major #2: {x.secondMajorName}</h3>
+                        <h3 key={`${y}5`} className="major date">מסלול #2: {x.secondMajorName}</h3>
                         <div key={`${y}6`} className="txt">
                             <div className="table-container">
                                 <div className="table-horizontal-container">
                                     <table className="unfixed-table">
                                         <thead className="attendanceThead">
                                             <tr>
-                                                <th className="attendanceTh">Course Name</th>
-                                                <th className="attendanceTh">Teachers Name</th>
-                                                <th className="attendanceTh">Number of Lessons</th>
-                                                <th className="attendanceTh">Number of Attended Lessons</th>
+                                                <th className="attendanceTh">שם קורס</th>
+                                                <th className="attendanceTh">שם מורה</th>
+                                                <th className="attendanceTh">מספר שעורים</th>
+                                                <th className="attendanceTh">מספר שעורים שנכחה</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -75,7 +75,7 @@ export const AttendanceReport = () => {
                                 </div>
                             </div>
                         </div>
-                        <h3 className="details" onClick={() => openPersonalReport(x)}>View and Print ⇾</h3>
+                        <h3 className="details" onClick={() => openPersonalReport(x)}>הצג והדפס ⇾</h3>
                     </div>
                 </article>
             )}

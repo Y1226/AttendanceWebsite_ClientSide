@@ -185,11 +185,14 @@ export const SignInForm = () => {
                                 {/* ----------------------------- */}
                                 <div className="col_md_login">
                                     <div className="cont_ba_opcitiy">
-                                        <h2 className='SignInFormH2'>LOGIN</h2>
-                                        {/* <h2 className='SignInFormH2'>התחברות</h2>   */}
-                                        <p className='SignInFormP'>Have an account? <br></br> Login!</p>
-                                        <button className="btn_login" onClick={() => change_to_login()}>LOGIN AS MANAGER{/*התחברות*/}</button>
-                                        <button className="btn_loginGuest" onClick={() => change_to_loginGuest()}>LOGIN AS USER{/*התחברות*/}</button>
+                                        {/* <h2 className='SignInFormH2'>LOGIN</h2> */}
+                                        <h2 className='SignInFormH2'>התחברות</h2>  
+                                        <p className='SignInFormP'>?יש לך חשבון <br></br> !התחבר</p>
+                                        {/* <p className='SignInFormP'>Have an account? <br></br> Login!</p> */}
+                                        <button className="btn_login" onClick={() => change_to_login()}>התחבר כמנהל</button>
+                                        {/* <button className="btn_login" onClick={() => change_to_login()}>LOGIN AS MANAGER</button> */}
+                                        <button className="btn_loginGuest" onClick={() => change_to_loginGuest()}>התחבר כמשתמש</button>
+                                        {/* <button className="btn_loginGuest" onClick={() => change_to_loginGuest()}>LOGIN AS USER</button> */}
                                     </div>
                                 </div>
 
@@ -198,10 +201,12 @@ export const SignInForm = () => {
                                 {/* ----------------------------- */}
                                 <div className="col_md_sign_up">
                                     <div className="cont_ba_opcitiy">
-                                        {/* <h2 className='SignInFormH2'>הירשם</h2> */}
-                                        <h2 className='SignInFormH2'>SIGN UP</h2>
-                                        <p className='SignInFormP'>Don't have an account yet? <br></br> Create one now!</p>
-                                        <button className="btn_sign_up" onClick={() => change_to_sign_up()}>SIGN UP{/*הירשם*/}</button>
+                                        <h2 className='SignInFormH2'>הירשם</h2>
+                                        {/* <h2 className='SignInFormH2'>SIGN UP</h2> */}
+                                        <p className='SignInFormP'>?עדין אין לך חשבון <br></br> !צור חשבון עכשיו</p>
+                                        {/* <p className='SignInFormP'>Don't have an account yet? <br></br> Create one now!</p> */}
+                                        <button className="btn_sign_up" onClick={() => change_to_sign_up()}>הירשם</button>
+                                        {/* <button className="btn_sign_up" onClick={() => change_to_sign_up()}>SIGN UP</button> */}
                                     </div>
                                 </div>
                             </div>
@@ -221,46 +226,51 @@ export const SignInForm = () => {
                                 {/* Login as manager */}
                                 <div className="cont_form_login">
                                     <p className='SignInFormA' onClick={() => hidden_login_and_sign_up()}><i className='SignInFormI'>«</i></p>
-                                    {/* <h2 className='SignInFormH2'>התחברות</h2> */}
-                                    <h2 className='SignInFormH2'>LOGIN</h2>
+                                    <h2 className='SignInFormH2'>התחברות</h2>
+                                    {/* <h2 className='SignInFormH2'>LOGIN</h2> */}
                                     {/* Option to choose seminar */}
                                     <select className='SignInFormSelect' onChange={e => { setSeminarCode(e.target.value); }}>
-                                        <option className='SignInFormOption' hidden>CHOOSE YOUR SCHOOL</option>
+                                        <option className='SignInFormOption' hidden>בחר את הסמינר שלך</option>
+                                        {/* <option className='SignInFormOption' hidden>CHOOSE YOUR SCHOOL</option> */}
                                         {/* Go through seminars from list in store and add the seminars name */}
                                         {seminars.map((x) => {
                                             return <option className='SignInFormOption' id='seminarKey' key={x.seminarCode} value={x.seminarCode}>{x.seminarName}</option>
                                         })}
                                     </select>
-                                    <input className='SignInFormInput' type="password" placeholder="Password" id='passwordManager' />
-                                    <button className="btn_login" onClick={() => login()}>LOGIN{/*התחברות*/}</button>
+                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordManager' />
+                                    <button className="btn_login" onClick={() => login()}>התחברות</button>
+                                    {/* <button className="btn_login" onClick={() => login()}>LOGIN</button> */}
                                 </div>
 
                                 {/* Login as user */}
                                 <div className="cont_form_loginGuest">
                                     <p className='SignInFormA' onClick={() => hidden_login_and_sign_up()}><i className='SignInFormI'>«</i></p>
-                                    {/* <h2 className='SignInFormH2'>התחברות</h2> */}
-                                    <h2 className='SignInFormH2'>LOGIN</h2>
-                                    <input className='SignInFormInput' type="text" placeholder="ID Number" id='username' />
-                                    <input className='SignInFormInput' type="password" placeholder="Password" id='passwordUser' />
+                                    <h2 className='SignInFormH2'>התחברות</h2>
+                                    {/* <h2 className='SignInFormH2'>LOGIN</h2> */}
+                                    <input className='SignInFormInput' type="text" placeholder="תעודת זהות" id='username' />
+                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordUser' />
                                     {/* Option to choose seminar */}
                                     <select className='SignInFormSelect' onChange={e => { setSeminarCode(e.target.value); }}>
-                                        <option className='SignInFormOption' hidden>CHOOSE YOUR SCHOOL</option>
+                                        <option className='SignInFormOption' hidden>בחר את הסמינר שלך</option>
+                                        {/* <option className='SignInFormOption' hidden>CHOOSE YOUR SCHOOL</option> */}
                                         {/* Go through seminars from list in store and add the seminars name */}
                                         {seminars.map((x) => {
                                             return <option className='SignInFormOption' id='seminarKey' key={x.seminarCode} value={x.seminarCode}>{x.seminarName}</option>
                                         })}
                                     </select>
-                                    <button className="btn_login" onClick={() => login()}>LOGIN{/*התחברות*/}</button>
+                                    <button className="btn_login" onClick={() => login()}>התחברות</button>
+                                    {/* <button className="btn_login" onClick={() => login()}>LOGIN</button> */}
                                 </div>
                                 {/* Sign up */}
                                 <div className="cont_form_sign_up">
                                     <p className='SignInFormA' onClick={() => hidden_login_and_sign_up()}><i className='SignInFormI'>«</i></p>
-                                    {/* <h2 className='SignInFormH2'>הירשם</h2> */}
-                                    <h2 className='SignInFormH2'>SIGN UP</h2>
-                                    <input className='SignInFormInput' type="text" placeholder="Seminar Name" id='newSeminarName' />
-                                    <input className='SignInFormInput' type="text" placeholder="Email" id='newSeminarEmail' />
-                                    <input className='SignInFormInput' type="text" placeholder="City" id='newSeminarCity' />
-                                    <button className="btn_sign_up" onClick={() => signUp()}>SIGN UP{/*הירשם*/}</button>
+                                    <h2 className='SignInFormH2'>הירשם</h2>
+                                    {/* <h2 className='SignInFormH2'>SIGN UP</h2> */}
+                                    <input className='SignInFormInput' type="text" placeholder="שם סמינר" id='newSeminarName' />
+                                    <input className='SignInFormInput' type="text" placeholder="דואל" id='newSeminarEmail' />
+                                    <input className='SignInFormInput' type="text" placeholder="עיר" id='newSeminarCity' />
+                                    <button className="btn_sign_up" onClick={() => signUp()}>הירשם</button>
+                                    {/* <button className="btn_sign_up" onClick={() => signUp()}>SIGN UP</button> */}
                                 </div>
                             </div>
                         </div>

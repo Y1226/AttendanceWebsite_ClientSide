@@ -37,7 +37,8 @@ export const FileUpload = (props) => {
                 </form>
                 <p className="FileUploadP">{fileName}</p>
             </div>
-            {!fileUpload && <button className="FileUploadButton" type="submit" onClick={importFile}>Upload</button>}
+            {!fileUpload && <button className="FileUploadButton" type="submit" onClick={importFile}>העלה</button>}
+            {/* {!fileUpload && <button className="FileUploadButton" type="submit" onClick={importFile}>Upload</button>} */}
             {fileUpload &&<Pencile></Pencile>}
         </>
     );
