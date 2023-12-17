@@ -33,7 +33,8 @@ export const GradeTable = () => {
             <div className="frame">
                 <div className="list">
                     <div className="headStudentTable">
-                        <div className="title">Choose a Grade:</div>
+                        <div className="title">:בחר שנתון</div>
+                        {/* <div className="title">Choose a Grade:</div> */}
                     </div>
                     <div className="StudentTableUl">
                         <p className="chooseStyle" onClick={() => GoToCourse('A')}>שנה א</p><br />

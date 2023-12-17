@@ -47,19 +47,19 @@ export const ChangingTable = () => {
 				<img className='img' src="https://localhost:44367/Logos/LogoSharansky.gif" alt="LogoSharansky" />
 			</div>
         <h2 className="title mtp tableh2">{x.studentFirstName} {x.studentLastName}<span className="flag"></span></h2>
-        <h3 className="date mtp">Grade: {x.studentGrade}</h3>
-        <h3 className="major date mtp">Major #1: {x.firstMajorName}</h3>
+        <h3 className="date mtp">מחזור: {x.studentGrade}</h3>
+        <h3 className="major date mtp">מסלול #1: {x.firstMajorName}</h3>
         <h3 className="major date mtp">|</h3>
-        <h3 className="major date mtp">Major #2: {x.secondMajorName}</h3>
+        <h3 className="major date mtp">מסלול #2: {x.secondMajorName}</h3>
         {/* Table */}
         <div className="container">
           <ul className="responsive-table">
             <li className="tableLI table-header">
-              <div className="col col-1">Course Name</div>
-              <div className="col col-2">Number of Lessons</div>
-              <div className="col col-3">Number of Attended Lessons</div>
+              <div className="col col-1">שם קורס</div>
+              <div className="col col-2">מספר שעורים</div>
+              <div className="col col-3">מספר שעורים שנכחה</div>
               <div className="col col-4">%</div>
-              <div className="col col-5">Passed</div>
+              <div className="col col-5">עברה</div>
             </li>
 
             <ShowExtraDetails MajorDetails={x.detailsForTheFirstMajor} MajorName={x.firstMajorName}></ShowExtraDetails>

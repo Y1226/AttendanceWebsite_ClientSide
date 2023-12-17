@@ -25,9 +25,12 @@ export const Verification = () => {
             {/* <span className="close">X</span> */}
 
             <div className="info">
-                <span className="title">Verify It's You!</span>
-                <p className="description">A verification code has been sent to your email.</p>
-                <p>Save this code as your future password.</p>
+                <span className="title">!ודא שזה אתה</span>
+                {/* <span className="title">Verify It's You!</span> */}
+                <p className="description">.קוד אימות נשלח למייל שלך</p>
+                {/* <p className="description">A verification code has been sent to your email.</p> */}
+                <p>.שמור את הקוד הזה כסיסמה העתידית שלך</p>
+                {/* <p>Save this code as your future password.</p> */}
             </div>
             {/* <div className="input-fields">
                 <input placeholder="____" type="tel" maxLength="4" />
@@ -43,8 +46,10 @@ export const Verification = () => {
             </div>
 
             <div className="action-btns">
-                <p className="verify" onClick={() => Verify()}>Verify</p>
-                <p className="clear" onClick={() => document.getElementById('verificationCode').value = ''}>Clear</p>
+                <p className="verify" onClick={() => Verify()}>אמת</p>
+                {/* <p className="verify" onClick={() => Verify()}>Verify</p> */}
+                <p className="clear" onClick={() => document.getElementById('verificationCode').value = ''}>נקה</p>
+                {/* <p className="clear" onClick={() => document.getElementById('verificationCode').value = ''}>Clear</p> */}
             </div>
 
         </form>

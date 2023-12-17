@@ -50,7 +50,7 @@ export const UploadLogo = (props) => {
                     <p className="FileUploadP">{fileName}</p>
                 </div>
                 
-            {!fileUpload && <button type="submit" className="ButtonUpdate" onClick={importFile} disabled={fileName === '' ? true : false}>Upload</button>}
+            {!fileUpload && <button type="submit" className="ButtonUpdate" onClick={importFile} disabled={fileName === '' ? true : false}>העלה</button>}
             {fileUpload && <Pencile></Pencile>}
             <br />
 
