@@ -36,10 +36,10 @@ export const PersonalAttendanceReport = () => {
 
     return <div ref={componentRef} className="letter">
         <h2 className="title">{x.studentFirstName} {x.studentLastName}<span className="flag"></span></h2>
-        <h3 className="date">Grade: {x.studentGrade}</h3>
-        <h3 className="major date">Major #1: {x.firstMajorName}</h3>
+        <h3 className="date">מחזור: {x.studentGrade}</h3>
+        <h3 className="major date">מסלול #1: {x.firstMajorName}</h3>
         <h3 className="major date">|</h3>
-        <h3 className="major date">Major #2: {x.secondMajorName}</h3>
+        <h3 className="major date">מסלול #2: {x.secondMajorName}</h3>
         {/* <div className="txt"> */}
             <div className="wrapAttendanceTable">
                 {/* <div className="table-horizontal-container"> */}
@@ -48,6 +48,6 @@ export const PersonalAttendanceReport = () => {
                 {/* </div> */}
             </div>
         {/* </div> */}
-        <button onClick={handlePrint}>print</button>
+        <button onClick={handlePrint}>הדפס</button>
     </div>
 }

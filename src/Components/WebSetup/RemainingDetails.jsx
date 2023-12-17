@@ -48,16 +48,16 @@ export const RemainingDetails = () => {
         <div className="detailsForm">
             <div className='detailsFormContent'>
                 <form /*onSubmit={sendEmail}*/>
-                    <h2>Enter remaining info:</h2><br />
+                    <h2>:הכנס את המידע הנותר</h2><br />
                     <input type="text" value={JSON.parse(localStorage.getItem('newSeminar')).seminarName} id="SeminarName" name='userName' readOnly /><br />
                     <input type="text" value={JSON.parse(localStorage.getItem('newSeminar')).SeminarEmailAddress} id="SeminarEmail" name='email' readOnly /><br />
-                    <input type="text" placeholder="SeminarAddress" id="SeminarAddress"  ref={seminarAddress}/><br />
+                    <input type="text" placeholder="כתובת" id="SeminarAddress"  ref={seminarAddress}/><br />
                     {/* <input type="text" style={{ width: '20vh' }} placeholder="#" id="number" /> */}
                     <input type="text" style={{ width: '25vh' }} value={JSON.parse(localStorage.getItem('newSeminar')).seminarLocationCity} id="SeminarCity" readOnly /><br />
-                    <input type="text" placeholder="SeminarPhoneNumber" id="SeminarPhoneNumber" ref={seminarPhoneNumber}/><br />
-                    <input type="text" placeholder="SeminarFaxNumber" id="SeminarFaxNumber" ref={seminarFaxNumber}/><br />
+                    <input type="text" placeholder="טלפון" id="SeminarPhoneNumber" ref={seminarPhoneNumber}/><br />
+                    <input type="text" placeholder="פקס" id="SeminarFaxNumber" ref={seminarFaxNumber}/><br />
                     <input type="text" value={code} id="password" name='code' hidden readOnly /><br />
-                    <input type='submit' value='NEXT' /*readOnly*/ onClick={() => VerifyCode()} />
+                    <input type='submit' value='הבא' /*readOnly*/ onClick={() => VerifyCode()} />
                 </form>
             </div>
         </div>

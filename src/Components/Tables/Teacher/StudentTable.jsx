@@ -77,14 +77,14 @@ export const StudentTable = () => {
                             <br></br>
                         {/* <p className="subtitle" id="lessonNumber">Lesson #5</p> */}
                         <select className="subtitle" id="lessonNumber">
-                        <option value="1" className="subtitle">Lesson #1</option>
-                        <option value="2" className="subtitle">Lesson #2</option>
-                        <option value="3" className="subtitle">Lesson #3</option>
-                        <option value="4" className="subtitle">Lesson #4</option>   
-                        <option value="5" className="subtitle">Lesson #5</option>
-                        <option value="6" className="subtitle">Lesson #6</option>
-                        <option value="7" className="subtitle">Lesson #7</option>
-                        <option value="8" className="subtitle">Lesson #8</option>
+                        <option value="1" className="subtitle">שעור #1</option>
+                        <option value="2" className="subtitle">שעור #2</option>
+                        <option value="3" className="subtitle">שעור #3</option>
+                        <option value="4" className="subtitle">שעור #4</option>   
+                        <option value="5" className="subtitle">שעור #5</option>
+                        <option value="6" className="subtitle">שעור #6</option>
+                        <option value="7" className="subtitle">שעור #7</option>
+                        <option value="8" className="subtitle">שעור #8</option>
                     </select>
                     </div>
                     <ul className="StudentTableUl">

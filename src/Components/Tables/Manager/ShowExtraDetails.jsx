@@ -34,9 +34,9 @@ export const ShowExtraDetails = (props) => {
                         {/* <div className="container"> */}
                             {/* <ul className="responsive-table rts"> */}
                                 <li className="tableLI ths">
-                                    <div className="small">date</div>
-                                    <div className="small">lesson Number</div>
-                                    <div className="small">attendance</div>
+                                    <div className="small">תאריך</div>
+                                    <div className="small">מספר שעור</div>
+                                    <div className="small">נוכחות</div>
                                 </li>
                             {/* </ul> */}
                         {/* </div> */}

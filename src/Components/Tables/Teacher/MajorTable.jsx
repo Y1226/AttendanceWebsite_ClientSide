@@ -33,7 +33,8 @@ export const MajorTable = () => {
         <div className="frame">
             <div className="list">
                 <div className="headStudentTable">
-                    <div className="title">Choose a major:</div>
+                    <div className="title">:בחר מסלול</div>
+                    {/* <div className="title">Choose a major:</div> */}
                 </div>
                 <ul className="StudentTableUl">
                     {

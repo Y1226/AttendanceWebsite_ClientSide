@@ -40,7 +40,8 @@ export const CourseTable = () => {
                 <div className="list">
                     <div className="headStudentTable">
                         <div className="title" style={{ textDecorationLine: 'underline' }}>{JSON.parse(localStorage.getItem('CurrentMajor')).majorName}</div>
-                        <div className="title" style={{ fontSize: '2rem' }}>Choose a course:</div>
+                        <div className="title" style={{ fontSize: '2rem' }}>:בחר קורס</div>
+                        {/* <div className="title" style={{ fontSize: '2rem' }}>Choose a course:</div> */}
                     </div>
                     <ul className="StudentTableUl">
                         {
