@@ -7,21 +7,16 @@ import { useNavigate } from "react-router-dom"
 import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
 import { FillStaffData } from "../../Redux/Actions/TableActions/Manager/TeacherTableAction"
 import Select from 'react-select'
+import { major } from 'semver'
 
 export const AddMajor = () => {
-    debugger
-    let majors = useSelector(x => x.ManagerMajorTableReducer.MajorList)
+    // let majors = useSelector(x => x.ManagerMajorTableReducer.MajorList)
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
     let navigate = useNavigate()
     let dispatch = useDispatch()
     let other = useRef()
     let [isOtherChecked, setIsOtherChecked] = useState(false)
     const listSelectStaff = []
-    const [majorsToSelect, setMajorsToSelect] = useState([])
-
-    // majors.forEach(e => {
-    //     majorsToSelect.push({nameMajor: e.majorName, statusMajor: true })
-    // })
 
     staff.forEach(e => {
         listSelectStaff.push({ code: e.staffCode, value: e.userFirstName + " " + e.userLastName, label: e.userFirstName + " " + e.userLastName })
@@ -112,62 +107,96 @@ export const AddMajor = () => {
     //     return elementsOther;
     // }
 
-    const SaveMajors = () => {
-        // let chosenMajor = document.getElementsByClassName('major_checkbox')
-        let chosenMajor = document.getElementsByClassName('checkbox')
-        // let chosenLabel = document.getElementsByClassName('major_label')
-        // let chosenLabel = document.getElementsByClassName('label')
-        let chosenLabel = document.getElementsByClassName('divCheckbox')
-        let majorList = []
-        for (let i = 0; i < chosenLabel.length; i++) {
-            if (chosenLabel[i].getElementsByClassName('checkbox')[0].checked)
-                majorList.push({ 'major': chosenLabel[i].getElementsByClassName('label')[0].innerHTML })
-            // if (chosenLabel[0].checked === true)
-            //     majorList.push({'major': chosenLabel[i].innerText})
-        }
-        // for (let i = 0; i < chosenMajor.length; i++) {
-        //     if (chosenMajor[i].checked === true)
-        //         majorList.push({'major': chosenLabel[i].innerText})
-        // }
-        localStorage.setItem('chosenExistingMajor', JSON.stringify(majorList))
-        // ===================================================================
-        debugger
-        if (other.current.checked) {
-            chosenMajor = document.getElementsByClassName('spaces')
-            let chosenMajorCoordinator = document.getElementsByClassName('selectCoordinator')
-            majorList = {}
-            for (let i = 0; i < chosenMajor.length; i++) {
-                debugger
-                // let majorItem = {}
-                majorList[chosenMajor[i].value] = chosenMajorCoordinator[i].value
-                // majorList.push(majorItem)
-                let index = chosenMajorCoordinator[i].value.split(' ')
-                let majorCodeCoordinator = staff.find(x => x.userFirstName === index[0] && x.userLastName === index[1])
-                let majorElement = { majorName: `N'${chosenMajor[i].value}'`, majorCodeCoordinator: majorCodeCoordinator.staffCode, seminarCode: '1' }
-                axios.post('https://localhost:44367/api/Major/AddMajor', majorElement)
-            }
-            localStorage.setItem('chosenNewMajor', JSON.stringify(majorList))
-        }
+    // const SaveMajors = () => {
+    //     // let chosenMajor = document.getElementsByClassName('major_checkbox')
+    //     let chosenMajor = document.getElementsByClassName('checkbox')
+    //     // let chosenLabel = document.getElementsByClassName('major_label')
+    //     // let chosenLabel = document.getElementsByClassName('label')
+    //     let chosenLabel = document.getElementsByClassName('divCheckbox')
+    //     let majorList = []
+    //     for (let i = 0; i < chosenLabel.length; i++) {
+    //         if (chosenLabel[i].getElementsByClassName('checkbox')[0].checked)
+    //             majorList.push({ 'major': chosenLabel[i].getElementsByClassName('label')[0].innerHTML })
+    //         // if (chosenLabel[0].checked === true)
+    //         //     majorList.push({'major': chosenLabel[i].innerText})
+    //     }
+    //     // for (let i = 0; i < chosenMajor.length; i++) {
+    //     //     if (chosenMajor[i].checked === true)
+    //     //         majorList.push({'major': chosenLabel[i].innerText})
+    //     // }
+    //     localStorage.setItem('chosenExistingMajor', JSON.stringify(majorList))
+    //     // ===================================================================
+    //     debugger
+    //     if (other.current.checked) {
+    //         chosenMajor = document.getElementsByClassName('spaces')
+    //         let chosenMajorCoordinator = document.getElementsByClassName('selectCoordinator')
+    //         majorList = {}
+    //         for (let i = 0; i < chosenMajor.length; i++) {
+    //             debugger
+    //             // let majorItem = {}
+    //             majorList[chosenMajor[i].value] = chosenMajorCoordinator[i].value
+    //             // majorList.push(majorItem)
+    //             let index = chosenMajorCoordinator[i].value.split(' ')
+    //             let majorCodeCoordinator = staff.find(x => x.userFirstName === index[0] && x.userLastName === index[1])
+    //             let majorElement = { majorName: `N'${chosenMajor[i].value}'`, majorCodeCoordinator: majorCodeCoordinator.staffCode, seminarCode: '1' }
+    //             axios.post('https://localhost:44367/api/Major/AddMajor', majorElement)
+    //         }
+    //         localStorage.setItem('chosenNewMajor', JSON.stringify(majorList))
+    //     }
 
-        navigate('../addCourseToMajor')
-    }
+    //     navigate('../addCourseToMajor')
+    // }
 
-    const [selectValues, setSelectValues] = useState([{ selectValue: null, inputValue: '' }]);
+    // --------------------------------------------------------------------
+    const [majors, setMajors] = useState([
+        { majorName: 'Major 1', routeCoordinator: null },
+        { majorName: 'Major 2', routeCoordinator: null },
+        { majorName: 'Major 3', routeCoordinator: null },
+    ]);
+
+    const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+
+    const handleCheckboxChange = (index) => {
+        if (selectedCheckboxes.includes(index)) {
+            setSelectedCheckboxes(selectedCheckboxes.filter((checkbox) => checkbox !== index));
+        } else {
+            setSelectedCheckboxes([...selectedCheckboxes, index]);
+        }
+    };
 
     const handleChange = (index, selectedOption) => {
+        const updatedMajors = [...majors];
+        updatedMajors[index].routeCoordinator = selectedOption;
+        setMajors(updatedMajors);
+    };
+
+    // const handleFormSubmit = (event) => {
+    //     event.preventDefault();
+    //     const selectedItems = selectedCheckboxes.map((index) => ({
+    //         majorName: majors[index].majorName,
+    //         routeCoordinator: majors[index].routeCoordinator ? majors[index].routeCoordinator : null,
+    //     }));
+    //     console.log(selectedItems);
+    //     // Do further processing with the selected items here
+    // };
+
+    //אחר
+    const [selectValues, setSelectValues] = useState([{ majorName: '', routeCoordinator: null }]);
+
+    const handleAnothersChange = (index, selectedOption) => {
         const updatedValues = [...selectValues];
-        updatedValues[index] = { ...updatedValues[index], selectValue: selectedOption };
+        updatedValues[index] = { ...updatedValues[index], routeCoordinator: selectedOption };
         setSelectValues(updatedValues);
     };
 
-    const handleInputChange = (index, inputValue) => {
+    const handleInputChange = (index, majorName) => {
         const updatedValues = [...selectValues];
-        updatedValues[index] = { ...updatedValues[index], inputValue };
+        updatedValues[index] = { ...updatedValues[index], majorName };
         setSelectValues(updatedValues);
     };
 
     const handleAddSelect = () => {
-        setSelectValues([...selectValues, { selectValue: null, inputValue: '' }]);
+        setSelectValues([...selectValues, { majorName: '', routeCoordinator: null }]);
     };
 
     const handleDeleteSelect = (index) => {
@@ -176,14 +205,17 @@ export const AddMajor = () => {
     };
 
     const handleSubmit = () => {
-        const dictionary = {};
-        selectValues.forEach((value, index) => {
-            dictionary[`select${index}`] = value.selectValue;
-            dictionary[`input${index}`] = value.inputValue;
+        const selectedItems = selectedCheckboxes.map((index) => ({
+            majorName: majors[index].majorName,
+            routeCoordinator: majors[index].routeCoordinator ? majors[index].routeCoordinator : null,
+        }));
+        debugger
+        selectValues.forEach(element => {
+            selectedItems.push(element);
         });
-        console.log(dictionary);
-        console.log(selectValues);
-        SaveMajors();
+        console.log(selectedItems);
+        localStorage.setItem('chosenNewMajor', JSON.stringify(selectedItems))
+        // navigate('../addCourseToMajor')
     };
 
     return <>
@@ -193,14 +225,34 @@ export const AddMajor = () => {
             </div>
             <hr style={{ background: '#607d8b', height: '1px' }} />
             <br />
-            {majors.map((value, index) => (
-                <div key={index} className='divCheckbox'>
-                    <input className="checkbox" type="checkbox" />
-                    <label className="label">{value.majorName}</label>
-                </div>
-            ))}
+            <div>
+                {majors.map((value, index) => (
+                    <div key={index} className='divCheckbox'>
+                        <input
+                            className="checkbox"
+                            type="checkbox"
+                            checked={selectedCheckboxes.includes(index)}
+                            onChange={() => handleCheckboxChange(index)}
+                        />
+                        <label className="label">{value.majorName}</label>
+                        <br />
+                        {selectedCheckboxes.includes(index) && (
+                            <div className='selectOfListMajors'>
+                                <Select
+                                    placeholder="Select route coordinator"
+                                    maxMenuHeight={130}
+                                    value={value.routeCoordinator}
+                                    onChange={(selectedOption) => handleChange(index, selectedOption)}
+                                    options={listSelectStaff}
+                                />
+                            </div>
+                        )}
+                    </div>
+                ))}
+                {/* <button type="submit" onClick={handleFormSubmit}>Submit</button> */}
+            </div>
             <div className='divCheckbox'>
-                <input className="checkbox" type="checkbox" ref={other} onChange={() => { setIsOtherChecked(other.current.checked); if (!isOtherChecked) setSelectValues([{ selectValue: null, inputValue: '' }]) }} />
+                <input className="checkbox" type="checkbox" ref={other} onChange={() => { setIsOtherChecked(other.current.checked); if (!isOtherChecked) setSelectValues([{ majorName: '', routeCoordinator: null }]) }} />
                 <label className='label'>אחר</label>
             </div>
         </div>
@@ -212,7 +264,7 @@ export const AddMajor = () => {
                             className="effect-19"
                             type="text"
                             placeholder="track name"
-                            value={value.inputValue}
+                            value={value.majorName}
                             onChange={(e) => handleInputChange(index, e.target.value)}
                             onFocus={(e) => e.target.placeholder = ""}
                             onBlur={(e) => e.target.placeholder = "track name"}
@@ -226,30 +278,30 @@ export const AddMajor = () => {
                         <Select
                             placeholder="Select route coordinator"
                             maxMenuHeight={130}
-                            value={value.selectValue}
-                            onChange={(selectedOption) => handleChange(index, selectedOption)}
+                            value={value.routeCoordinator}
+                            onChange={(selectedOption) => handleAnothersChange(index, selectedOption)}
                             options={listSelectStaff}
                         />
                     </div>
                     <button className="plusButton" style={{ flexDirection: 'column' }} onClick={() => handleDeleteSelect(index)}>
                         <svg className="bin-top" viewBox="0 0 39 7">
-                            <line y1="5" x2="39" y2="5" stroke-width="4"></line>
-                            <line x1="12" y1="1.5" x2="26.0357" y2="1.5" stroke-width="3"></line>
+                            <line y1="5" x2="39" y2="5" strokeWidth="4"></line>
+                            <line x1="12" y1="1.5" x2="26.0357" y2="1.5" strokeWidth="3"></line>
                         </svg>
                         <svg className="bin-bottom" viewBox="0 0 33 39">
                             <mask>
                                 <path d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"></path>
                             </mask>
                             <path d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z"></path>
-                            <path d="M12 6L12 29" stroke-width="4"></path>
-                            <path d="M21 6V29" stroke-width="4"></path>
+                            <path d="M12 6L12 29" strokeWidth="4"></path>
+                            <path d="M21 6V29" strokeWidth="4"></path>
                         </svg>
                     </button>
                 </div>
             ))}
             <br />
             {isOtherChecked &&
-                <div tabindex="0" className="plusButton plus" onClick={handleAddSelect}>
+                <div tabIndex="0" className="plusButton plus" onClick={handleAddSelect}>
                     <svg className="plusIcon" viewBox="0 0 30 30">
                         <path d="M13.75 23.75V16.25H6.25V13.75H13.75V6.25H16.25V13.75H23.75V16.25H16.25V23.75H13.75Z"></path>
                     </svg>
