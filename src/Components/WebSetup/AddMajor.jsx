@@ -21,6 +21,8 @@ export const AddMajor = () => {
 
     // majors.forEach(e => {
     //     majorsToSelect.push({nameMajor: e.majorName, statusMajor: true })
+    //     debugger
+    //     console.log(majorsToSelect);
     // })
 
     staff.forEach(e => {
@@ -35,7 +37,13 @@ export const AddMajor = () => {
             dispatch(FillStaffData(s.data))
         }
         fetchData()
-    }, [dispatch])
+        
+        const derivedArray = majors.map((item) => ({
+            nameMajor: item.majorName,
+            statusMajor: true
+        }));
+        setMajorsToSelect(derivedArray);
+    }, [dispatch, majors])
 
     // const handleChange = (value) => {
     //     debugger
@@ -193,10 +201,10 @@ export const AddMajor = () => {
             </div>
             <hr style={{ background: '#607d8b', height: '1px' }} />
             <br />
-            {majors.map((value, index) => (
+            {majorsToSelect.map((value, index) => (
                 <div key={index} className='divCheckbox'>
                     <input className="checkbox" type="checkbox" />
-                    <label className="label">{value.majorName}</label>
+                    <label className="label">{value.nameMajor}</label>
                 </div>
             ))}
             <div className='divCheckbox'>
