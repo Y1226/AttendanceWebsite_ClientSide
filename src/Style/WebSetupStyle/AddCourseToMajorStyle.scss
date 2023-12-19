@@ -1,44 +1,136 @@
-// $one: #fce1e1;
-// $two: #ffb8b8;
-// $three: #ff9191;
-// $four: #ff5e5e;
-// $five: #ff4040;
-// $six: #ff0000;
-// $w: white;
+.titleAddCourse {
+    position: relative;
+    color: #080808;
+    text-align: right;
+    padding-bottom: 5px;
+    font-weight: 500;
+    line-height: 1.5em;
+    position: relative;
+}
 
-// .accordion {
-//     background-color: #eee;
-//     color: #444;
-//     cursor: pointer;
-//     padding: 18px;
-//     width: 100%;
-//     border: none;
-//     text-align: left;
-//     outline: none;
-//     font-size: 15px;
-//     transition: 0.4s;
-//   }
-  
-//   .active, .accordion:hover {
-//     background-color: #ccc;
-//   }
-  
-//   .accordion:after {
-//     content: '\002B';
-//     color: #777;
-//     font-weight: bold;
-//     float: right;
-//     margin-left: 5px;
-//   }
-  
-//   .active:after {
-//     content: "\2212";
-//   }
-  
-//   .panel {
-//     padding: 0 18px;
-//     background-color: white;
-//     max-height: 0;
-//     overflow: hidden;
-//     transition: max-height 0.2s ease-out;
-//   }
+.label {
+    font-size: 20px;
+    font-family: Calibri;
+    margin-right: 8px;
+}
+
+h1 {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+h3 {
+    margin-top: 0;
+    font-weight: 300;
+}
+
+.container {
+    max-width: 80em;
+    margin: 10px auto;
+    direction: rtl;
+}
+
+// main level
+// #607d8b
+// #b0bec5
+// #cfd8dc
+.ac-label {
+    font-weight: 700;
+    position: relative;
+    padding: .5em 1em;
+    margin-bottom: .5em;
+    display: block;
+    cursor: pointer;
+    background-color: #cfd8dc;
+    color: #607d8b;
+    transition: background-color .15s ease-in-out;
+}
+
+.ac-input:checked+label,
+.ac-label:hover {
+    background-color: #607d8b;
+    // background-color: #b0bec5;
+    // background-color: #cfd8dc;
+    color: white;
+}
+
+.ac-label:after,
+.ac-input:checked+.ac-label:after {
+    font-family: FontAwesome;
+    content: "\f07b";
+    // content: "+";
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    width: 2em;
+    height: 100%;
+    line-height: 2.25em;
+    text-align: center;
+    background-color: #cfd8dc;
+    transition: background-color .15s ease-in-out;
+}
+
+.ac-label:hover:after,
+.ac-input:checked+.ac-label:after {
+    background-color: #607d8b;
+    color: white;
+}
+
+.ac-input:checked+.ac-label:after {
+    font-family: FontAwesome;
+    content: "\f07c";
+    // content: "-";
+}
+
+.ac-input {
+    display: none;
+}
+
+// the magic
+
+.ac-text,
+.ac-sub-text {
+    opacity: 0;
+    height: 0;
+    margin-bottom: .5em;
+    transition: opacity .5s ease-in-out;
+    overflow: hidden;
+}
+
+.ac-input:checked~.ac-text,
+.ac-sub .ac-input:checked~.ac-sub-text {
+    opacity: 1;
+    height: auto;
+}
+
+// sub-level
+
+.ac-sub .ac-label {
+    // background: none;
+    font-weight: 600;
+    // padding: .5em 2em;
+    margin-right: 2em;
+    margin-bottom: 0;
+}
+
+.ac-sub .ac-label:checked {
+    // background: none;
+    border-bottom: 1px solid whitesmoke;
+}
+
+.ac-sub .ac-label:after,
+.ac-sub .ac-input:checked+.ac-label:after {
+    left: 0;
+    // padding-left: 2em;
+    // background: none;
+}
+
+.ac-sub .ac-input:checked+label,
+.ac-sub .ac-label:hover {
+    // background: none;
+}
+
+.ac-sub-text {
+    padding: 0 2em 0 2em;
+}

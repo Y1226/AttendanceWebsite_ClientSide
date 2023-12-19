@@ -7,16 +7,18 @@ import { useNavigate } from "react-router-dom"
 import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
 import { FillStaffData } from "../../Redux/Actions/TableActions/Manager/TeacherTableAction"
 import Select from 'react-select'
-import { major } from 'semver'
+// import { major } from 'semver'
+import { FillCoursesForMajors } from '../../Redux/Actions/WebSetupActions/AddCourseToMajorAction'
 
 export const AddMajor = () => {
-    // let majors = useSelector(x => x.ManagerMajorTableReducer.MajorList)
+    let initialMajors = useSelector(x => x.ManagerMajorTableReducer.MajorList)
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
     let navigate = useNavigate()
     let dispatch = useDispatch()
     let other = useRef()
     let [isOtherChecked, setIsOtherChecked] = useState(false)
     const listSelectStaff = []
+    // const [majors, setMajors] = useState([])
 
     staff.forEach(e => {
         listSelectStaff.push({ code: e.staffCode, value: e.userFirstName + " " + e.userLastName, label: e.userFirstName + " " + e.userLastName })
@@ -30,7 +32,13 @@ export const AddMajor = () => {
             dispatch(FillStaffData(s.data))
         }
         fetchData()
-    }, [dispatch])
+
+        // const derivedArray = initialMajors.map((item) => ({
+        //     majorName: item.majorName,
+        //     routeCoordinator: null
+        // }));
+        // setMajors(derivedArray);
+    }, [dispatch, initialMajors])
 
     // const handleChange = (value) => {
     //     debugger
@@ -211,11 +219,16 @@ export const AddMajor = () => {
         }));
         debugger
         selectValues.forEach(element => {
-            selectedItems.push(element);
+            debugger
+            if (!(element.majorName === '' && element.routeCoordinator === null))
+                selectedItems.push(element);
         });
+        selectedItems.sort((a, b) => a.majorName > b.majorName ? 1 : -1)
         console.log(selectedItems);
-        localStorage.setItem('chosenNewMajor', JSON.stringify(selectedItems))
-        // navigate('../addCourseToMajor')
+
+        localStorage.setItem('selectedMajors', JSON.stringify(selectedItems))
+        dispatch(FillCoursesForMajors([...Array(selectedItems.length * 2)].map(()=> null)))
+        navigate('../addCourseToMajor')
     };
 
     return <>
