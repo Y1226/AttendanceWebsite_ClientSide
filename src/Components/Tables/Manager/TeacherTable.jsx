@@ -14,102 +14,102 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 const TeacherTable = () => {
 
-    const dispatch = useDispatch()
-    const staff = useSelector(x => x.TeacherTableReducer.StaffList)
+  const dispatch = useDispatch()
+  const staff = useSelector(x => x.TeacherTableReducer.StaffList)
 
-    useEffect(() => {
-        let currentUser = JSON.parse(localStorage.getItem("CurrentUser"))
-        async function fetchData() {
-            let s = await axios.get(`https://localhost:44367/api/Staff/GetTheStaffMemberWithMoreDetailsBySeminarCode/${currentUser.seminarCode}`)
-            dispatch(FillStaffData(s.data))
-            debugger
-        }
-        fetchData()
-    }, [dispatch])
+  useEffect(() => {
+    let currentUser = JSON.parse(localStorage.getItem("CurrentUser"))
+    async function fetchData() {
+      let s = await axios.get(`https://localhost:44367/api/Staff/GetTheStaffMemberWithMoreDetailsBySeminarCode/${currentUser.seminarCode}`)
+      dispatch(FillStaffData(s.data))
+      debugger
+    }
+    fetchData()
+  }, [dispatch])
 
-    const columns = useMemo(
+  const columns = useMemo(
 
-        () => [
-            {
-                accessorKey: 'userFirstName',
-                header: 'שם פרטי',
-            },
-            {
-                accessorKey: 'userLastName',
-                header: 'שם משפחה',
-            },
-            {
-                accessorKey: 'userId',
-                header: 'תעודת זהות',
-            },
-            {
-                accessorKey: 'userEnglishDateOfBirth',
-                accessorFn: (row) => row.userEnglishDateOfBirth.split('T')[0],
-                id: 'userEnglishDateOfBirth',
-                header: 'תאריך לידה לועזי',
-            },
-            {
-                accessorKey: 'userHebrewDateOfBirth',
-                header: 'תאריך לידה עברי',
-            },
-            {
-                accessorKey: 'userAddress',
-                header: 'כתובת',
-            },
-            {
-                accessorKey: 'userLocationCity',
-                header: 'עיר',
-            },
-            {
-                accessorKey: 'userHomePhoneNumber',
-                header: 'טלפון',
-            },
-            {
-                accessorKey: 'userCellPhoneNumber',
-                header: 'פלאפון',
-            },
-            {
-                accessorKey: 'staffMemberPosition',
-                header: 'סטטוס',
-            },
-            {
-                accessorKey: 'userPassword',
-                header: 'סיסמא',
-            },
-            {
-                accessorKey: 'staffEmploymentStartDate',
-                accessorFn: (row) => row.staffEmploymentStartDate.split('T')[0],
-                id: 'staffEmploymentStartDate',
-                header: 'תאריך תחילת עבודה',
-            }
-        ],
-        [],
-    );
+    () => [
+      {
+        accessorKey: 'userFirstName',
+        header: 'שם פרטי',
+      },
+      {
+        accessorKey: 'userLastName',
+        header: 'שם משפחה',
+      },
+      {
+        accessorKey: 'userId',
+        header: 'תעודת זהות',
+      },
+      {
+        accessorKey: 'userEnglishDateOfBirth',
+        accessorFn: (row) => row.userEnglishDateOfBirth.split('T')[0],
+        id: 'userEnglishDateOfBirth',
+        header: 'תאריך לידה לועזי',
+      },
+      {
+        accessorKey: 'userHebrewDateOfBirth',
+        header: 'תאריך לידה עברי',
+      },
+      {
+        accessorKey: 'userAddress',
+        header: 'כתובת',
+      },
+      {
+        accessorKey: 'userLocationCity',
+        header: 'עיר',
+      },
+      {
+        accessorKey: 'userHomePhoneNumber',
+        header: 'טלפון',
+      },
+      {
+        accessorKey: 'userCellPhoneNumber',
+        header: 'פלאפון',
+      },
+      {
+        accessorKey: 'staffMemberPosition',
+        header: 'סטטוס',
+      },
+      {
+        accessorKey: 'userPassword',
+        header: 'סיסמא',
+      },
+      {
+        accessorKey: 'staffEmploymentStartDate',
+        accessorFn: (row) => row.staffEmploymentStartDate.split('T')[0],
+        id: 'staffEmploymentStartDate',
+        header: 'תאריך תחילת עבודה',
+      }
+    ],
+    [],
+  );
 
-    const csvConfig = mkConfig({
-        fieldSeparator: ',',
-        decimalSeparator: '.',
-        useKeysAsHeaders: true,
-    });
+  const csvConfig = mkConfig({
+    fieldSeparator: ',',
+    decimalSeparator: '.',
+    useKeysAsHeaders: true,
+  });
 
-    const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(staff);
-        download(csvConfig)(csv);
-    };
+  const handleExportData = () => {
+    const csv = generateCsv(csvConfig)(staff);
+    download(csvConfig)(csv);
+  };
 
-      return (
-            <div id='tableWrapper'>
-                <h1>צוות</h1>
-      <MaterialReactTable 
-      columns={columns}
+  return (
+    <div id='tableWrapper'>
+      <h1>צוות</h1>
+      <MaterialReactTable
+        columns={columns}
         data={staff}
         //enableRowSelection
         enableRowNumbers
         rowNumberMode="original" //default
-        columnFilterDisplayMode = 'popover'
-        paginationDisplayMode= 'pages'
-        positionToolbarAlertBanner= 'bottom'
-        renderTopToolbarCustomActions = {({ table }) => (
+        columnFilterDisplayMode='popover'
+        paginationDisplayMode='pages'
+        positionToolbarAlertBanner='bottom'
+        renderTopToolbarCustomActions={({ table }) => (
           <Box
             sx={{
               display: 'flex',
@@ -156,79 +156,79 @@ const TeacherTable = () => {
           </Box>
         )}
         renderDetailPanel={({ row }) => (
-                <Box
-                    sx={{
-                        display: 'grid',
-                        float: 'left',
-                        gridTemplateColumns: '1fr 1fr',
-                        width: '50%',
-                    }}
-                >
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style={{border: '1px solid black'}}>Major</th>
-                                <th style={{border: '1px solid black'}}>Course</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                row.original.majorCourses.map(x => (
-                                    <tr>
-                                        <td style={{border: '1px solid black'}}>{x.majorName}</td>
-                                        <td style={{border: '1px solid black'}}>{x.coursesNames.map(y => (`${y}, `))}</td>
-                                    </tr>
-                                ))
-                            }
-                        </tbody>
-                    </table>
-                </Box>
-            )}
+          <Box
+            sx={{
+              display: 'grid',
+              float: 'left',
+              gridTemplateColumns: '1fr 1fr',
+              width: '50%',
+            }}
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th style={{ border: '1px solid black' }}>Major</th>
+                  <th style={{ border: '1px solid black' }}>Course</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  row.original.majorCourses.map(x => (
+                    <tr>
+                      <td style={{ border: '1px solid black' }}>{x.majorName}</td>
+                      <td style={{ border: '1px solid black' }}>{x.coursesNames.map(y => (`${y}, `))}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </Box>
+        )}
       />;
-      </div>
-    );
+    </div>
+  );
 
-    // return (
-    //     <div id='tableWrapper'>
-    //         <h1>צוות</h1>
-    //         <MaterialReactTable
-    //             columns={columns}
-    //             data={staff}
-    //             enableRowNumbers
-    //             rowNumberMode="original" //default
-                
-    //         // renderDetailPanel={({ row }) => (
-    //         //     <Box
-    //         //         sx={{
-    //         //             display: 'grid',
-    //         //             float: 'left',
-    //         //             gridTemplateColumns: '1fr 1fr',
-    //         //             width: '50%',
-    //         //         }}
-    //         //     >
-    //         //         <table>
-    //         //             <thead>
-    //         //                 <tr>
-    //         //                     <th style={{border: '1px solid black'}}>Major</th>
-    //         //                     <th style={{border: '1px solid black'}}>Course</th>
-    //         //                 </tr>
-    //         //             </thead>
-    //         //             <tbody>
-    //         //                 {
-    //         //                     row.original.majorCourses.map(x => (
-    //         //                         <tr>
-    //         //                             <td style={{border: '1px solid black'}}>{x.majorName}</td>
-    //         //                             <td style={{border: '1px solid black'}}>{x.coursesNames.map(y => (`${y}, `))}</td>
-    //         //                         </tr>
-    //         //                     ))
-    //         //                 }
-    //         //             </tbody>
-    //         //         </table>
-    //         //     </Box>
-    //         // )}
-    //         />
-    //     </div>
-    // );
+  // return (
+  //     <div id='tableWrapper'>
+  //         <h1>צוות</h1>
+  //         <MaterialReactTable
+  //             columns={columns}
+  //             data={staff}
+  //             enableRowNumbers
+  //             rowNumberMode="original" //default
+
+  //         // renderDetailPanel={({ row }) => (
+  //         //     <Box
+  //         //         sx={{
+  //         //             display: 'grid',
+  //         //             float: 'left',
+  //         //             gridTemplateColumns: '1fr 1fr',
+  //         //             width: '50%',
+  //         //         }}
+  //         //     >
+  //         //         <table>
+  //         //             <thead>
+  //         //                 <tr>
+  //         //                     <th style={{border: '1px solid black'}}>Major</th>
+  //         //                     <th style={{border: '1px solid black'}}>Course</th>
+  //         //                 </tr>
+  //         //             </thead>
+  //         //             <tbody>
+  //         //                 {
+  //         //                     row.original.majorCourses.map(x => (
+  //         //                         <tr>
+  //         //                             <td style={{border: '1px solid black'}}>{x.majorName}</td>
+  //         //                             <td style={{border: '1px solid black'}}>{x.coursesNames.map(y => (`${y}, `))}</td>
+  //         //                         </tr>
+  //         //                     ))
+  //         //                 }
+  //         //             </tbody>
+  //         //         </table>
+  //         //     </Box>
+  //         // )}
+  //         />
+  //     </div>
+  // );
 };
 
 export default TeacherTable;

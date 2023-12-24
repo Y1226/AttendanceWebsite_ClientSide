@@ -5,22 +5,18 @@ import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorActio
 import { FillStaffData } from "../../Redux/Actions/TableActions/Manager/TeacherTableAction";
 import Select from 'react-select'
 import '../../Style/WebSetupStyle/AddMajorStyle.scss'
-import { FillCoursesForMajors, FillCoursesForMajorsByIndex } from "../../Redux/Actions/WebSetupActions/AddCourseToMajorAction";
+import './InputAndSelect.scss'
+import { FillCoursesForMajorsByIndex } from "../../Redux/Actions/WebSetupActions/AddCourseToMajorAction";
 
 export const InputAndSelect = (props) => {
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
-    // let c = useSelector(x => x.AddCourseToMajorReducer.CoursesForMajorsAccordingToYearbooks)
     let dispatch = useDispatch()
     const listSelectStaff = []
-    const [selectValues, setSelectValues] = useState([{ majorName: '', routeCoordinator: null }]);
+    const [selectValues, setSelectValues] = useState([{ courseName: '', routeCoordinator: null }]);
 
     staff.forEach(e => {
         listSelectStaff.push({ code: e.staffCode, value: e.userFirstName + " " + e.userLastName, label: e.userFirstName + " " + e.userLastName })
     })
-
-    
-
-    console.log("selectValues: ", selectValues);
 
     const handleAnothersChange = (index, selectedOption) => {
         const updatedValues = [...selectValues];
@@ -28,23 +24,20 @@ export const InputAndSelect = (props) => {
         setSelectValues(updatedValues);
     };
 
-    const handleInputChange = (index, majorName) => {
+    const handleInputChange = (index, courseName) => {
         const updatedValues = [...selectValues];
-        updatedValues[index] = { ...updatedValues[index], majorName };
+        updatedValues[index] = { ...updatedValues[index], courseName };
         setSelectValues(updatedValues);
     };
 
     const handleAddSelect = () => {
-        setSelectValues([...selectValues, { majorName: '', routeCoordinator: null }]);
+        setSelectValues([...selectValues, { courseName: '', routeCoordinator: null }]);
     };
 
     const handleDeleteSelect = (index) => {
         const updatedValues = selectValues.filter((_, i) => i !== index);
         setSelectValues(updatedValues);
     };
-
-    
-    // console.log("c: ", c);
 
     useEffect(() => {
         async function fetchData() {
@@ -57,10 +50,10 @@ export const InputAndSelect = (props) => {
         function handleSubmit() {
             const selectedItems = []
             selectValues.forEach(element => {
-                if (!(element.majorName === '' && element.routeCoordinator === null))
+                if (!(element.courseName === '' || element.routeCoordinator === null))
                     selectedItems.push(element);
             });
-            selectedItems.sort((a, b) => a.majorName > b.majorName ? 1 : -1)
+            selectedItems.sort((a, b) => a.courseName > b.courseName ? 1 : -1)
             console.log(selectedItems);
             debugger
             dispatch(FillCoursesForMajorsByIndex(props.index, selectedItems))
@@ -69,32 +62,39 @@ export const InputAndSelect = (props) => {
     }, [dispatch, selectValues, props.index])
 
     return <>
+        <div className="inputAndSelect">
         {selectValues.map((value, index) => (
             <div key={index} className='spaces'>
+                
+                {/* Enter a course name */}
                 <div className="col-3 input-effect">
                     <input
                         className="effect-19"
                         type="text"
-                        placeholder="track name"
-                        value={value.majorName}
+                        placeholder="שם הקורס"
+                        value={value.courseName}
                         onChange={(e) => handleInputChange(index, e.target.value)}
                         onFocus={(e) => e.target.placeholder = ""}
-                        onBlur={(e) => e.target.placeholder = "track name"}
+                        onBlur={(e) => e.target.placeholder = "שם הקורס"}
                     />
-                    <label>track name</label>
+                    <label>שם הקורס</label>
                     <span className="focus-border">
                         <i></i>
                     </span>
                 </div>
+
+                {/* Teacher selection */}
                 <div className='SelectComponent'>
                     <Select
-                        placeholder="Select route coordinator"
+                        placeholder="בחר מורה"
                         maxMenuHeight={130}
                         value={value.routeCoordinator}
                         onChange={(selectedOption) => handleAnothersChange(index, selectedOption)}
                         options={listSelectStaff}
                     />
                 </div>
+
+                {/* Delete button */}
                 <button className="plusButton" style={{ flexDirection: 'column' }} onClick={() => handleDeleteSelect(index)}>
                     <svg className="bin-top" viewBox="0 0 39 7">
                         <line y1="5" x2="39" y2="5" strokeWidth="4"></line>
@@ -109,23 +109,16 @@ export const InputAndSelect = (props) => {
                         <path d="M21 6V29" strokeWidth="4"></path>
                     </svg>
                 </button>
+
             </div>
         ))}
+        </div>
+
+        {/* Add button */}
         <div tabIndex="0" className="plusButton plus" onClick={handleAddSelect}>
             <svg className="plusIcon" viewBox="0 0 30 30">
                 <path d="M13.75 23.75V16.25H6.25V13.75H13.75V6.25H16.25V13.75H23.75V16.25H16.25V23.75H13.75Z"></path>
             </svg>
         </div>
-        {/* <div className="plusButton div_next" style={{ marginBottom: '50px' }} onClick={handleSubmit}>
-            <svg className="arrow" viewBox="0 0 20 20">
-                <path d="M18.271,9.212H3.615l4.184-4.184c0.306-0.306,0.306-0.801,0-1.107c-0.306-0.306-0.801-0.306-1.107,0
-                            L1.21,9.403C1.194,9.417,1.174,9.421,1.158,9.437c-0.181,0.181-0.242,0.425-0.209,0.66c0.005,0.038,0.012,0.071,0.022,0.109
-                            c0.028,0.098,0.075,0.188,0.142,0.271c0.021,0.026,0.021,0.061,0.045,0.085c0.015,0.016,0.034,0.02,0.05,0.033l5.484,5.483
-                            c0.306,0.307,0.801,0.307,1.107,0c0.306-0.305,0.306-0.801,0-1.105l-4.184-4.185h14.656c0.436,0,0.788-0.353,0.788-0.788
-                            S18.707,9.212,18.271,9.212z">
-                </path>
-            </svg>
-            <label className="text_next">הבא</label>
-        </div> */}
     </>
 }

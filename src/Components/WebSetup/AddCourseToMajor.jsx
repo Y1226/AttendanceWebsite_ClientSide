@@ -6,6 +6,8 @@ import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorActio
 import '../../Style/WebSetupStyle/AddCourseToMajorStyle.scss'
 import { InputAndSelect } from "../InputAndSelect/InputAndSelect"
 import 'font-awesome/css/font-awesome.min.css';
+import { addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode, addMajor, getMajorByMajorName } from "../../Redux/Axios/WebSetupAxios/AddCourseToMajorAxios"
+import { useNavigate } from "react-router-dom"
 
 
 export const AddCourseToMajor = () => {
@@ -15,8 +17,9 @@ export const AddCourseToMajor = () => {
     let majorsNew = []//Object.keys(JSON.parse(localStorage.getItem('chosenNewMajor')))
     let selectedMajors = JSON.parse(localStorage.getItem('selectedMajors'))
     let arrayCourses = useSelector(x => x.AddCourseToMajorReducer.CoursesForMajorsAccordingToYearbooks)
+    let navigate = useNavigate()
 
-    console.log("selectedMajors: ", selectedMajors);
+    // console.log("selectedMajors: ", selectedMajors);
 
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
     //let currentSeminar = JSON.parse(localStorage.getItem('newSeminar')).seminarManagerPassword
@@ -96,8 +99,38 @@ export const AddCourseToMajor = () => {
         // AddInputBox(14)
     }, [dispatch])
 
-    const AddMajorToDatabase = () => {
+    const handleSubmit = async () => {
+        for (let index = 0; index < selectedMajors.length; index++) {
+            let element = selectedMajors[index];
+            let currentMajor = await getMajorByMajorName(element.majorName).then(x => x.data)
+            if (currentMajor === '') {
+                let majorToAdd = {
+                    // "majorCode": 0,
+                    "majorName": element.majorName,
+                    "majorCodeCoordinator": element.routeCoordinator.code,
+                    "seminarCode": 1 //need to check what seminar code
+                }
+                currentMajor = await addMajor(majorToAdd).then(x => x.data);
+            }
 
+            //Year A 
+            if (arrayCourses[index * 2] !== null)
+                for (let x = 0; x < arrayCourses[index * 2].length; x++) {
+                    let currentCourse = arrayCourses[index * 2][x];
+                    await addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode(currentMajor.majorCode, 'A',currentCourse.courseName, currentCourse.routeCoordinator.code)
+                }
+
+            //Year B
+            if (arrayCourses[(index * 2) + 1] !== null)
+                for (let x = 0; x < arrayCourses[(index * 2) + 1].length; x++) {
+                    let currentCourse = arrayCourses[(index * 2) + 1][x];
+                    await addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode(currentMajor.majorCode, 'B', currentCourse.courseName, currentCourse.routeCoordinator.code)
+                }
+        };
+        navigate('../../managerNav/teacherTable')
+    }
+
+    const AddMajorToDatabase = () => {
         let majorsToAdd = document.getElementsByClassName('majorToAdd')
         // fetch('http://localhost:8080/posts')
         // .then(function(response){ return response.json(); })
@@ -130,7 +163,6 @@ export const AddCourseToMajor = () => {
         <hr style={{ background: '#607d8b', height: '1px' }} />
         <br />
         {selectedMajors.map((value, index) => (
-            // <li key={index}>{value.majorName} / {value.routeCoordinator.value}</li>
             <section key={index} className="container">
                 <div className="ac">
                     <input className="ac-input" id={`ac-1${index}`} name={`ac-1${index}`} type="checkbox" />
@@ -154,11 +186,23 @@ export const AddCourseToMajor = () => {
                 </div>
             </section >
         ))}
-        <button type="submit" onClick={() => { debugger; console.log("arrayCourses: ", arrayCourses) }}>Submit</button>
+        <div className="plusButton div_next" style={{ marginBottom: '50px' }} onClick={handleSubmit}>
+            <svg className="arrow" viewBox="0 0 20 20">
+                <path d="M18.271,9.212H3.615l4.184-4.184c0.306-0.306,0.306-0.801,0-1.107c-0.306-0.306-0.801-0.306-1.107,0
+                            L1.21,9.403C1.194,9.417,1.174,9.421,1.158,9.437c-0.181,0.181-0.242,0.425-0.209,0.66c0.005,0.038,0.012,0.071,0.022,0.109
+                            c0.028,0.098,0.075,0.188,0.142,0.271c0.021,0.026,0.021,0.061,0.045,0.085c0.015,0.016,0.034,0.02,0.05,0.033l5.484,5.483
+                            c0.306,0.307,0.801,0.307,1.107,0c0.306-0.305,0.306-0.801,0-1.105l-4.184-4.185h14.656c0.436,0,0.788-0.353,0.788-0.788
+                            S18.707,9.212,18.271,9.212z">
+                </path>
+            </svg>
+            <label className="text_next">הבא</label>
+        </div>
+
+        {/* <button type="submit" onClick={() => { debugger; }}>Submit</button> */}
         {/*  */}
         {/*  */}
         {/*  */}
-        <p>:הכנס שם מסלול</p>
+        {/* <p>:הכנס שם מסלול</p> */}
         {/* <p>יג</p> */}
         {
             majors.map(x => <>
@@ -216,7 +260,7 @@ export const AddCourseToMajor = () => {
             </>)
         } */}
         {/* <input type="text" className="newMajor" name="text4"></input> */}
-        <button style={{ backgroundColor: 'deepskyblue', padding: '5px' }} onClick={() => AddMajorToDatabase()}>Add</button>
+        {/* <button style={{ backgroundColor: 'deepskyblue', padding: '5px' }} onClick={() => AddMajorToDatabase()}>Add</button> */}
 
 
 

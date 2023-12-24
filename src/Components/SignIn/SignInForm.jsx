@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Logo } from '../Logo/Logo';
+import { loginToTheSystem } from '../../Redux/Axios/SignInAxios';
 
 //First page to be seen in the project, used to sign in/up to the system.
 export const SignInForm = () => {
@@ -143,7 +144,7 @@ export const SignInForm = () => {
         //0 - user does not exist.
         //1 - user exists as regular user.
         //2 - user exists as manager.
-        let userStatus = await axios.get(`https://localhost:44367/api/Login/LoginToTheSystem/${password}/${parseInt(SeminarCode)}/${username}`)
+        let userStatus = await loginToTheSystem(password, parseInt(SeminarCode), username);
 
         //Save cuurent user in storage.
         let currentUser = { userName: `${username}`, password: `${password}`, seminarCode: `${SeminarCode}` }

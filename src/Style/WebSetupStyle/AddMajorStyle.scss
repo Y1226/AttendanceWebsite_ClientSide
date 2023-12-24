@@ -60,8 +60,8 @@
 }
 
 .label {
-    font-size: 20px;
-    font-family: Calibri;
+    // font-size: 20px;
+    font: 15px/24px Calibri;
     margin-right: 8px;
 }
 
@@ -137,6 +137,7 @@
 
 :focus {
     outline: none;
+    z-index: 500;
 }
 
 .selectOfListMajors{

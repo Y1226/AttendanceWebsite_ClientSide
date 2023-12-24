@@ -1,7 +1,12 @@
 import produce from 'immer'
 
 const SignInState = {
-    SeminarList: []
+    SeminarList: [],
+    CurrentUser: {
+        userName: '',
+        password: '',
+        seminarCode: ''
+    }
 }
 
 export const SignInReducer = produce(
