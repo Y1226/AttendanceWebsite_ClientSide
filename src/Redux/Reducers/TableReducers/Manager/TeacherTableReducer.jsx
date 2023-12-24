@@ -10,7 +10,6 @@ export const TeacherTableReducer = produce(
             case 'Fill-Staff-Data':
                 s.StaffList = a.payload; 
                 break;
-        
             default:
                 break;
         }

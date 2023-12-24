@@ -2,11 +2,12 @@ import React, { useEffect, useMemo } from 'react';
 import MaterialReactTable from 'material-react-table';
 import '../../../Style/Tables/Manager/TeacherTableStyle.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Button } from '@mui/material';
-import { mkConfig, generateCsv, download } from 'export-to-csv';
+import { Box } from '@mui/material';
+// import ExcelJS from 'exceljs';
+// import { saveAs } from 'file-saver';
 import axios from 'axios';
 import { FillStaffData } from '../../../Redux/Actions/TableActions/Manager/TeacherTableAction.jsx';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import DownloadToExcel from './DownloadToExcel.jsx';
 // import {
 //     MaterialReactTable,
 //     useMaterialReactTable,
@@ -86,16 +87,16 @@ const TeacherTable = () => {
     [],
   );
 
-  const csvConfig = mkConfig({
-    fieldSeparator: ',',
-    decimalSeparator: '.',
-    useKeysAsHeaders: true,
-  });
+    const csvConfig = mkConfig({
+        fieldSeparator: ',',
+        decimalSeparator: '.',
+        useKeysAsHeaders: true,
+    });
 
-  const handleExportData = () => {
-    const csv = generateCsv(csvConfig)(staff);
-    download(csvConfig)(csv);
-  };
+    const handleExportData = () => {
+        const csv = generateCsv(csvConfig)(staff);
+        download(csvConfig)(csv);
+    };
 
   return (
     <div id='tableWrapper'>
@@ -106,10 +107,10 @@ const TeacherTable = () => {
         //enableRowSelection
         enableRowNumbers
         rowNumberMode="original" //default
-        columnFilterDisplayMode='popover'
-        paginationDisplayMode='pages'
-        positionToolbarAlertBanner='bottom'
-        renderTopToolbarCustomActions={({ table }) => (
+        columnFilterDisplayMode = 'popover'
+        paginationDisplayMode= 'pages'
+        positionToolbarAlertBanner= 'bottom'
+        renderTopToolbarCustomActions = {({ table }) => (
           <Box
             sx={{
               display: 'flex',
