@@ -1,4 +1,5 @@
 import '../../Style/WebSetupStyle/AddMajorStyle.scss'
+
 import axios from "axios"
 import { React, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
