@@ -130,31 +130,31 @@ export const AddCourseToMajor = () => {
         navigate('../../managerNav/teacherTable')
     }
 
-    const AddMajorToDatabase = () => {
-        let majorsToAdd = document.getElementsByClassName('majorToAdd')
-        // fetch('http://localhost:8080/posts')
-        // .then(function(response){ return response.json(); })
-        // .then(function(data) {
-        //     const items = data;
-        //     console.log(items)
-        // })
-        for (let i = 0; i < majorsToAdd.length; i++) {
-            axios.get(`https://localhost:44367/api/Major/GetMajorByMajorName/${majorsToAdd[i].classList[1]}`)
-                .then(x => {
-                    let major = x.data;
-                    console.log(major);
-                })
+    // const AddMajorToDatabase = () => {
+    //     let majorsToAdd = document.getElementsByClassName('majorToAdd')
+    //     // fetch('http://localhost:8080/posts')
+    //     // .then(function(response){ return response.json(); })
+    //     // .then(function(data) {
+    //     //     const items = data;
+    //     //     console.log(items)
+    //     // })
+    //     for (let i = 0; i < majorsToAdd.length; i++) {
+    //         axios.get(`https://localhost:44367/api/Major/GetMajorByMajorName/${majorsToAdd[i].classList[1]}`)
+    //             .then(x => {
+    //                 let major = x.data;
+    //                 console.log(major);
+    //             })
 
-        }
+    //     }
 
-        //https://localhost:44367/api/MajorCourses/AddAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode/{MajorCode}/{CourseGrade}/{CourseName}/{CourseTeacherCode}
+    //     //https://localhost:44367/api/MajorCourses/AddAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode/{MajorCode}/{CourseGrade}/{CourseName}/{CourseTeacherCode}
 
-        // let inputs = document.getElementsByClassName("newMajor")
-        // inputs.forEach(element => {
-        //     major: {element.value, null, JSON.parse(localStorage.getItem())}
-        //     axios.post('https://localhost:44367/api/Major/AddMajor')
-        // });
-    }
+    //     // let inputs = document.getElementsByClassName("newMajor")
+    //     // inputs.forEach(element => {
+    //     //     major: {element.value, null, JSON.parse(localStorage.getItem())}
+    //     //     axios.post('https://localhost:44367/api/Major/AddMajor')
+    //     // });
+    // }
 
     return <>
         <div className="titleAddCourse">

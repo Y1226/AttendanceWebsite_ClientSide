@@ -1,17 +1,16 @@
 import { useEffect } from 'react';
 import '../../Style/Tables/Manager/Update.scss'
-import { FileUpload } from '../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload';
+// import { FileUpload } from '../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload';
+import { FileUploadCopy } from '../UploadAnExcelFileWithAllTheDesign/Pencile/FileUploadCopy';
 // import { useNavigate } from 'react-router-dom';
 // import '../../Style/WebSetupStyle/AddTeachersStyle.scss'
 
 export const AddTeachersAndStudents = () => {
 
-    // let navigate = useNavigate()
-
     useEffect(() => {
         document.getElementsByClassName('tabcontent')[0].style.display = 'block'
         document.getElementsByClassName('tablinks')[0].className += ' active'
-    },[])
+    }, [])
 
     const OpenASelectionOption = (evt, optionID) => {
         debugger
@@ -35,11 +34,10 @@ export const AddTeachersAndStudents = () => {
             <button className='tablinks disabledUpdateButton' disabled id='nextButton'>הבא</button>
         </div>
         <div id='Staff' className='tabcontent'>
-            <FileUpload id="Staff"></FileUpload>
+            <FileUploadCopy id="Staff"></FileUploadCopy>
         </div>
         <div id='Students' className='tabcontent'>
-            <FileUpload id="Students"></FileUpload>
+            <FileUploadCopy id="Students"></FileUploadCopy>
         </div>
-
     </>
 }
