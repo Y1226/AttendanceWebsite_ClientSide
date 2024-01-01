@@ -2,11 +2,12 @@ import React, { useEffect, useMemo } from 'react';
 import MaterialReactTable from 'material-react-table';
 import '../../../Style/Tables/Manager/TeacherTableStyle.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Button } from '@mui/material';
-import { mkConfig, generateCsv, download } from 'export-to-csv';
+import { Box } from '@mui/material';
+// import ExcelJS from 'exceljs';
+// import { saveAs } from 'file-saver';
 // import axios from 'axios';
 import { FillStaffData } from '../../../Redux/Actions/TableActions/Manager/TeacherTableAction.jsx';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import DownloadToExcel from './DownloadToExcel.jsx';
 import { getTheStaffMemberWithMoreDetailsBySeminarCode } from '../../../Redux/Axios/Tables/TeacherTableAxios.jsx';
 // import {
 //     MaterialReactTable,
@@ -89,16 +90,20 @@ const TeacherTable = () => {
     [],
   );
 
-  const csvConfig = mkConfig({
-    fieldSeparator: ',',
-    decimalSeparator: '.',
-    useKeysAsHeaders: true,
-  });
-
-  const handleExportData = () => {
-    const csv = generateCsv(csvConfig)(staff);
-    download(csvConfig)(csv);
-  };
+  const selectedColumns = [
+    'userFirstName', 
+    'userLastName', 
+    'userId', 
+    'userEnglishDateOfBirth', 
+    'userHebrewDateOfBirth', 
+    'userAddress', 
+    'userLocationCity', 
+    'userHomePhoneNumber', 
+    'userCellPhoneNumber', 
+    'staffMemberPosition', 
+    'userPassword', 
+    'staffEmploymentStartDate'
+  ];
 
   return (
     <div id='tableWrapper'>
@@ -112,51 +117,8 @@ const TeacherTable = () => {
         columnFilterDisplayMode='popover'
         paginationDisplayMode='pages'
         positionToolbarAlertBanner='bottom'
-        renderTopToolbarCustomActions={({ table }) => (
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '16px',
-              padding: '8px',
-              flexWrap: 'wrap',
-            }}
-          >
-            <Button
-              //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-              onClick={handleExportData}
-              startIcon={<FileDownloadIcon />}
-            >
-              הורדה לקובץ אקסל
-            </Button>
-            {/* <Button
-              disabled={table.getPrePaginationRowModel().rows.length === 0}
-              //export all rows, including from the next page, (still respects filtering and sorting)
-              onClick={() =>
-                handleExportRows(table.getPrePaginationRowModel().rows)
-              }
-              //startIcon={<FileDownloadIcon />}
-            >
-              Export All Rows
-            </Button> */}
-            {/* <Button
-              disabled={table.getRowModel().rows.length === 0}
-              //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
-              onClick={() => handleExportRows(table.getRowModel().rows)}
-              startIcon={<FileDownloadIcon />}
-            >
-              Export Page Rows
-            </Button> */}
-            {/* <Button
-              disabled={
-                !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-              }
-              //only export selected rows
-              onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-              startIcon={<FileDownloadIcon />}
-            >
-              Export Selected Rows
-            </Button> */}
-          </Box>
+        renderTopToolbarCustomActions={() => (
+          <DownloadToExcel selectedColumns={selectedColumns} table={staff} type={'staffData.xlsx'}></DownloadToExcel>
         )}
         renderDetailPanel={({ row }) => (
           <Box
