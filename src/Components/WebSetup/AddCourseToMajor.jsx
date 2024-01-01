@@ -1,4 +1,3 @@
-import axios from "axios"
 // import { useCallback } from "react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -6,7 +5,7 @@ import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorActio
 import '../../Style/WebSetupStyle/AddCourseToMajorStyle.scss'
 import { InputAndSelect } from "../InputAndSelect/InputAndSelect"
 import 'font-awesome/css/font-awesome.min.css';
-import { addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode, addMajor, getMajorByMajorName } from "../../Redux/Axios/WebSetupAxios/AddCourseToMajorAxios"
+import { addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode, addMajor, getMajorByMajorName, getMajorBySeminarCode } from "../../Redux/Axios/WebSetupAxios/AddCourseToMajorAxios"
 import { useNavigate } from "react-router-dom"
 
 
@@ -22,6 +21,7 @@ export const AddCourseToMajor = () => {
     // console.log("selectedMajors: ", selectedMajors);
 
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
+    const currentSeminarCode = useSelector(x => x.SignInReducer.currentSeminarCode)
     //let currentSeminar = JSON.parse(localStorage.getItem('newSeminar')).seminarManagerPassword
     //currentSeminar = axios.get(`getseminarbypassword/${currentSeminar}`).then(x => x.data) //fix to use the store with useSelector.
 
@@ -91,13 +91,12 @@ export const AddCourseToMajor = () => {
     useEffect(() => {
         debugger
         async function fetchData() {
-            let m = await axios.get(`https://localhost:44367/api/Major/GetMajorBySeminarCode/1`) //${} - when I know the seminar code.
-            dispatch(FillMajorData(m.data))
+            await getMajorBySeminarCode(currentSeminarCode).then(x => dispatch(FillMajorData(x.data)))
         }
         fetchData()
         // AddInputBox(13)
         // AddInputBox(14)
-    }, [dispatch])
+    }, [dispatch, currentSeminarCode])
 
     const handleSubmit = async () => {
         for (let index = 0; index < selectedMajors.length; index++) {

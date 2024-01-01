@@ -1,5 +1,9 @@
 import axios from "axios"
 
+export const getMajorBySeminarCode = (seminarCode) => {
+    return (axios.get(`https://localhost:44367/api/Major/GetMajorBySeminarCode/${seminarCode}`))
+}
+
 export const getMajorByMajorName = (majorName) => {
     return (axios.get(`https://localhost:44367/api/Major/GetMajorByMajorName/${majorName}`));
 }

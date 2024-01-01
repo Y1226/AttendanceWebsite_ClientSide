@@ -1,32 +1,28 @@
-import axios from "axios"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { FillCourseData } from '../../../Redux/Actions/TableActions/Teacher/CourseTableAction';
 import { useNavigate } from "react-router-dom";
+import { GetCoursesByMajorCodeAndCourseGrade } from "../../../Redux/Axios/Table/Teacher/CourseTableAxios";
 
 export const CourseTable = () => {
 
     let navigate = useNavigate()
     let dispatch = useDispatch()
     let courses = useSelector(x => x.CourseTableReducer.CourseList)
+    const currentMajor = useSelector(x => x.MajorTableReducer.CurrentMajor)
+    const currentGrade = useSelector(x => x.GradeTableReducer.CurrentGrade)
 
     useEffect(() => {
         async function fetchData() {
-            debugger
-            let currentMajor = JSON.parse(localStorage.getItem("CurrentMajor"))
-            let currentGrade = JSON.parse(localStorage.getItem("Grade"))
             let m
-            // let s = await axios.get(`https://localhost:44367/api/Staff/GetStaffMemberByStaffID/${currentUser.userName}`)
-            // console.log(s.data);
             if (currentGrade === 'A')
-                m = await axios.get(`https://localhost:44367/api/Courses/GetCoursesByMajorCodeAndCourseGrade/${currentMajor.majorCode}/A`)
+                m = await GetCoursesByMajorCodeAndCourseGrade(currentMajor.majorCode, 'A')
             else
-                m = await axios.get(`https://localhost:44367/api/Courses/GetCoursesByMajorCodeAndCourseGrade/${currentMajor.majorCode}/B`)
-
+                m = await GetCoursesByMajorCodeAndCourseGrade(currentMajor.majorCode, 'B')
             dispatch(FillCourseData(m.data))
         }
         fetchData()
-    }, [dispatch])
+    }, [dispatch, currentMajor, currentGrade])
 
     const GetStudents = (x) => {
         debugger

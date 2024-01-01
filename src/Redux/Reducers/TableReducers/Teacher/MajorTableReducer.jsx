@@ -1,7 +1,13 @@
 import produce from 'immer'
 
 const MajorTableState = {
-    MajorList: []
+    MajorList: [],
+    CurrentMajor: {
+        majorCode: '',
+        majorName: '',
+        majorCodeCoordinator: '',
+        seminarCode: ''
+    }
 }
 
 export const MajorTableReducer = produce(

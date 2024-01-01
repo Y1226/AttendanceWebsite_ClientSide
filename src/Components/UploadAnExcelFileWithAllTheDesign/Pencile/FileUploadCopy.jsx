@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Pencile } from './Pencile'
 import '../../UploadAnExcelFileWithAllTheDesign/SelectFile/SelectFile.css'
 import '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload.scss'
@@ -7,6 +6,8 @@ import { StaffTable } from "../HeaderTables/Staff";
 import { StudentTable } from "../HeaderTables/Student";
 import { useNavigate } from "react-router-dom";
 import '../../File Upload/FileUpload.css'
+import { UploadFileExcel } from "../../../Redux/Axios/FileUpload/FileUploadAxios";
+import { useSelector } from "react-redux";
 
 
 export const FileUploadCopy = (props) => {
@@ -16,6 +17,7 @@ export const FileUploadCopy = (props) => {
     const fileSelected= useState();
     const [fileUpload, setFileUpload] = useState(false);
     const [fileName, setFileName] = useState('')
+    const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
 
     const importFile = async (e) => {
         debugger
@@ -28,14 +30,14 @@ export const FileUploadCopy = (props) => {
             // https://localhost:44367/api/Students/UploadFileExcel/1
             setFileUpload(true)
             if (props.id === "Staff") {
-                await axios.post("https://localhost:44367/api/Staff/UploadFileExcel", formData);
+                await UploadFileExcel('Staff', currentSeminarCode, formData)
                 
                 let btn = document.getElementById('nextButton') 
                 btn.disabled = false
                 btn.addEventListener('click' , ()=> navigate('../addMajor'))
             }
             else
-                await axios.post("https://localhost:44367/api/Students/UploadFileExcel/1", formData);
+                await UploadFileExcel('Students', currentSeminarCode, formData)
         } catch (ex) {
             console.log(ex);
         }

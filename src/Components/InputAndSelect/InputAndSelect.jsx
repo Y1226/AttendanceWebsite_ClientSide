@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction";
@@ -7,9 +6,12 @@ import Select from 'react-select'
 import '../../Style/WebSetupStyle/AddMajorStyle.scss'
 import './InputAndSelect.scss'
 import { FillCoursesForMajorsByIndex } from "../../Redux/Actions/WebSetupActions/AddCourseToMajorAction";
+import { GetAllMajors } from "../../Redux/Axios/Table/Manager/ManagerMajorTableAxios";
+import { GetFullStaffDataBySeminarCode } from "../../Redux/Axios/Table/Manager/TeacherTableAxios";
 
 export const InputAndSelect = (props) => {
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
+    const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
     let dispatch = useDispatch()
     const listSelectStaff = []
     const [selectValues, setSelectValues] = useState([{ courseName: '', routeCoordinator: null }]);
@@ -41,10 +43,8 @@ export const InputAndSelect = (props) => {
 
     useEffect(() => {
         async function fetchData() {
-            let m = await axios.get('https://localhost:44367/api/Major/GetAllMajors')
-            dispatch(FillMajorData(m.data))
-            let s = await axios.get(`https://localhost:44367/api/Staff/GetFullStaffDataBySeminarCode/1`) //${} - when I know the seminar code.
-            dispatch(FillStaffData(s.data))
+            await GetAllMajors().then(x => dispatch(FillMajorData(x.data)))
+            await GetFullStaffDataBySeminarCode(currentSeminarCode).then(x => dispatch(FillStaffData(x.data)))
         }
         fetchData()
         function handleSubmit() {
@@ -59,7 +59,7 @@ export const InputAndSelect = (props) => {
             dispatch(FillCoursesForMajorsByIndex(props.index, selectedItems))
         };
         handleSubmit()
-    }, [dispatch, selectValues, props.index])
+    }, [dispatch, selectValues, props.index, currentSeminarCode])
 
     return <>
         <div className="inputAndSelect">

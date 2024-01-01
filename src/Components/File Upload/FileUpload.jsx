@@ -1,12 +1,15 @@
-import axios from "axios";
 import { useState } from "react";
 import './FileUpload.css'
 import { Pencile } from "../Pencile/Pencile";
+import { useSelector } from "react-redux";
+import { UploadFileExcel } from "../../Redux/Axios/FileUpload/FileUploadAxios";
 
 export const FileUpload = (props) => {
     const fileSelected = useState();
     const [fileName, setFileName] = useState("")
     const [fileUpload, setFileUpload] = useState(false)
+
+    const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
 
     const importFile = async (e) => {
         debugger
@@ -14,7 +17,7 @@ export const FileUpload = (props) => {
         formData.append("file", fileSelected);
         try {
             setFileUpload(true)
-            await axios.post(`https://localhost:44367/api/${props.id}/UploadFileExcel/1`, formData);
+            await UploadFileExcel(props.id, currentSeminarCode, formData)
         } catch (ex) {
             console.log(ex);
         }

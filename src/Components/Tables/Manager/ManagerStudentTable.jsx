@@ -3,24 +3,22 @@ import MaterialReactTable from 'material-react-table';
 import '../../../Style/Tables/Manager/TeacherTableStyle.scss'
 import { useDispatch, useSelector } from 'react-redux';
 // import { GetFullStaffData } from '../../Redux/Axios/Tables/TeacherTableAxios.jsx';
-import axios from 'axios';
 import { FillStudentData } from '../../../Redux/Actions/TableActions/Manager/ManagerStudentTableAction.jsx';
 import DownloadToExcel from './DownloadToExcel.jsx';
+import { GetFullStudentsDataBySeminarCode } from '../../../Redux/Axios/Table/Manager/ManagerStudentTableAxios.jsx';
 
 export const ManagerStudentTable = () => {
 
     const dispatch = useDispatch()
     const students = useSelector(x => x.ManagerStudentTableReducer.StudentList)
+    const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
 
     useEffect(() => {
-        debugger
-        let currentUser = JSON.parse(localStorage.getItem('CurrentUser'))
         async function fetchData() {
-            let s = await axios.get(`https://localhost:44367/api/Students/GetFullStudentsDataBySeminarCode/${currentUser.seminarCode}`)
-            dispatch(FillStudentData(s.data))
+            await GetFullStudentsDataBySeminarCode(currentSeminarCode).then(x => dispatch(FillStudentData(x.data)))
         }
         fetchData()
-    }, [dispatch])
+    }, [dispatch, currentSeminarCode])
 
     const columns = useMemo(
         //column definitions...

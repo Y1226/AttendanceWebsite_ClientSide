@@ -1,26 +1,23 @@
-import axios from "axios"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { FillMajorData } from '../../../Redux/Actions/TableActions/Teacher/MajorTableActions';
 import { useNavigate } from "react-router-dom";
+import { getMajorsBySeminarAndTeacherCode, getStaffMemberByStaffID } from "../../../Redux/Axios/Table/Teacher/MajorTableAxios";
 
 export const MajorTable = () => {
 
     let dispatch = useDispatch()
     let navigate = useNavigate()
     let majors = useSelector(x => x.MajorTableReducer.MajorList)
+    const currentUser = useSelector(x => x.SignInReducer.CurrentUser)
 
     useEffect(() => {
         async function fetchData() {
-            debugger
-            let currentUser = JSON.parse(localStorage.getItem("CurrentUser"))
-            let s = await axios.get(`https://localhost:44367/api/Staff/GetStaffMemberByStaffID/${currentUser.userName}`)
-            console.log(s.data);
-            let m = await axios.get(`https://localhost:44367/api/Major/GetMajorsBySeminarAndTeacherCode/${currentUser.seminarCode}/${s.data.staffCode}`)
-            dispatch(FillMajorData(m.data))
+            let s = await getStaffMemberByStaffID(currentUser.userName)
+            await getMajorsBySeminarAndTeacherCode(currentUser.seminarCode, s.data.staffCode).then(dispatch(x => FillMajorData(x.data)))
         }
         fetchData()
-    },[dispatch])
+    },[dispatch, currentUser])
 
     const GoToGrades = (x) => {
         debugger

@@ -3,21 +3,20 @@ import '../../../Style/Tables/Manager/AttendanceReportStyle.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { FillAttendanceForAllStudents } from '../../../Redux/Actions/TableActions/Manager/AttendanceReportAction'
 // import { FillAttendanceForCurrentStudent } from '../../../Redux/Actions/TableActions/Manager/PersonalAttendanceReportActions'
-import axios from 'axios'
+import { GetTheAttendanceForAllStudentsWithMoreDetailsBySeminarCode } from '../../../Redux/Axios/Table/Manager/AttendanceReportAxios'
 
 export const AttendanceReport = () => {
 
     let dispatch = useDispatch()
     let studentsAttendance = useSelector(x => x.AttendanceReportReducer.AttendanceStudentList)
+    const currentUser = useSelector(x => x.SignInReducer.CurrentUser)
 
     useEffect(() => {
         async function fetchData() {
-            let currentUser = JSON.parse(localStorage.getItem("CurrentUser"))
-            let s = await axios.get(`https://localhost:44367/api/AttendencePerCourse/GetTheAttendanceForAllStudentsWithMoreDetailsBySeminarCode/${currentUser.seminarCode}`)
-            dispatch(FillAttendanceForAllStudents(s.data))
+            await GetTheAttendanceForAllStudentsWithMoreDetailsBySeminarCode(currentUser.seminarCode).then(x => dispatch(FillAttendanceForAllStudents(x.data)))
         }
         fetchData()
-    }, [dispatch])
+    }, [dispatch, currentUser])
 
     const openPersonalReport = (x) => {
         localStorage.setItem('currentStudentAttendance', JSON.stringify(x))
