@@ -74,10 +74,11 @@
   bottom: 0;
   left: 0;
 
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
 }
+
 .b {
   position: absolute;
   top: 0;
@@ -225,6 +226,12 @@
   width: 80%;
   color: #37474f;
 }
+
+.btn_login:disabled {
+  // cursor: not-allowed;
+  opacity: 0.4;
+}
+
 
 .btn_login,
 .btn_loginGuest {
@@ -435,4 +442,10 @@ background text
   float: left;
   margin: 10px;
   margin-left: 30px;
+}
+
+.error {
+  color: #ef5350;
+  font-weight: bold;
+  -webkit-text-stroke: 0.3px black;
 }

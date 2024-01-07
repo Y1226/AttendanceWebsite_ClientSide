@@ -33,13 +33,14 @@ export const FileUpload = (props) => {
                             </path>
                         </svg>
                     </div>
-                    <input className="FileUploadInput" type="file" multiple onChange={(e) => { setFileName(e.target.files[0].name) }} />
+                    <input className="FileUploadInput" type="file" accept="image/*" multiple onChange={(e) => { setFileName(e.target.files[0].name) }} />
                 </form>
+                {/* <p className="FileUploadP">שם קובץ</p> */}
                 <p className="FileUploadP">{fileName}</p>
             </div>
             {!fileUpload && <button className="FileUploadButton" type="submit" onClick={importFile}>העלה</button>}
             {/* {!fileUpload && <button className="FileUploadButton" type="submit" onClick={importFile}>Upload</button>} */}
-            {fileUpload &&<Pencile></Pencile>}
+            {fileUpload && <Pencile></Pencile>}
         </>
     );
 };

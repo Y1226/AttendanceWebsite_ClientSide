@@ -28,7 +28,7 @@ import { Verification } from "../WebSetup/Verification"
 import { CheckStudentMajor } from "../WebSetup/CheckStudentMajor"
 import { MatchTeacherToCourse } from "../WebSetup/MatchTeacherToCourse"
 import { AddMajor } from "../WebSetup/AddMajor"
-import { AddTeachersAndStudents } from "../WebSetup/AddTeachers"
+import { AddTeachersAndStudents } from "../WebSetup/AddTeachersAndStudents"
 import { AddCourseToMajor } from "../WebSetup/AddCourseToMajor"
 
 export const LoadRoutes = () => {

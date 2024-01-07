@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Pencile } from './Pencile'
 import '../../UploadAnExcelFileWithAllTheDesign/SelectFile/SelectFile.css'
-import '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload.scss'
+// import '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload.scss'
 import { StaffTable } from "../HeaderTables/Staff";
 import { StudentTable } from "../HeaderTables/Student";
 import { useNavigate } from "react-router-dom";
-import '../../File Upload/FileUpload.css'
+// import '../../File Upload/FileUpload.css'
 
 
 export const FileUploadCopy = (props) => {
@@ -65,7 +65,6 @@ export const FileUploadCopy = (props) => {
             <div className="instructionDiv">
                 <h3>מלאי והעלי קובץ אקסל לפי הכותרות הבאות:</h3>
                 {props.id === "Staff" ? <StaffTable></StaffTable> : <StudentTable></StudentTable>}
-                <br />
                 <h4>בהצלחה רבה והמון סיעתא דשמיא!</h4>
             </div>
         </>

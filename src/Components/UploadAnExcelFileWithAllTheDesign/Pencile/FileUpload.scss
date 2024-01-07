@@ -31,14 +31,15 @@
 }
 
 .instructionDiv {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    // position: absolute;
+    // bottom: 0;
+    // left: 0;
+    // right: 0;
     width: 75%;
     height: 40%;
     border-top: 2px solid #607d8b ;    
     margin: auto;
+    // display: inline-flex;
     padding: 2%;
     color: #607d8b;
 }

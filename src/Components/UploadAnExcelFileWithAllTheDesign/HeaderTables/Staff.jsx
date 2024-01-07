@@ -1,3 +1,5 @@
+import '../Pencile/FileUpload.scss'
+
 export const StaffTable = () => {
     return <table className="instructionTable">
         <thead>

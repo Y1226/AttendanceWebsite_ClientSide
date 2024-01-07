@@ -5,23 +5,24 @@ import { useNavigate } from "react-router-dom"
 import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
 import { FillStaffData } from "../../Redux/Actions/TableActions/Manager/TeacherTableAction"
 import Select from 'react-select'
+import { FillCoursesForMajors } from '../../Redux/Actions/WebSetupActions/AddCourseToMajorAction'
+import { getAllMajors, getFullStaffDataBySeminarCode } from '../../Redux/Axios/WebSetupAxios/AddMajorAxios'
 
 export const AddMajor = () => {
-    debugger
-    let majors = useSelector(x => x.ManagerMajorTableReducer.MajorList)
+    let initialMajors = useSelector(x => x.ManagerMajorTableReducer.MajorsToSelect)
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
     let navigate = useNavigate()
     let dispatch = useDispatch()
     let other = useRef()
     let [isOtherChecked, setIsOtherChecked] = useState(false)
     const listSelectStaff = []
-    const [majorsToSelect, setMajorsToSelect] = useState([])
-
-    // majors.forEach(e => {
-    //     majorsToSelect.push({nameMajor: e.majorName, statusMajor: true })
-    //     debugger
-    //     console.log(majorsToSelect);
-    // })
+    
+    const [majors, setMajors] = useState([])
+    // const [majors, setMajors] = useState([
+    //     { majorName: 'Major 1', routeCoordinator: null },
+    //     { majorName: 'Major 2', routeCoordinator: null },
+    //     { majorName: 'Major 3', routeCoordinator: null },
+    // ]);
 
     staff.forEach(e => {
         listSelectStaff.push({ code: e.staffCode, value: e.userFirstName + " " + e.userLastName, label: e.userFirstName + " " + e.userLastName })
@@ -35,132 +36,36 @@ export const AddMajor = () => {
             dispatch(FillStaffData(s.data))
         }
         fetchData()
-        
-        const derivedArray = majors.map((item) => ({
-            nameMajor: item.majorName,
-            statusMajor: true
+    }, [dispatch])
+
+    useEffect(() => {
+        const derivedArray = initialMajors.map((item) => ({
+            majorName: item.majorName,
+            routeCoordinator: null
         }));
-        setMajorsToSelect(derivedArray);
-    }, [dispatch, majors])
+        setMajors(derivedArray);
+    }, [initialMajors])
+    
+    const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
 
-    // const handleChange = (value) => {
-    //     debugger
-    //     console.log("value:", value);
-    //     alert("code: " + value.code + ", value: " + value.value)
-    //     setAnimal(value);
-    // };
-
-    // const ShowInputs = () => {
-    //     setIsOtherChecked(other.current.checked)
-    //     let checked = document.getElementById('other').checked
-    //     let otherInput = document.getElementById('addedInput')
-    //     if (checked === true) {
-    //         otherInput.removeAttribute('hidden')
-    //         AddInputs()
-    //     }
-    //     else {
-    //         otherInput.setAttribute('hidden', true)
-    //         RemoveInput()
-    //     }
-    // }
-
-    // const AddInputs = () => {
-    //     let a = document.getElementById("inputPlace")
-    //     let newInput = document.createElement('input')
-    //     newInput.setAttribute('type', 'text')
-    //     newInput.setAttribute('class', 'major_new')
-    //     newInput.setAttribute('placeholder', 'שם מסלול')
-    //     a.appendChild(newInput)
-
-    //     newInput = document.createElement('select')
-    //     newInput.setAttribute('class', 'selectCoordinator')
-    //     let newOption = document.createElement('option')
-    //     newOption.setAttribute('hidden', true)
-    //     newOption.text = 'בחרי רכזת מסלול'
-    //     newInput.appendChild(newOption)
-    //     for (let i = 0; i < staff.length; i++) {
-    //         newOption = document.createElement('option')
-    //         newOption.text = staff[i].userFirstName + ' ' + staff[i].userLastName
-    //         newInput.appendChild(newOption)
-    //     }
-    //     a.appendChild(newInput)
-    //     a.appendChild(document.createElement('br'))
-    // }
-
-    //     const RemoveInput = () => {
-    //         debugger
-    //         let newMajors = document.getElementsByClassName('major_new')
-    //         newMajors[newMajors.length - 1].remove()
-    //         let newSelect = document.getElementsByClassName('selectCoordinator')
-    //         newSelect[newSelect.length - 1].remove()
-    //         let br = document.getElementsByTagName('br')
-    //         br[br.length - 1].remove()
-    //     }
-
-    // const createElementsForOther = (number) => {
-    //     // var elementsOther = [];
-    //     for (let i = 0; i < number; i++) {
-    //         elementsOther.push(
-    //             <div key={i} className='spaces'>
-    //                 <div className="col-3 input-effect">
-    //                     <input className="effect-19" type="text" placeholder={"שם מסלול"} onFocus={(e) => e.target.placeholder = ""} onBlur={(e) => e.target.placeholder = "שם מסלול"} />
-    //                     <label>שם מסלול</label>
-    //                     <span className="focus-border">
-    //                         <i></i>
-    //                     </span>
-    //                 </div>
-    //                 <div className='SelectComponent'>
-    //                     <Select placeholder="בחרי רכזת מסלול" maxMenuHeight={130} onChange={handleChange} options={listSelectStaff} />
-    //                 </div>
-    //             </div>
-    //         );
-    //     }
-    //     return elementsOther;
-    // }
-
-    const SaveMajors = () => {
-        // let chosenMajor = document.getElementsByClassName('major_checkbox')
-        let chosenMajor = document.getElementsByClassName('checkbox')
-        // let chosenLabel = document.getElementsByClassName('major_label')
-        // let chosenLabel = document.getElementsByClassName('label')
-        let chosenLabel = document.getElementsByClassName('divCheckbox')
-        let majorList = []
-        for (let i = 0; i < chosenLabel.length; i++) {
-            if (chosenLabel[i].getElementsByClassName('checkbox')[0].checked)
-                majorList.push({ 'major': chosenLabel[i].getElementsByClassName('label')[0].innerHTML })
-            // if (chosenLabel[0].checked === true)
-            //     majorList.push({'major': chosenLabel[i].innerText})
+    const handleCheckboxChange = (index) => {
+        if (selectedCheckboxes.includes(index)) {
+            setSelectedCheckboxes(selectedCheckboxes.filter((checkbox) => checkbox !== index));
+        } else {
+            setSelectedCheckboxes([...selectedCheckboxes, index]);
         }
-        // for (let i = 0; i < chosenMajor.length; i++) {
-        //     if (chosenMajor[i].checked === true)
-        //         majorList.push({'major': chosenLabel[i].innerText})
-        // }
-        localStorage.setItem('chosenExistingMajor', JSON.stringify(majorList))
-        // ===================================================================
-        debugger
-        if (other.current.checked) {
-            chosenMajor = document.getElementsByClassName('spaces')
-            let chosenMajorCoordinator = document.getElementsByClassName('selectCoordinator')
-            majorList = {}
-            for (let i = 0; i < chosenMajor.length; i++) {
-                debugger
-                // let majorItem = {}
-                majorList[chosenMajor[i].value] = chosenMajorCoordinator[i].value
-                // majorList.push(majorItem)
-                let index = chosenMajorCoordinator[i].value.split(' ')
-                let majorCodeCoordinator = staff.find(x => x.userFirstName === index[0] && x.userLastName === index[1])
-                let majorElement = { majorName: `N'${chosenMajor[i].value}'`, majorCodeCoordinator: majorCodeCoordinator.staffCode, seminarCode: '1' }
-                axios.post('https://localhost:44367/api/Major/AddMajor', majorElement)
-            }
-            localStorage.setItem('chosenNewMajor', JSON.stringify(majorList))
-        }
-
-        navigate('../addCourseToMajor')
-    }
-
-    const [selectValues, setSelectValues] = useState([{ selectValue: null, inputValue: '' }]);
+    };
 
     const handleChange = (index, selectedOption) => {
+        const updatedMajors = [...majors];
+        updatedMajors[index].routeCoordinator = selectedOption;
+        setMajors(updatedMajors);
+    };
+
+    //Other
+    const [selectValues, setSelectValues] = useState([{ majorName: '', routeCoordinator: null }]);
+
+    const handleAnothersChange = (index, selectedOption) => {
         const updatedValues = [...selectValues];
         updatedValues[index] = { ...updatedValues[index], routeCoordinator: selectedOption };
         setSelectValues(updatedValues);
@@ -182,10 +87,21 @@ export const AddMajor = () => {
     };
 
     const handleSubmit = () => {
-        const dictionary = {};
-        selectValues.forEach((value, index) => {
-            dictionary[`select${index}`] = value.selectValue;
-            dictionary[`input${index}`] = value.inputValue;
+        debugger
+        const selectedMajors = selectedCheckboxes.map((index) => ({
+            majorName: majors[index].majorName,
+            routeCoordinator: majors[index].routeCoordinator ? majors[index].routeCoordinator : null,
+        }));
+        const selectedItems = []
+        selectedMajors.forEach(element => {
+            if (element.routeCoordinator !== null)
+                selectedItems.push(element)
+        });
+        debugger
+        selectValues.forEach(element => {
+            debugger
+            if (!(element.majorName === '' || element.routeCoordinator === null))
+                selectedItems.push(element);
         });
         selectedItems.sort((a, b) => a.majorName > b.majorName ? 1 : -1)
         console.log(selectedItems);
@@ -202,14 +118,33 @@ export const AddMajor = () => {
             </div>
             <hr style={{ background: '#607d8b', height: '1px' }} />
             <br />
-            {majorsToSelect.map((value, index) => (
-                <div key={index} className='divCheckbox'>
-                    <input className="checkbox" type="checkbox" />
-                    <label className="label">{value.nameMajor}</label>
-                </div>
-            ))}
+            <div>
+                {majors.map((value, index) => (
+                    <div key={index} className='divCheckbox'>
+                        <input
+                            className="checkbox"
+                            type="checkbox"
+                            checked={selectedCheckboxes.includes(index)}
+                            onChange={() => handleCheckboxChange(index)}
+                        />
+                        <label className="label">{value.majorName}</label>
+                        <br />
+                        {selectedCheckboxes.includes(index) && (
+                            <div className='selectOfListMajors'>
+                                <Select
+                                    placeholder="בחר מורה"
+                                    maxMenuHeight={130}
+                                    value={value.routeCoordinator}
+                                    onChange={(selectedOption) => handleChange(index, selectedOption)}
+                                    options={listSelectStaff}
+                                />
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
             <div className='divCheckbox'>
-                <input className="checkbox" type="checkbox" ref={other} onChange={() => { setIsOtherChecked(other.current.checked); if (!isOtherChecked) setSelectValues([{ selectValue: null, inputValue: '' }]) }} />
+                <input className="checkbox" type="checkbox" ref={other} onChange={() => { setIsOtherChecked(other.current.checked); if (!isOtherChecked) setSelectValues([{ majorName: '', routeCoordinator: null }]) }} />
                 <label className='label'>אחר</label>
             </div>
         </div>
@@ -220,8 +155,8 @@ export const AddMajor = () => {
                         <input
                             className="effect-19"
                             type="text"
-                            placeholder="track name"
-                            value={value.inputValue}
+                            placeholder="שם המסלול"
+                            value={value.majorName}
                             onChange={(e) => handleInputChange(index, e.target.value)}
                             onFocus={(e) => e.target.placeholder = ""}
                             onBlur={(e) => e.target.placeholder = "שם המסלול"}

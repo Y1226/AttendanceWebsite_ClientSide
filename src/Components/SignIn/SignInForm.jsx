@@ -1,4 +1,4 @@
-import { FillSeminarData } from '../../Redux/Actions/SignInActions';
+import { FillCurrentUser, FillNewSeminar, FillSeminarData } from '../../Redux/Actions/SignInActions';
 import { useDispatch, useSelector } from 'react-redux';
 import '../../Style/SignInStyle/SignInFormStyle.scss'
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Logo } from '../Logo/Logo';
 import { loginToTheSystem } from '../../Redux/Axios/SignInAxios';
+import { AreTheSeminarCodeAndPasswordCorrect, IsTheIDAndPasswordAndSeminarCodeCorrect, IsTheIDCorrect, IsThePasswordCorrect } from '../../Redux/Actions/IntegrityChecks';
 
 //First page to be seen in the project, used to sign in/up to the system.
 export const SignInForm = () => {
@@ -18,7 +19,13 @@ export const SignInForm = () => {
     //Gets all of the seminars from the store.
     const seminars = useSelector(x => x.SignInReducer.SeminarList)
     //Saves the code of the selected seminar.
-    const [SeminarCode, setSeminarCode] = useState(0);
+    const [seminarCode, setSeminarCode] = useState(0);
+    const [seminarCodeOfManager, setSeminarCodeOfManager] = useState(0);
+    const [seminarCodeOfUser, setSeminarCodeOfUser] = useState(0);
+
+    const [correctnessPasswordManager, setCorrectnessPasswordManager] = useState(false)
+    const [correctnessPasswordUser, setCorrectnessPasswordUser] = useState(false)
+    const [correctnessIdUser, setCorrectnessIdUser] = useState(false)
 
     //Different time fields.
     const time_to_show_login = 400;
@@ -126,31 +133,29 @@ export const SignInForm = () => {
 
     //Navigates to new page according to entered data.
     const login = async () => {
-
-        debugger
         //Get password from input field.
         let password = document.getElementById('passwordManager').value
         if (password === "")
             password = document.getElementById('passwordUser').value
 
         let username = document.getElementById('username').value
-
+        debugger
         //If signing in as manager and there is no username.
         if (username === "") {
             username = 'manager'
+            setSeminarCode(seminarCodeOfManager)
         }
+        else setSeminarCode(seminarCodeOfUser)
+
+        //Save current user in reducer.
+        dispatch(FillCurrentUser(username, password, seminarCode))
 
         //Get function that checks if:
         //0 - user does not exist.
         //1 - user exists as regular user.
         //2 - user exists as manager.
-        let userStatus = await loginToTheSystem(password, parseInt(SeminarCode), username);
-
-        //Save cuurent user in storage.
-        let currentUser = { userName: `${username}`, password: `${password}`, seminarCode: `${SeminarCode}` }
-        localStorage.setItem("CurrentUser", JSON.stringify(currentUser))
-
-        userStatus.data === 1 ? navigate('/teacherNav/majorTable') : userStatus.data === 2 ? navigate('/managerNav/teacherTable') : alert("does not exist")
+        await loginToTheSystem(password, parseInt(seminarCode), username)
+            .then(x => x.data === 1 ? navigate('/teacherNav/majorTable') : x.data === 2 ? navigate('/managerNav/teacherTable') : alert("does not exist"));
     }
 
     const signUp = async () => {
@@ -159,8 +164,7 @@ export const SignInForm = () => {
         let newSeminarEmail = document.getElementById('newSeminarEmail').value
         let newSeminarCity = document.getElementById('newSeminarCity').value
 
-        let newSeminar = { seminarName: `${newSeminarName}`, SeminarEmailAddress: `${newSeminarEmail}`, seminarLocationCity: `${newSeminarCity}` }
-        localStorage.setItem("newSeminar", JSON.stringify(newSeminar))
+        dispatch(FillNewSeminar(newSeminarName, newSeminarEmail, newSeminarCity))
 
         if (newSeminarName !== '' && newSeminarEmail !== '' && newSeminarCity !== '')
             navigate('/moreInfoNav/remainingDetails')
@@ -172,7 +176,6 @@ export const SignInForm = () => {
     //--------------------------   HTML   ----------------------------------------------
     //----------------------------------------------------------------------------------
     return <>
-
         <div className="cotn_principal">
             <div className='a'>
                 <div style={{ display: 'block', float: 'right' }}><Logo></Logo></div>
@@ -186,14 +189,10 @@ export const SignInForm = () => {
                                 {/* ----------------------------- */}
                                 <div className="col_md_login">
                                     <div className="cont_ba_opcitiy">
-                                        {/* <h2 className='SignInFormH2'>LOGIN</h2> */}
-                                        <h2 className='SignInFormH2'>התחברות</h2>  
+                                        <h2 className='SignInFormH2'>התחברות</h2>
                                         <p className='SignInFormP'>?יש לך חשבון <br></br> !התחבר</p>
-                                        {/* <p className='SignInFormP'>Have an account? <br></br> Login!</p> */}
                                         <button className="btn_login" onClick={() => change_to_login()}>התחבר כמנהל</button>
-                                        {/* <button className="btn_login" onClick={() => change_to_login()}>LOGIN AS MANAGER</button> */}
                                         <button className="btn_loginGuest" onClick={() => change_to_loginGuest()}>התחבר כמשתמש</button>
-                                        {/* <button className="btn_loginGuest" onClick={() => change_to_loginGuest()}>LOGIN AS USER</button> */}
                                     </div>
                                 </div>
 
@@ -203,11 +202,8 @@ export const SignInForm = () => {
                                 <div className="col_md_sign_up">
                                     <div className="cont_ba_opcitiy">
                                         <h2 className='SignInFormH2'>הירשם</h2>
-                                        {/* <h2 className='SignInFormH2'>SIGN UP</h2> */}
                                         <p className='SignInFormP'>?עדין אין לך חשבון <br></br> !צור חשבון עכשיו</p>
-                                        {/* <p className='SignInFormP'>Don't have an account yet? <br></br> Create one now!</p> */}
                                         <button className="btn_sign_up" onClick={() => change_to_sign_up()}>הירשם</button>
-                                        {/* <button className="btn_sign_up" onClick={() => change_to_sign_up()}>SIGN UP</button> */}
                                     </div>
                                 </div>
                             </div>
@@ -228,50 +224,59 @@ export const SignInForm = () => {
                                 <div className="cont_form_login">
                                     <p className='SignInFormA' onClick={() => hidden_login_and_sign_up()}><i className='SignInFormI'>«</i></p>
                                     <h2 className='SignInFormH2'>התחברות</h2>
-                                    {/* <h2 className='SignInFormH2'>LOGIN</h2> */}
                                     {/* Option to choose seminar */}
-                                    <select className='SignInFormSelect' onChange={e => { setSeminarCode(e.target.value); }}>
+                                    <select className='SignInFormSelect' onChange={e => { setSeminarCodeOfManager(e.target.value); }}>
                                         <option className='SignInFormOption' hidden>בחר את הסמינר שלך</option>
-                                        {/* <option className='SignInFormOption' hidden>CHOOSE YOUR SCHOOL</option> */}
                                         {/* Go through seminars from list in store and add the seminars name */}
                                         {seminars.map((x) => {
                                             return <option className='SignInFormOption' id='seminarKey' key={x.seminarCode} value={x.seminarCode}>{x.seminarName}</option>
                                         })}
                                     </select>
-                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordManager' />
-                                    <button className="btn_login" onClick={() => login()}>התחברות</button>
-                                    {/* <button className="btn_login" onClick={() => login()}>LOGIN</button> */}
+                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordManager' onInput={(e) => setCorrectnessPasswordManager(IsThePasswordCorrect(e.target.value))} />
+                                    {!correctnessPasswordManager &&
+                                        <>
+                                            <br />
+                                            <small className='error'>הסיסמה אינה תקינה</small>
+                                            <br />
+                                        </>}
+                                    <button className="btn_login" disabled={!AreTheSeminarCodeAndPasswordCorrect(seminarCodeOfManager, correctnessPasswordManager)} onClick={() => login()}>התחברות</button>
                                 </div>
 
                                 {/* Login as user */}
                                 <div className="cont_form_loginGuest">
                                     <p className='SignInFormA' onClick={() => hidden_login_and_sign_up()}><i className='SignInFormI'>«</i></p>
                                     <h2 className='SignInFormH2'>התחברות</h2>
-                                    {/* <h2 className='SignInFormH2'>LOGIN</h2> */}
-                                    <input className='SignInFormInput' type="text" placeholder="תעודת זהות" id='username' />
-                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordUser' />
+                                    <input className='SignInFormInput' type="text" placeholder="תעודת זהות" id='username' onInput={(e) => setCorrectnessIdUser(IsTheIDCorrect(e.target.value))} />
+                                    {!correctnessIdUser &&
+                                        <>
+                                            <br />
+                                            <small className='error'>תעודת הזהות אינה תקינה</small>
+                                        </>}
+                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordUser' onInput={(e) => setCorrectnessPasswordUser(IsThePasswordCorrect(e.target.value))} />
+                                    {!correctnessPasswordUser &&
+                                        <>
+                                            <br />
+                                            <small className='error'>הסיסמה אינה תקינה</small>
+                                        </>}
                                     {/* Option to choose seminar */}
-                                    <select className='SignInFormSelect' onChange={e => { setSeminarCode(e.target.value); }}>
+                                    <select className='SignInFormSelect' onChange={e => { setSeminarCodeOfUser(e.target.value); }}>
                                         <option className='SignInFormOption' hidden>בחר את הסמינר שלך</option>
-                                        {/* <option className='SignInFormOption' hidden>CHOOSE YOUR SCHOOL</option> */}
                                         {/* Go through seminars from list in store and add the seminars name */}
                                         {seminars.map((x) => {
                                             return <option className='SignInFormOption' id='seminarKey' key={x.seminarCode} value={x.seminarCode}>{x.seminarName}</option>
                                         })}
                                     </select>
-                                    <button className="btn_login" onClick={() => login()}>התחברות</button>
-                                    {/* <button className="btn_login" onClick={() => login()}>LOGIN</button> */}
+
+                                    <button className="btn_login" disabled={!IsTheIDAndPasswordAndSeminarCodeCorrect(correctnessIdUser, seminarCodeOfUser, correctnessPasswordUser )} onClick={() => login()}>התחברות</button>
                                 </div>
                                 {/* Sign up */}
                                 <div className="cont_form_sign_up">
                                     <p className='SignInFormA' onClick={() => hidden_login_and_sign_up()}><i className='SignInFormI'>«</i></p>
                                     <h2 className='SignInFormH2'>הירשם</h2>
-                                    {/* <h2 className='SignInFormH2'>SIGN UP</h2> */}
                                     <input className='SignInFormInput' type="text" placeholder="שם סמינר" id='newSeminarName' />
                                     <input className='SignInFormInput' type="text" placeholder="דואל" id='newSeminarEmail' />
                                     <input className='SignInFormInput' type="text" placeholder="עיר" id='newSeminarCity' />
                                     <button className="btn_sign_up" onClick={() => signUp()}>הירשם</button>
-                                    {/* <button className="btn_sign_up" onClick={() => signUp()}>SIGN UP</button> */}
                                 </div>
                             </div>
                         </div>

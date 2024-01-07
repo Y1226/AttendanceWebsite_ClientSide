@@ -3,16 +3,20 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    min-height: 70vh;
-    margin-top: 5%;
+    // min-height: 70vh;
+    // margin-top: 5%;
 }
 
 .detailsFormContent {
-    input, button {
+    input[type="text"] {
         margin: 15px;
         height: 5vh;
         width: 50vh;
         padding-left: 1vh;
+        direction: rtl;
+    }
+    :focus{
+        border: 2px solid #2684FF;
     }
 }
 
@@ -21,4 +25,19 @@
     display: inline-block;
     font-size: xx-large;
     // margin-left: 100px;
+}
+
+.title_h2{
+    margin: 0;
+}
+
+.titleAboveTheLogo{
+    font-weight: 100;
+    font-size: large;
+    margin-bottom: 0;
+}
+
+.div_next{
+    margin: auto;
+    margin-top: 20px;
 }

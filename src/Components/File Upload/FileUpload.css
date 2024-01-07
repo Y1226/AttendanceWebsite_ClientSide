@@ -39,19 +39,24 @@
 .FileUploadP {
     text-align: center;
     color: black;
-    font-family: monospace;
+    /* font-family: monospace; */
     font-size: 2.5dvb;
     white-space: nowrap;
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    /* color: #607d8b; */
+    direction: ltr;
+    height: 23px;
+    margin-top: 0;
 }
 
-button.FileUploadButton {
+.FileUploadButton {
     display: block;
     align-items: center;
     justify-content: center;
     margin: auto;
+    margin-top: 20px;
     outline: none;
     cursor: pointer;
     width: 180px;

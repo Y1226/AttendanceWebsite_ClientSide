@@ -3,11 +3,11 @@ import axios from "axios";
 import { Arrow2 } from "../Arrow/Arrow2";
 import { Pencile } from './Pencile'
 import '../../UploadAnExcelFileWithAllTheDesign/SelectFile/SelectFile.css'
-import '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload.scss'
+// import '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload.scss'
 import { StaffTable } from "../HeaderTables/Staff";
 import { StudentTable } from "../HeaderTables/Student";
 import { useNavigate } from "react-router-dom";
-import { FileUploadCopy } from "./FileUpload copy";
+import { FileUploadCopy } from "./FileUploadCopy";
 
 
 export const FileUpload = (props) => {
@@ -37,10 +37,10 @@ export const FileUpload = (props) => {
             setFileUpload(true)
             if (props.id === "Staff") {
                 await axios.post("https://localhost:44367/api/Staff/UploadFileExcel", formData);
-                
-                let btn = document.getElementById('nextButton') 
+
+                let btn = document.getElementById('nextButton')
                 btn.disabled = false
-                btn.addEventListener('click' , ()=> navigate('../addMajor'))
+                btn.addEventListener('click', () => navigate('../addMajor'))
             }
             else
                 await axios.post("https://localhost:44367/api/Students/UploadFileExcel/1", formData);
@@ -61,7 +61,7 @@ export const FileUpload = (props) => {
         //             </form>
         //             <p className="FileUploadP">{fileName}</p>
         //         </div>
-                
+
         //     {!fileUpload && <button type="submit" className="ButtonUpdate" onClick={importFile} disabled={fileName === '' ? true : false}>Upload</button>}
         //     {fileUpload && <Pencile></Pencile>}
         //     <br />
