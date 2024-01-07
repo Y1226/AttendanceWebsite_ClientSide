@@ -148,9 +148,6 @@ export const SignInForm = () => {
         //Save current user in reducer.
         dispatch(FillCurrentUser(username, password, seminarCode))
 
-        //Save current user in reducer.
-        dispatch(FillCurrentUser(username, password, SeminarCode))
-
         //Get function that checks if:
         //0 - user does not exist.
         //1 - user exists as regular user.
