@@ -7,6 +7,8 @@ import { FillStaffData } from "../../Redux/Actions/TableActions/Manager/TeacherT
 import Select from 'react-select'
 import { FillCoursesForMajors } from '../../Redux/Actions/WebSetupActions/AddCourseToMajorAction'
 import { getAllMajors, getFullStaffDataBySeminarCode } from '../../Redux/Axios/WebSetupAxios/AddMajorAxios'
+import { FillCoursesForMajors } from '../../Redux/Actions/WebSetupActions/AddCourseToMajorAction'
+import { getAllMajors, getFullStaffDataBySeminarCode } from '../../Redux/Axios/WebSetupAxios/AddMajorAxios'
 
 export const AddMajor = () => {
     let initialMajors = useSelector(x => x.ManagerMajorTableReducer.MajorsToSelect)
@@ -18,11 +20,6 @@ export const AddMajor = () => {
     const listSelectStaff = []
     
     const [majors, setMajors] = useState([])
-    // const [majors, setMajors] = useState([
-    //     { majorName: 'Major 1', routeCoordinator: null },
-    //     { majorName: 'Major 2', routeCoordinator: null },
-    //     { majorName: 'Major 3', routeCoordinator: null },
-    // ]);
 
     staff.forEach(e => {
         listSelectStaff.push({ code: e.staffCode, value: e.userFirstName + " " + e.userLastName, label: e.userFirstName + " " + e.userLastName })
@@ -44,8 +41,15 @@ export const AddMajor = () => {
             routeCoordinator: null
         }));
         setMajors(derivedArray);
-    }, [initialMajors])
-    
+    },[initialMajors])
+
+    // --------------------------------------------------------------------
+    // const [majors, setMajors] = useState([
+    //     { majorName: 'Major 1', routeCoordinator: null },
+    //     { majorName: 'Major 2', routeCoordinator: null },
+    //     { majorName: 'Major 3', routeCoordinator: null },
+    // ]);
+
     const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
 
     const handleCheckboxChange = (index) => {

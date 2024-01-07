@@ -5,11 +5,14 @@ import $ from 'jquery'
 // import TeacherTable from "../Tables/TeacherTable"
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export const UserNav = () => {
 
 	const [CurrentUser, setCurrentUser] = useState({})
 	const [CurrentSeminar, setCurrentSeminar] = useState({})
+
+	const currentUser = useSelector(x => x.SignInReducer.CurrentUser)
 
 	let navigate = useNavigate()
 
@@ -34,14 +37,12 @@ export const UserNav = () => {
 		// })
 
 	});
-
+	
 	useEffect(() => {
-		debugger
-		let storageUser = JSON.parse(localStorage.getItem('CurrentUser'))
-		axios.get(`https://localhost:44367/api/User/GetUserByUserID/${storageUser.userName}`).then(x => { setCurrentUser(x.data) })
-		axios.get(`https://localhost:44367/api/Seminar/GetSeminarBySeminarCode/${storageUser.seminarCode}`).then(x => { setCurrentSeminar(x.data) })
+		axios.get(`https://localhost:44367/api/User/GetUserByUserID/${currentUser.userName}`).then(x => { setCurrentUser(x.data) })
+		axios.get(`https://localhost:44367/api/Seminar/GetSeminarBySeminarCode/${currentUser.seminarCode}`).then(x => { setCurrentSeminar(x.data) })
 
-	}, [])
+	}, [currentUser])
 
 	if (window.location.href === 'http://localhost:3000/teacherNav/majorTable')
 		$('#backButton').css('display', 'none')

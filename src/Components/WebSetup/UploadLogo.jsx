@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Arrow2 } from '../UploadAnExcelFileWithAllTheDesign/Arrow/Arrow2';
 import { Pencile } from '../UploadAnExcelFileWithAllTheDesign/Pencile/Pencile'
+import { uploadALogo } from "../../Redux/Axios/WebSetupAxios/UploadLogoAxios";
 // import '../../UploadAnExcelFileWithAllTheDesign/SelectFile/SelectFile.css'
 // import '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload.scss'
 // import { StaffTable } from "../HeaderTables/Staff";
@@ -30,7 +30,7 @@ export const UploadLogo = (props) => {
             // For Students:
             // https://localhost:44367/api/Students/UploadFileExcel/1
             setFileUpload(true)
-            await axios.post("https://localhost:44367/api/Seminar/UploadALogo", formData);
+            await uploadALogo(formData)
         } catch (ex) {
             console.log(ex);
         }

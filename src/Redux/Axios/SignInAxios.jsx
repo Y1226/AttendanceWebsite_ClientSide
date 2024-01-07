@@ -1,5 +1,9 @@
 import axios from "axios"
 
+export const getAllSeminars = () => {
+    return (axios.get('https://localhost:44367/api/Seminar/GetAllSeminars'))
+} 
+
 export const loginToTheSystem = (password, seminarCode, identificationNumber) => {
     return (axios.get(`https://localhost:44367/api/Login/LoginToTheSystem/${password}/${seminarCode}/${identificationNumber}`));
 }

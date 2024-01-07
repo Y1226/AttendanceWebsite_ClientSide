@@ -1,10 +1,10 @@
-import axios from "axios"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { FillStudentUserData } from '../../../Redux/Actions/TableActions/Teacher/StudentTableAction';
 import { FillStudentData } from '../../../Redux/Actions/TableActions/Teacher/StudentTableAction';
 import "../../../Style/Tables/Teacher/StudentTableStyle.scss"
 import { useNavigate } from "react-router-dom";
+import { addingAttendanceToTheCourse, getAllStudentsByStudentMajorCode, getUsersByUserIDAndMajorCode } from "../../../Redux/Axios/Table/Teacher/StudentTableAxios";
 // import { AddToClass } from "../../Classes/AddToClass";
 // import { useNavigate } from "react-router-dom";
 
@@ -14,6 +14,7 @@ export const StudentTable = () => {
     let dispatch = useDispatch()
     let users = useSelector(x => x.StudentTableReducer.StudentUserList)
     let students = useSelector(x => x.StudentTableReducer.StudentList)
+    const currentMajor = useSelector(x => x.MajorTableReducer.CurrentMajor)
     let studentCodes = []
     let studentAttendance = []
 
@@ -21,14 +22,12 @@ export const StudentTable = () => {
     let minDate = new Date().getMonth() < 9 ? new Date().getFullYear() - 1 : new Date().getFullYear()
 
     useEffect(() => {
-        let currentMajor = JSON.parse(localStorage.getItem("CurrentMajor"))
         async function fetchData() {
-            debugger
-            await axios.get(`https://localhost:44367/api/User/GetUsersByUserIDAndMajorCode/${currentMajor.majorCode}`).then(x => dispatch(FillStudentUserData(x.data)))
-            await axios.get(`https://localhost:44367/api/Students/GetAllStudentsByStudentMajorCode/${currentMajor.majorCode}`).then(x => dispatch(FillStudentData(x.data)))
+            await getUsersByUserIDAndMajorCode(currentMajor.majorCode).then(x => dispatch(FillStudentUserData(x.data)))
+            await getAllStudentsByStudentMajorCode(currentMajor.majorCode).then(x => dispatch(FillStudentData(x.data)))
         }
         fetchData()
-    }, [dispatch])
+    }, [dispatch, currentMajor])
 
 
     for (let i = 0; i < students.length; i++) {
@@ -42,7 +41,6 @@ export const StudentTable = () => {
 
 
     const SubmitAttendance = async () => {
-        let currentMajor = JSON.parse(localStorage.getItem('CurrentMajor'))
         let object = {
             SeminarCode: currentMajor.seminarCode,
             MajorCode: currentMajor.majorCode,
@@ -51,9 +49,7 @@ export const StudentTable = () => {
             LessonDate: document.getElementById('lessonDate').value,
             LessonNumber: document.getElementById('lessonNumber').value
         }
-        console.log(object);
-        debugger
-        await axios.post('https://localhost:44367/api/AttendencePerCourse/AddingAttendanceToTheCourse', object)
+        await addingAttendanceToTheCourse(object)
         navigate('../majorTable')
     }
 

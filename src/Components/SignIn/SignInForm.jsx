@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../../Style/SignInStyle/SignInFormStyle.scss'
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Logo } from '../Logo/Logo';
-import { loginToTheSystem } from '../../Redux/Axios/SignInAxios';
+import { getAllSeminars, loginToTheSystem } from '../../Redux/Axios/SignInAxios';
 import { AreTheSeminarCodeAndPasswordCorrect, IsTheIDAndPasswordAndSeminarCodeCorrect, IsTheIDCorrect, IsThePasswordCorrect } from '../../Redux/Actions/IntegrityChecks';
 
 //First page to be seen in the project, used to sign in/up to the system.
@@ -39,8 +38,7 @@ export const SignInForm = () => {
     //Onload get all of the seminars and send to the list in the store.
     useEffect(() => {
         async function fetchData() {
-            let s = await axios.get('https://localhost:44367/api/Seminar/GetAllSeminars')
-            dispatch(FillSeminarData(s.data))
+            await getAllSeminars().then(x => dispatch(FillSeminarData(x.data)))
         }
         fetchData()
     }, [dispatch])
@@ -149,6 +147,9 @@ export const SignInForm = () => {
 
         //Save current user in reducer.
         dispatch(FillCurrentUser(username, password, seminarCode))
+
+        //Save current user in reducer.
+        dispatch(FillCurrentUser(username, password, SeminarCode))
 
         //Get function that checks if:
         //0 - user does not exist.
