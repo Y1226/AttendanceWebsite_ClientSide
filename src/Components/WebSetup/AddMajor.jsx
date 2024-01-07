@@ -7,8 +7,6 @@ import { FillStaffData } from "../../Redux/Actions/TableActions/Manager/TeacherT
 import Select from 'react-select'
 import { FillCoursesForMajors } from '../../Redux/Actions/WebSetupActions/AddCourseToMajorAction'
 import { getAllMajors, getFullStaffDataBySeminarCode } from '../../Redux/Axios/WebSetupAxios/AddMajorAxios'
-import { FillCoursesForMajors } from '../../Redux/Actions/WebSetupActions/AddCourseToMajorAction'
-import { getAllMajors, getFullStaffDataBySeminarCode } from '../../Redux/Axios/WebSetupAxios/AddMajorAxios'
 
 export const AddMajor = () => {
     let initialMajors = useSelector(x => x.ManagerMajorTableReducer.MajorsToSelect)

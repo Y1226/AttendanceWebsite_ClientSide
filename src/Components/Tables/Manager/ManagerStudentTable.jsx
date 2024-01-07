@@ -2,7 +2,6 @@ import React, { useEffect, useMemo } from 'react';
 import MaterialReactTable from 'material-react-table';
 import '../../../Style/Tables/Manager/TeacherTableStyle.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Button } from '@mui/material';
 // import { GetFullStaffData } from '../../Redux/Axios/Tables/TeacherTableAxios.jsx';
 import { FillStudentData } from '../../../Redux/Actions/TableActions/Manager/ManagerStudentTableAction.jsx';
 import DownloadToExcel from './DownloadToExcel.jsx';
@@ -95,16 +94,24 @@ export const ManagerStudentTable = () => {
         [],
     );
 
-    const csvConfig = mkConfig({
-        fieldSeparator: ',',
-        decimalSeparator: '.',
-        useKeysAsHeaders: true,
-    });
-
-    const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(students);
-        download(csvConfig)(csv);
-    };
+    const selectedColumns = [
+        'userFirstName',
+        'userLastName',
+        'userId',
+        'userEnglishDateOfBirth',
+        'userHebrewDateOfBirth',
+        'userAddress',
+        'userLocationCity',
+        'userHomePhoneNumber',
+        'studentFatherCellPhoneNumber',
+        'studentMotherCellPhoneNumber',
+        'userCellPhoneNumber',
+        'studentGrade',
+        'studentClassNumber',
+        'studentFirstMajorName',
+        'studentSecondMajorName',
+        'userPassword',
+    ];
 
     return (
         <div id='tableWrapper'>
@@ -126,23 +133,8 @@ export const ManagerStudentTable = () => {
                 columnFilterDisplayMode='popover'
                 paginationDisplayMode='pages'
                 positionToolbarAlertBanner='bottom'
-                renderTopToolbarCustomActions={({ table }) => (
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            gap: '16px',
-                            padding: '8px',
-                            flexWrap: 'wrap',
-                        }}
-                    >
-                        <Button
-                            //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-                            onClick={handleExportData}
-                            startIcon={<FileDownloadIcon />}
-                        >
-                            הורדה לקובץ אקסל
-                        </Button>
-                    </Box>
+                renderTopToolbarCustomActions={() => (
+                    <DownloadToExcel selectedColumns={selectedColumns} table={students} type={'studentData.xlsx'}></DownloadToExcel>
                 )}
             />
         </div>
