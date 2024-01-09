@@ -1,15 +1,24 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import '../../../Style/Tables/Manager/AttendanceReportStyle.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { FillAttendanceForAllStudents } from '../../../Redux/Actions/TableActions/Manager/AttendanceReportAction'
 // import { FillAttendanceForCurrentStudent } from '../../../Redux/Actions/TableActions/Manager/PersonalAttendanceReportActions'
-import { GetTheAttendanceForAllStudentsWithMoreDetailsBySeminarCode } from '../../../Redux/Axios/Table/Manager/AttendanceReportAxios'
+import { GetTheAttendanceForAllStudentsWithMoreDetailsBySeminarCode, GetTheMaxNumberOfClassesInSeminarBySeminarCode } from '../../../Redux/Axios/Table/Manager/AttendanceReportAxios'
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+import { getMajorBySeminarCode } from '../../../Redux/Axios/WebSetupAxios/AddCourseToMajorAxios'
+import { LensBlur } from '@mui/icons-material'
+
+const animatedComponents = makeAnimated();
 
 export const AttendanceReport = () => {
 
     let dispatch = useDispatch()
     let studentsAttendance = useSelector(x => x.AttendanceReportReducer.AttendanceStudentList)
     const currentUser = useSelector(x => x.SignInReducer.CurrentUser)
+    const [majors, setMajors] = useState([])
+    getMajorBySeminarCode(useSelector(x => x.SignInReducer.CurrentSeminarCode)).then(x => setMajors(x.data))
+    const [options, setOptions] = useState([])
 
     useEffect(() => {
         async function fetchData() {
@@ -17,6 +26,30 @@ export const AttendanceReport = () => {
         }
         fetchData()
     }, [dispatch, currentUser])
+
+    useEffect(() => {
+        const derivedArray = [{value: 'מסלולים', label: 'מסלולים', isDisabled: true}, ...majors.map((item, index) => ({
+            value: item.majorName,
+            label: item.majorName,
+            key: index
+        }))];
+        
+        async function fetchData() {
+            return await GetTheMaxNumberOfClassesInSeminarBySeminarCode(currentUser.seminarCode).then(x => {return x.data})
+        }
+        
+        let numberOfClasses = fetchData()
+        debugger
+        let array = [numberOfClasses]
+        console.log("array: ", array);
+        // const numberClasses = [{value: 'מספר כיתה', label: 'מספר כיתה', isDisabled: true}, [...Array(numberOfClasses)].map((item, index) => ({
+        //     value: index+1,
+        //     label: index+1, 
+        //     key: index
+        // }))];
+        setOptions(derivedArray);
+        // setOptions(numberClasses)
+    }, [])
 
     const openPersonalReport = (x) => {
         localStorage.setItem('currentStudentAttendance', JSON.stringify(x))
@@ -26,6 +59,13 @@ export const AttendanceReport = () => {
     }
 
     return <div className='cardWrapper'>
+        <Select
+            closeMenuOnSelect={false}
+            components={animatedComponents}
+            // defaultValue={[colourOptions[4], colourOptions[5]]}
+            isMulti
+            options={options}
+        />
         {
             studentsAttendance.map((x, y) =>
                 <article className="card">
