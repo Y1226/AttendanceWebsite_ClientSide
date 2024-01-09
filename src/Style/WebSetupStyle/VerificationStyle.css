@@ -135,7 +135,7 @@
     box-shadow: transparent;
     border: 1px solid var(--night-rider);
     transition: 0.5s ease;
-    user-select: none;
+    /* user-select: none; */
   }
   
   .verify:hover,.verify:focus {
@@ -154,7 +154,7 @@
     background: transparent;
     border: 1px solid var(--night-rider);
     transition: 0.5s ease;
-    user-select: none;
+    /* user-select: none; */
   }
   
   .clear:hover,.clear:focus {

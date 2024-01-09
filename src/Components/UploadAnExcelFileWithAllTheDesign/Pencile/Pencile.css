@@ -4,11 +4,15 @@
     margin: 0;
     padding: 0;
 } */
+.styleAllPencil{
+    margin: auto;
+}
+
 .main{
     width: 180px;
-    /* background-color: #16a085; */
     text-align: center;
     align-items: center;
+    margin: auto;
 }
 /* :root {
     --hue: 223;
@@ -31,6 +35,7 @@
     display: inline-block;
     width: 40%;
     height: 40%;
+    margin: auto;
     /* margin-left: (180px - 7%); */
 }
 

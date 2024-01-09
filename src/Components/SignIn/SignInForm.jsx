@@ -2,7 +2,7 @@ import { FillCurrentUser, FillNewSeminar, FillSeminarData } from '../../Redux/Ac
 import { useDispatch, useSelector } from 'react-redux';
 import '../../Style/SignInStyle/SignInFormStyle.scss'
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Logo } from '../Logo/Logo';
 import { getAllSeminars, loginToTheSystem } from '../../Redux/Axios/SignInAxios';
 import { AreTheSeminarCodeAndPasswordCorrect, IsTheIDAndPasswordAndSeminarCodeCorrect, IsTheIDCorrect, IsThePasswordCorrect } from '../../Redux/Actions/IntegrityChecks';
@@ -18,9 +18,12 @@ export const SignInForm = () => {
     //Gets all of the seminars from the store.
     const seminars = useSelector(x => x.SignInReducer.SeminarList)
     //Saves the code of the selected seminar.
-    const [seminarCode, setSeminarCode] = useState(0);
-    const [seminarCodeOfManager, setSeminarCodeOfManager] = useState(0);
-    const [seminarCodeOfUser, setSeminarCodeOfUser] = useState(0);
+    // const [seminarCode, setSeminarCode] = useState(0);
+    // const [seminarCodeOfManager, setSeminarCodeOfManager] = useState(0);
+    // const [seminarCodeOfUser, setSeminarCodeOfUser] = useState(0);
+
+    const seminarCodeOfManager = useRef(0)
+    const seminarCodeOfUser = useRef(0)
 
     const [correctnessPasswordManager, setCorrectnessPasswordManager] = useState(false)
     const [correctnessPasswordUser, setCorrectnessPasswordUser] = useState(false)
@@ -131,6 +134,7 @@ export const SignInForm = () => {
 
     //Navigates to new page according to entered data.
     const login = async () => {
+        let seminarCode
         //Get password from input field.
         let password = document.getElementById('passwordManager').value
         if (password === "")
@@ -140,10 +144,11 @@ export const SignInForm = () => {
         debugger
         //If signing in as manager and there is no username.
         if (username === "") {
+            debugger
             username = 'manager'
-            setSeminarCode(seminarCodeOfManager)
+            seminarCode = seminarCodeOfManager.current.value
         }
-        else setSeminarCode(seminarCodeOfUser)
+        else seminarCode = seminarCodeOfUser.current.value
 
         //Save current user in reducer.
         dispatch(FillCurrentUser(username, password, seminarCode))
@@ -223,7 +228,8 @@ export const SignInForm = () => {
                                     <p className='SignInFormA' onClick={() => hidden_login_and_sign_up()}><i className='SignInFormI'>«</i></p>
                                     <h2 className='SignInFormH2'>התחברות</h2>
                                     {/* Option to choose seminar */}
-                                    <select className='SignInFormSelect' onChange={e => { setSeminarCodeOfManager(e.target.value); }}>
+                                    {/* <select className='SignInFormSelect' onChange={e => { setSeminarCodeOfManager(e.target.value); }}> */}
+                                    <select className='SignInFormSelect' ref={seminarCodeOfManager}>
                                         <option className='SignInFormOption' hidden>בחר את הסמינר שלך</option>
                                         {/* Go through seminars from list in store and add the seminars name */}
                                         {seminars.map((x) => {
@@ -237,7 +243,8 @@ export const SignInForm = () => {
                                             <small className='error'>הסיסמה אינה תקינה</small>
                                             <br />
                                         </>}
-                                    <button className="btn_login" disabled={!AreTheSeminarCodeAndPasswordCorrect(seminarCodeOfManager, correctnessPasswordManager)} onClick={() => login()}>התחברות</button>
+                                    {/* <button className="btn_login" onClick={() => login()}>התחברות</button> */}
+                                    <button className="btn_login" disabled={!AreTheSeminarCodeAndPasswordCorrect(seminarCodeOfManager.current.value, correctnessPasswordManager)} onClick={() => login()}>התחברות</button>
                                 </div>
 
                                 {/* Login as user */}
@@ -257,7 +264,8 @@ export const SignInForm = () => {
                                             <small className='error'>הסיסמה אינה תקינה</small>
                                         </>}
                                     {/* Option to choose seminar */}
-                                    <select className='SignInFormSelect' onChange={e => { setSeminarCodeOfUser(e.target.value); }}>
+                                    {/* <select className='SignInFormSelect' onChange={e => { setSeminarCodeOfUser(e.target.value); }}> */}
+                                    <select className='SignInFormSelect' ref={seminarCodeOfUser}>
                                         <option className='SignInFormOption' hidden>בחר את הסמינר שלך</option>
                                         {/* Go through seminars from list in store and add the seminars name */}
                                         {seminars.map((x) => {
@@ -265,7 +273,8 @@ export const SignInForm = () => {
                                         })}
                                     </select>
 
-                                    <button className="btn_login" disabled={!IsTheIDAndPasswordAndSeminarCodeCorrect(correctnessIdUser, seminarCodeOfUser, correctnessPasswordUser )} onClick={() => login()}>התחברות</button>
+                                    {/* <button className="btn_login" onClick={() => login()}>התחברות</button> */}
+                                    <button className="btn_login" disabled={!IsTheIDAndPasswordAndSeminarCodeCorrect(correctnessIdUser, seminarCodeOfUser.current.value, correctnessPasswordUser )} onClick={() => login()}>התחברות</button>
                                 </div>
                                 {/* Sign up */}
                                 <div className="cont_form_sign_up">

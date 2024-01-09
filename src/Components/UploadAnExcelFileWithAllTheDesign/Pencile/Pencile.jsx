@@ -2,7 +2,7 @@ import '../../UploadAnExcelFileWithAllTheDesign/Pencile/Pencile.css'
 
 export const Pencile = () => {
     return <>
-    <div className='styleAllPencil'>
+        <div className='styleAllPencil'>
         <div className='main'>
         <svg className="pencil" viewBox="0 0 200 200" width="200px" height="200px">
             <defs>
