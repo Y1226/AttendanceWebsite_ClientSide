@@ -7,7 +7,7 @@ import { GetTheAttendanceForAllStudentsWithMoreDetailsBySeminarCode, GetTheMaxNu
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { getMajorBySeminarCode } from '../../../Redux/Axios/WebSetupAxios/AddCourseToMajorAxios'
-import { LensBlur } from '@mui/icons-material'
+// import { LensBlur } from '@mui/icons-material'
 
 const animatedComponents = makeAnimated();
 
@@ -37,7 +37,7 @@ export const AttendanceReport = () => {
         async function fetchData() {
             return await GetTheMaxNumberOfClassesInSeminarBySeminarCode(currentUser.seminarCode).then(x => {return x.data})
         }
-        
+
         let numberOfClasses = fetchData()
         debugger
         let array = [numberOfClasses]
@@ -49,7 +49,7 @@ export const AttendanceReport = () => {
         // }))];
         setOptions(derivedArray);
         // setOptions(numberClasses)
-    }, [])
+    }, [currentUser.seminarCode, majors])
 
     const openPersonalReport = (x) => {
         localStorage.setItem('currentStudentAttendance', JSON.stringify(x))

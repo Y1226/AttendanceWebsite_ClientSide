@@ -4,21 +4,24 @@ import '../../UploadAnExcelFileWithAllTheDesign/SelectFile/SelectFile.css'
 // import '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload.scss'
 import { StaffTable } from "../HeaderTables/Staff";
 import { StudentTable } from "../HeaderTables/Student";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import '../../File Upload/FileUpload.css'
 import { UploadFileExcel } from "../../../Redux/Axios/FileUpload/FileUploadAxios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { FillFileCounter } from "../../../Redux/Actions/WebSetupActions/AddTeachersAndStudentsActions";
 // import '../../File Upload/FileUpload.css'
 
 
 export const FileUploadCopy = (props) => {
 
-    let navigate = useNavigate()
+    // let navigate = useNavigate()
+    let dispatch = useDispatch()
 
-    const fileSelected= useState();
+    const [fileSelected, setFileSelected] = useState();
     const [fileUpload, setFileUpload] = useState(false);
     const [fileName, setFileName] = useState('')
     const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
+    const fileCounter = useSelector(x => x.AddTeachersAndStudentsReducer.FileCounter)
 
     const importFile = async (e) => {
         debugger
@@ -31,14 +34,20 @@ export const FileUploadCopy = (props) => {
             // https://localhost:44367/api/Students/UploadFileExcel/1
             setFileUpload(true)
             if (props.id === "Staff") {
+                fileCounter === 0 ? dispatch(FillFileCounter(1)) :
+                    fileCounter === 2 ? dispatch(FillFileCounter(3)) :
+                        fileCounter === 3 ? dispatch(FillFileCounter(3)) :
+                            dispatch(FillFileCounter(1))
+                debugger
                 await UploadFileExcel('Staff', currentSeminarCode, formData)
-                
-                let btn = document.getElementById('nextButton') 
-                btn.disabled = false
-                btn.addEventListener('click' , ()=> navigate('../addMajor'))
             }
-            else
+            else {
+                fileCounter === 0 ? dispatch(FillFileCounter(2)) :
+                    fileCounter === 1 ? dispatch(FillFileCounter(3)) :
+                        fileCounter === 3 ? dispatch(FillFileCounter(3)) :
+                            dispatch(FillFileCounter(2))
                 await UploadFileExcel('Students', currentSeminarCode, formData)
+            }
         } catch (ex) {
             console.log(ex);
         }
@@ -57,12 +66,12 @@ export const FileUploadCopy = (props) => {
                             </path>
                         </svg>
                     </div>
-                    <input className="FileUploadInput" type="file" accept=".xlsx" multiple onChange={(e) => { setFileName(e.target.files[0].name) }} />
+                    <input className="FileUploadInput" type="file" accept=".xlsx" multiple onChange={(e) => { setFileSelected(e.target.files[0]); setFileName(e.target.files[0].name) }} />
                 </form>
                 <p className="FileUploadP">{fileName}</p>
             </div>
-            {!fileUpload && <button className="FileUploadButton" type="submit" onClick={importFile}>העלה</button>}
-            {fileUpload &&<Pencile></Pencile>}
+            {!fileUpload && <button className="FileUploadButton" type="submit" disabled={fileName === ''} onClick={importFile}>העלה</button>}
+            {fileUpload && <Pencile></Pencile>}
             <br />
 
             <div className="instructionDiv">

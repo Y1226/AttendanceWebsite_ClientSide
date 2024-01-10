@@ -81,3 +81,9 @@ button.FileUploadButton:hover {
 button.FileUploadButton:active {
     transform: scale(0.95, 0.95) !important;
 }
+
+button.FileUploadButton:disabled {
+    opacity: 25%;
+    box-shadow: none;
+    transform: scale(1, 1) !important;
+}

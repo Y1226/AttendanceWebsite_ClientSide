@@ -2,10 +2,15 @@ import { useEffect } from 'react';
 import '../../Style/Tables/Manager/Update.scss'
 // import { FileUpload } from '../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload';
 import { FileUploadCopy } from '../UploadAnExcelFileWithAllTheDesign/Pencile/FileUploadCopy';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
 // import '../../Style/WebSetupStyle/AddTeachersStyle.scss'
 
 export const AddTeachersAndStudents = () => {
+
+    let navigate = useNavigate()
+    const fileCounter = useSelector(x => x.AddTeachersAndStudentsReducer.FileCounter)
 
     useEffect(() => {
         document.getElementsByClassName('tabcontent')[0].style.display = 'block'
@@ -31,7 +36,7 @@ export const AddTeachersAndStudents = () => {
         <div className='tab'>
             <button className='tablinks updateButton' onClick={(e) => OpenASelectionOption(e, 'Staff')}>אנשי צוות</button>
             <button className='tablinks updateButton' onClick={(e) => OpenASelectionOption(e, 'Students')}>תלמידות</button>
-            <button className='tablinks disabledUpdateButton' disabled id='nextButton'>הבא</button>
+            <button className='tablinks updateButton' disabled={fileCounter !== 3} onClick={() => navigate('../addMajor')}>הבא</button>
         </div>
         <div id='Staff' className='tabcontent'>
             <FileUploadCopy id="Staff"></FileUploadCopy>
