@@ -13,6 +13,7 @@ import CourseTableReducer from "../Reducers/TableReducers/Teacher/CourseTableRed
 import StudentTableReducer from "../Reducers/TableReducers/Teacher/StudentTableReducer"
 import PersonalAttendanceReportReducer from "../Reducers/TableReducers/Manager/PersonalAttendanceReportReducer"
 import AddCourseToMajorReducer from '../Reducers/WebSetupReducers/AddCourseToMjorReducer'
+import AddTeachersAndStudentsReducer from '../Reducers/WebSetupReducers/AddTeachersAndStudentsReducer'
 
 const reducers = combineReducers({
     // NavReducer,
@@ -28,7 +29,8 @@ const reducers = combineReducers({
     ManagerStudentTableReducer,
     PersonalAttendanceReportReducer,
     AddCourseToMajorReducer,
-    GradeTableReducer
+    GradeTableReducer,
+    AddTeachersAndStudentsReducer
 })
 
 const store = createStore(reducers)

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import '../../../Style/Tables/Manager/Update.scss'
-import { FileUpload } from '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload';
+// import { FileUpload } from '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload';
+import { FileUploadCopy } from '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUploadCopy';
 // import './upload.css'
 // import { Pencil } from './Pencil';
 
@@ -32,10 +33,10 @@ export const Update = () => {
             <button className='tablinks updateButton' onClick={(e) => OpenASelectionOption(e, 'Students')}>תלמידות</button>
         </div>
         <div id='Staff' className='tabcontent'>
-            <FileUpload id="Staff"></FileUpload>
+            <FileUploadCopy id="Staff"></FileUploadCopy>
         </div>
         <div id='Students' className='tabcontent'>
-            <FileUpload id="Students"></FileUpload>
+            <FileUploadCopy id="Students"></FileUploadCopy>
         </div>
 
     </>
