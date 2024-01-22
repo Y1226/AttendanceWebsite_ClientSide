@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Logo } from '../Logo/Logo';
 import { getAllSeminars, loginToTheSystem } from '../../Redux/Axios/SignInAxios';
-import { AreTheSeminarCodeAndPasswordCorrect, IsTheIDAndPasswordAndSeminarCodeCorrect, IsTheIDCorrect, IsThePasswordCorrect } from '../../Redux/Actions/IntegrityChecks';
+import { AreTheFormFieldsFilledInCorrectly, AreTheSeminarCodeAndPasswordCorrect, IsTheCharacterInputALetter, IsTheIDAndPasswordAndSeminarCodeCorrect, IsTheIDCorrect, IsThePasswordCorrect, IsValidEmail } from '../../Redux/Actions/IntegrityChecks';
 
 //First page to be seen in the project, used to sign in/up to the system.
 export const SignInForm = () => {
@@ -25,10 +25,18 @@ export const SignInForm = () => {
     const seminarCodeOfManager = useRef(0)
     const seminarCodeOfUser = useRef(0)
 
+    const [newSeminarName, setNewSeminarName] = useState('')
+    const [newSeminarEmail, setNewSeminarEmail] = useState('')
+    const [newSeminarCity, setNewSeminarCity] = useState('')
+
     const [correctnessPasswordManager, setCorrectnessPasswordManager] = useState(false)
     const [correctnessPasswordUser, setCorrectnessPasswordUser] = useState(false)
     const [correctnessIdUser, setCorrectnessIdUser] = useState(false)
 
+    const [doShowTheErrorOfPasswordOfManager, setDoShowTheErrorOfPasswordOfManager] = useState(false)
+    const [doShowTheErrorOfPasswordOfUser, setDoShowTheErrorOfPasswordOfUser] = useState(false)
+    const [doShowTheErrorOfIdOfUser, setDoShowTheErrorOfIdOfUser] = useState(false)
+    const [doShowTheErrorOfNewSeminarEmail, setDoShowTheErrorOfNewSeminarEmail] = useState(false)
     //Different time fields.
     const time_to_show_login = 400;
     const time_to_hidden_login = 200;
@@ -162,17 +170,8 @@ export const SignInForm = () => {
     }
 
     const signUp = async () => {
-
-        let newSeminarName = document.getElementById('newSeminarName').value
-        let newSeminarEmail = document.getElementById('newSeminarEmail').value
-        let newSeminarCity = document.getElementById('newSeminarCity').value
-
         dispatch(FillNewSeminar(newSeminarName, newSeminarEmail, newSeminarCity))
-
-        if (newSeminarName !== '' && newSeminarEmail !== '' && newSeminarCity !== '')
-            navigate('/moreInfoNav/remainingDetails')
-        else
-            alert('fill in all fields')
+        navigate('/moreInfoNav/remainingDetails')
     }
 
     //----------------------------------------------------------------------------------
@@ -236,8 +235,8 @@ export const SignInForm = () => {
                                             return <option className='SignInFormOption' id='seminarKey' key={x.seminarCode} value={x.seminarCode}>{x.seminarName}</option>
                                         })}
                                     </select>
-                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordManager' onInput={(e) => setCorrectnessPasswordManager(IsThePasswordCorrect(e.target.value))} />
-                                    {!correctnessPasswordManager &&
+                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordManager' onInput={(e) => { setCorrectnessPasswordManager(IsThePasswordCorrect(e.target.value)); setDoShowTheErrorOfPasswordOfManager(true) }} />
+                                    {doShowTheErrorOfPasswordOfManager && !correctnessPasswordManager &&
                                         <>
                                             <br />
                                             <small className='error'>הסיסמה אינה תקינה</small>
@@ -251,14 +250,14 @@ export const SignInForm = () => {
                                 <div className="cont_form_loginGuest">
                                     <p className='SignInFormA' onClick={() => hidden_login_and_sign_up()}><i className='SignInFormI'>«</i></p>
                                     <h2 className='SignInFormH2'>התחברות</h2>
-                                    <input className='SignInFormInput' type="text" placeholder="תעודת זהות" id='username' onInput={(e) => setCorrectnessIdUser(IsTheIDCorrect(e.target.value))} />
-                                    {!correctnessIdUser &&
+                                    <input className='SignInFormInput' type="text" placeholder="תעודת זהות" id='username' onInput={(e) => { setCorrectnessIdUser(IsTheIDCorrect(e.target.value)); setDoShowTheErrorOfIdOfUser(true) }} />
+                                    {doShowTheErrorOfIdOfUser && !correctnessIdUser &&
                                         <>
                                             <br />
                                             <small className='error'>תעודת הזהות אינה תקינה</small>
                                         </>}
-                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordUser' onInput={(e) => setCorrectnessPasswordUser(IsThePasswordCorrect(e.target.value))} />
-                                    {!correctnessPasswordUser &&
+                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordUser' onInput={(e) => { setCorrectnessPasswordUser(IsThePasswordCorrect(e.target.value)); setDoShowTheErrorOfPasswordOfUser(true) }} />
+                                    {doShowTheErrorOfPasswordOfUser && !correctnessPasswordUser &&
                                         <>
                                             <br />
                                             <small className='error'>הסיסמה אינה תקינה</small>
@@ -274,16 +273,21 @@ export const SignInForm = () => {
                                     </select>
 
                                     {/* <button className="btn_login" onClick={() => login()}>התחברות</button> */}
-                                    <button className="btn_login" disabled={!IsTheIDAndPasswordAndSeminarCodeCorrect(correctnessIdUser, seminarCodeOfUser.current.value, correctnessPasswordUser )} onClick={() => login()}>התחברות</button>
+                                    <button className="btn_login" disabled={!IsTheIDAndPasswordAndSeminarCodeCorrect(correctnessIdUser, seminarCodeOfUser.current.value, correctnessPasswordUser)} onClick={() => login()}>התחברות</button>
                                 </div>
                                 {/* Sign up */}
                                 <div className="cont_form_sign_up">
                                     <p className='SignInFormA' onClick={() => hidden_login_and_sign_up()}><i className='SignInFormI'>«</i></p>
                                     <h2 className='SignInFormH2'>הירשם</h2>
-                                    <input className='SignInFormInput' type="text" placeholder="שם סמינר" id='newSeminarName' />
-                                    <input className='SignInFormInput' type="text" placeholder="דואל" id='newSeminarEmail' />
-                                    <input className='SignInFormInput' type="text" placeholder="עיר" id='newSeminarCity' />
-                                    <button className="btn_sign_up" onClick={() => signUp()}>הירשם</button>
+                                    <input className='SignInFormInput' type="text" placeholder="שם סמינר" id='newSeminarName' onInput={(e) => setNewSeminarName(e.target.value)} onKeyDown={(e) => { if (IsTheCharacterInputALetter(e)) e.preventDefault(); }} />
+                                    <input className='SignInFormInput' type="email" placeholder="דואל" id='newSeminarEmail' onInput={(e) => { setNewSeminarEmail(e.target.value); setDoShowTheErrorOfNewSeminarEmail(true) }} />
+                                    {doShowTheErrorOfNewSeminarEmail && !IsValidEmail(newSeminarEmail) &&
+                                        <>
+                                            <br />
+                                            <small className='error'>כתובת דוא"ל אינה תקינה</small>
+                                        </>}
+                                    <input className='SignInFormInput' type="text" placeholder="עיר" id='newSeminarCity' onInput={(e) => setNewSeminarCity(e.target.value)} onKeyDown={(e) => { if (IsTheCharacterInputALetter(e)) e.preventDefault(); }} />
+                                    <button className="btn_sign_up" disabled={!AreTheFormFieldsFilledInCorrectly(newSeminarName, newSeminarEmail, newSeminarCity)} onClick={() => signUp()}>הירשם</button>
                                 </div>
                             </div>
                         </div>

@@ -79,3 +79,13 @@ export const AreTheSeminarCodeAndPasswordCorrect = (seminarCode, isThePasswordCo
 export const IsTheIDAndPasswordAndSeminarCodeCorrect = (isTheIDCorrect, seminarCode, isThePasswordCorrect) => {
     return (isTheIDCorrect && AreTheSeminarCodeAndPasswordCorrect(seminarCode, isThePasswordCorrect));
 }
+
+export const IsValidEmail = (email) => {
+    // Define a regular expression pattern for email validation.
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
+}
+
+export const AreTheFormFieldsFilledInCorrectly = (seminarName, seminarEmail, seminarCity) => {
+    return (seminarName !== '' && IsValidEmail(seminarEmail) && seminarCity !== '')
+}
