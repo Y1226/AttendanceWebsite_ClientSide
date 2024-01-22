@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FinishFillingOutTheDataForANewSeminar } from '../../Redux/Actions/SignInActions'
 import '../../Style/WebSetupStyle/AddMajorStyle.scss'
 import '../File Upload/FileUpload.css'
+import { IsTheCharacterInputANumber } from '../../Redux/Actions/IntegrityChecks'
 
 
 export const RemainingDetails = () => {
@@ -72,8 +73,8 @@ export const RemainingDetails = () => {
                     <input type="text" value={newSeminar.seminarEmailAddress} id="SeminarEmail" name='email' readOnly /><br />
                     <input type="text" placeholder="כתובת" id="SeminarAddress" ref={seminarAddress} /><br />
                     <input type="text" value={newSeminar.seminarLocationCity} id="SeminarCity" readOnly /><br />
-                    <input type="text" placeholder="טלפון" id="SeminarPhoneNumber" ref={seminarPhoneNumber} /><br />
-                    <input type="text" placeholder="פקס" id="SeminarFaxNumber" ref={seminarFaxNumber} /><br />
+                    <input type="text" placeholder="טלפון" id="SeminarPhoneNumber" ref={seminarPhoneNumber} onKeyDown={(e) => { if (IsTheCharacterInputANumber(e)) e.preventDefault() }} /><br />
+                    <input type="text" placeholder="פקס" id="SeminarFaxNumber" ref={seminarFaxNumber} onKeyDown={(e) => { if (IsTheCharacterInputANumber(e)) e.preventDefault() }} /><br />
                     {/* <input type="text" value={password} id="password" name='password' hidden readOnly /><br /> */}
                     {/* We need to add validation */}
 

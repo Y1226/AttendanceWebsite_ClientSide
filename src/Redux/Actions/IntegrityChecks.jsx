@@ -22,11 +22,14 @@ export const IsTheIDCorrect = (id) => {
 }
 
 export const IsTheCharacterInputANumber = (keyboardCharacter) => {
-    if (!((keyboardCharacter.keyCode >= 48 && keyboardCharacter.keyCode <= 57) ||
-        (keyboardCharacter.keyCode >= 97 && keyboardCharacter.keyCode <= 105) ||
-        keyboardCharacter.keyCode === 8 || keyboardCharacter.keyCode === 96))
-        return true
-    return false
+    if ([8, 37, 39, 46].includes(keyboardCharacter.keyCode)) return false
+    else return !(/^\d+$/.test(keyboardCharacter.key));
+    
+    // if (!((keyboardCharacter.keyCode >= 48 && keyboardCharacter.keyCode <= 57) ||
+    //     (keyboardCharacter.keyCode >= 97 && keyboardCharacter.keyCode <= 105) ||
+    //     keyboardCharacter.keyCode === 8 || keyboardCharacter.keyCode === 96))
+    //     return true
+    // return false
 }
 
 export const IsTheCharacterInputALetter = (keyboardCharacter) => {
@@ -60,7 +63,7 @@ export const IsThePasswordCorrect = (password) => {
                     countDigits++;
                 else
                     if (symbolChars.indexOf(password.charAt(index)) !== -1)
-                    countSymbols++; 
+                        countSymbols++;
     }
     if ((countCapitalLetter > 0) && (countLowercaseLetter > 0) && (countDigits > 0) && (countSymbols > 0) &&
         (countCapitalLetter + countLowercaseLetter + countDigits + countSymbols === lengthPassword))
