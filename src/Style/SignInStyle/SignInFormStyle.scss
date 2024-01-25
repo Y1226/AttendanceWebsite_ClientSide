@@ -227,7 +227,7 @@
   color: #37474f;
 }
 
-.btn_login:disabled {
+.btn_login:disabled, .btn_sign_up:disabled {
   // cursor: not-allowed;
   opacity: 0.4;
 }

@@ -42,10 +42,10 @@ export const LoadRoutes = () => {
         </Route> */}
         <Route path="/" element={<SignInForm></SignInForm>}></Route>
         <Route path="/managerNav" element={<ManagerNav></ManagerNav>}>
-            <Route path="teacherTable" element={<TeacherTable></TeacherTable>}></Route>
+            <Route path="" element={<TeacherTable></TeacherTable>}></Route>
             <Route path="attendanceReport" element={<AttendanceReport></AttendanceReport>}></Route>
             <Route path="managerMajorTable" element={<ManagerMajorTable></ManagerMajorTable>}></Route>
-            <Route path="managerStudentTable" element={<ManagerStudentTable></ManagerStudentTable>}></Route>
+            <Route path="managerStudentTableteacherTable" element={<ManagerStudentTable></ManagerStudentTable>}></Route>
             <Route path="update" element={<Update></Update>}>
                 <Route path="pencil" element={<Pencil></Pencil>}></Route>
             </Route>
