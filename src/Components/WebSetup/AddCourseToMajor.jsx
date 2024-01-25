@@ -2,9 +2,9 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
-import '../../Style/WebSetupStyle/AddCourseToMajorStyle.scss'
+// import '../../Style/WebSetupStyle/AddCourseToMajorStyle.scss'
 import { InputAndSelect } from "../InputAndSelect/InputAndSelect"
-import 'font-awesome/css/font-awesome.min.css';
+// import 'font-awesome/css/font-awesome.min.css';
 import { addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode, addMajor, getMajorByMajorName, getMajorBySeminarCode } from "../../Redux/Axios/WebSetupAxios/AddCourseToMajorAxios"
 import { useNavigate } from "react-router-dom"
 
@@ -126,7 +126,7 @@ export const AddCourseToMajor = () => {
                     await addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode(currentMajor.majorCode, 'B', currentCourse.courseName, currentCourse.routeCoordinator.code)
                 }
         };
-        navigate('../../managerNav/teacherTable')
+        navigate('../matchStudentToMajor')
     }
 
     // const AddMajorToDatabase = () => {

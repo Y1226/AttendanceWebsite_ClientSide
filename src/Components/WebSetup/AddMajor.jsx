@@ -6,32 +6,32 @@ import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorActio
 import { FillStaffData } from "../../Redux/Actions/TableActions/Manager/TeacherTableAction"
 import Select from 'react-select'
 import { FillCoursesForMajors } from '../../Redux/Actions/WebSetupActions/AddCourseToMajorAction'
-import { getAllMajors, getFullStaffDataBySeminarCode } from '../../Redux/Axios/WebSetupAxios/AddMajorAxios'
+import { GetAllMajors, GetFullStaffDataBySeminarCode } from '../../Redux/Axios/WebSetupAxios/AddMajorAxios'
 
 export const AddMajor = () => {
     let initialMajors = useSelector(x => x.ManagerMajorTableReducer.MajorsToSelect)
+    let currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
     let navigate = useNavigate()
     let dispatch = useDispatch()
     let other = useRef()
     let [isOtherChecked, setIsOtherChecked] = useState(false)
     const listSelectStaff = []
-    
+
     const [majors, setMajors] = useState([])
 
     staff.forEach(e => {
+        debugger
         listSelectStaff.push({ code: e.staffCode, value: e.userFirstName + " " + e.userLastName, label: e.userFirstName + " " + e.userLastName })
     })
 
     useEffect(() => {
         async function fetchData() {
-            let m = await getAllMajors();
-            dispatch(FillMajorData(m.data))
-            let s = await getFullStaffDataBySeminarCode(1); //${} - when I know the seminar code.
-            dispatch(FillStaffData(s.data))
+            await GetAllMajors().then(x => dispatch(FillMajorData(x.data)) );
+            await GetFullStaffDataBySeminarCode(currentSeminarCode).then(x => dispatch(FillStaffData(x.data)) )
         }
         fetchData()
-    }, [dispatch])
+    }, [dispatch, currentSeminarCode])
 
     useEffect(() => {
         const derivedArray = initialMajors.map((item) => ({
@@ -39,7 +39,7 @@ export const AddMajor = () => {
             routeCoordinator: null
         }));
         setMajors(derivedArray);
-    },[initialMajors])
+    }, [initialMajors])
 
     // --------------------------------------------------------------------
     // const [majors, setMajors] = useState([

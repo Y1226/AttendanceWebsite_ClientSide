@@ -25,8 +25,7 @@ import { Pencil } from "../Tables/Manager/Pencil"
 import { RemainingDetails } from "../WebSetup/RemainingDetails"
 import { MoreInfoNav } from "../NavBar/MoreInfoNav"
 import { Verification } from "../WebSetup/Verification"
-import { CheckStudentMajor } from "../WebSetup/CheckStudentMajor"
-import { MatchTeacherToCourse } from "../WebSetup/MatchTeacherToCourse"
+import { MatchStudentToMajor } from "../WebSetup/MatchStudentToMajor"
 import { AddMajor } from "../WebSetup/AddMajor"
 import { AddTeachersAndStudents } from "../WebSetup/AddTeachersAndStudents"
 import { AddCourseToMajor } from "../WebSetup/AddCourseToMajor"
@@ -62,8 +61,7 @@ export const LoadRoutes = () => {
         <Route path="/moreInfoNav" element={<MoreInfoNav></MoreInfoNav>}>
             <Route path="remainingDetails" element={<RemainingDetails></RemainingDetails>}></Route>
             <Route path="verification" element={<Verification></Verification>}></Route>
-            <Route path="checkStudentMajor" element={<CheckStudentMajor></CheckStudentMajor>}></Route>
-            <Route path="matchTeacherToCourse" element={<MatchTeacherToCourse></MatchTeacherToCourse>}></Route>
+            <Route path="matchStudentToMajor" element={<MatchStudentToMajor></MatchStudentToMajor>}></Route>
             <Route path="addMajor" element={<AddMajor></AddMajor>}></Route>
             <Route path="addCourseToMajor" element={<AddCourseToMajor></AddCourseToMajor>}></Route>
             <Route path="addTeachersAndStudents" element={<AddTeachersAndStudents></AddTeachersAndStudents>}></Route>

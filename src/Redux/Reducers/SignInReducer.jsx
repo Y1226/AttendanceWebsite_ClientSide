@@ -18,7 +18,7 @@ const SignInState = {
         seminarManagerPassword: '',
         seminarStatus: ''
     },
-    CurrentSeminarCode: ''
+    CurrentSeminarCode: 1
 }
 
 export const SignInReducer = produce(
