@@ -20,7 +20,6 @@ const TeacherTable = () => {
   const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
 
   useEffect(() => {
-    // let currentUser = JSON.parse(localStorage.getItem("CurrentUser"))
     async function fetchData() {
       await getTheStaffMemberWithMoreDetailsBySeminarCode(currentSeminarCode).then(x => dispatch(FillStaffData(x.data)));
       // let s =
@@ -28,6 +27,7 @@ const TeacherTable = () => {
       debugger
     }
     fetchData()
+    
   }, [dispatch, currentSeminarCode])
 
   const columns = useMemo(
@@ -47,7 +47,7 @@ const TeacherTable = () => {
       },
       {
         accessorKey: 'userEnglishDateOfBirth',
-        accessorFn: (row) => row.userEnglishDateOfBirth.split('T')[0],
+        accessorFn: (row) => (row.userEnglishDateOfBirth?.toString()?.split('T')[0] ?? ''),
         id: 'userEnglishDateOfBirth',
         header: 'תאריך לידה לועזי',
       },
@@ -81,7 +81,8 @@ const TeacherTable = () => {
       },
       {
         accessorKey: 'staffEmploymentStartDate',
-        accessorFn: (row) => row.staffEmploymentStartDate.split('T')[0],
+        //accessorFn: (row) => (row.userEnglishDateOfBirth?.toString()?.split('T')[0] ?? ''),
+        accessorFn: (row) => (row.staffEmploymentStartDate.split('T')[0]),
         id: 'staffEmploymentStartDate',
         header: 'תאריך תחילת עבודה',
       }
@@ -131,14 +132,14 @@ const TeacherTable = () => {
             <table>
               <thead>
                 <tr>
-                  <th style={{ border: '1px solid black' }}>Major</th>
-                  <th style={{ border: '1px solid black' }}>Course</th>
+                  <th style={{ border: '1px solid black' }}>מסלול</th>
+                  <th style={{ border: '1px solid black' }}>קורס</th>
                 </tr>
               </thead>
               <tbody>
                 {
-                  row.original.majorCourses.map(x => (
-                    <tr>
+                  row.original.majorCourses && row.original.majorCourses.map(x => (
+                    <tr key={x.majorCode}>
                       <td style={{ border: '1px solid black' }}>{x.majorName}</td>
                       <td style={{ border: '1px solid black' }}>{x.coursesNames.map(y => (`${y}, `))}</td>
                     </tr>
@@ -148,7 +149,7 @@ const TeacherTable = () => {
             </table>
           </Box>
         )}
-      />;
+      />
     </div>
   );
 

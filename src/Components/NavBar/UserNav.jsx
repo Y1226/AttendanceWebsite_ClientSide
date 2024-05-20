@@ -5,16 +5,18 @@ import $ from 'jquery'
 // import TeacherTable from "../Tables/TeacherTable"
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { FillCurrentSeminar } from '../../Redux/Actions/NavBar/ManagerNavActions';
+import { GetSeminarBySeminarCode } from '../../Redux/Axios/NavBar/ManagerNavAxios';
 
 export const UserNav = () => {
 
 	const [CurrentUser, setCurrentUser] = useState({})
-	const [CurrentSeminar, setCurrentSeminar] = useState({})
-
+	let CurrentSeminar = useSelector(x => x.ManagerNavReducer.CurrentSeminar)
 	const currentUser = useSelector(x => x.SignInReducer.CurrentUser)
 
 	let navigate = useNavigate()
+	let dispatch = useDispatch()
 
 	$(document).ready(function () {
 
@@ -37,12 +39,18 @@ export const UserNav = () => {
 		// })
 
 	});
-	
+
 	useEffect(() => {
 		axios.get(`https://localhost:44367/api/User/GetUserByUserID/${currentUser.userName}`).then(x => { setCurrentUser(x.data) })
-		axios.get(`https://localhost:44367/api/Seminar/GetSeminarBySeminarCode/${currentUser.seminarCode}`).then(x => { setCurrentSeminar(x.data) })
 
 	}, [currentUser])
+
+	useEffect(() => {
+		async function fetchData() {
+			await GetSeminarBySeminarCode(currentUser.seminarCode).then(x => { dispatch(FillCurrentSeminar(x.data)); debugger })
+		}
+		fetchData()
+	}, [currentUser.seminarCode, dispatch])
 
 	if (window.location.href === 'http://localhost:3000/teacherNav/majorTable')
 		$('#backButton').css('display', 'none')
@@ -58,9 +66,11 @@ export const UserNav = () => {
 		{/* <img className='img' src="https://localhost:44367/Logos/LogoSharansky.gif" alt="LogoSharansky"/> */}
 
 		<header id='ManagerNavHeader'>
-			<div className='imgDiv'>
-				<img className='img' src="https://localhost:44367/Logos/LogoSharansky.gif" alt="LogoSharansky" />
-			</div>
+			{CurrentSeminar.seminarLogo !== '' &&
+				<div className='imgDiv'>
+					<img className='img' src={`https://localhost:44367/Logos/${CurrentSeminar.seminarLogo}`} alt="Logo" />
+				</div>}
+				
 			{/* <div className="nav-modal">
 				<div className="blob"></div>
 				<nav>
@@ -119,19 +129,16 @@ export const UserNav = () => {
 						<tr className='accountText' style={{ fontSize: 'large' }}>
 							<td>{CurrentSeminar.seminarName}</td>
 						</tr>
-						{/* <tr className='logoutText' style={{ fontSize: 'medium' }} onClick={() => { localStorage.clear(); navigate('../') }}>
-							<td>logout</td>
-						</tr> */}
 					</tbody>
 				</table>
 				<table className='accountTextContainer'>
 					<tbody>
-						<tr className='logoutText' onClick={() => navigate('../')}><td>יציאה</td></tr>
+						<tr className='logoutText' onClick={() => {navigate('../'); window.location.reload();}}><td>יציאה</td></tr>
 					</tbody>
 				</table>
 			</div>
 			<div className="head">
-				<p id="backButton" className="tile socialmedia" onClick={() => window.history.back(1)} /*style={{'display':'none'}}*/>»</p>
+				<p id="backButton" className="tile socialmedia" onClick={() => window.history.back(1)}>»</p>
 				<div className="tile burger">
 					<div className="meat">
 

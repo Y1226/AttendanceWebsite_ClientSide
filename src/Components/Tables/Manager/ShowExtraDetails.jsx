@@ -3,6 +3,8 @@ import '../../../Style/Tables/Manager/ChangingTable.scss'
 
 export const ShowExtraDetails = (props) => {
 
+    debugger
+
     return <>
         {/* <tr><th className='majorName'>{props.MajorName}</th></tr> */}
         {/* <table>  */}
@@ -20,11 +22,11 @@ export const ShowExtraDetails = (props) => {
         {
             props.MajorDetails.map(u => <>
                 <li className="table-row tableLI">
-                    <div className="col col-1" data-label="Course Name">{u.courseName}</div>
-                    <div className="col col-2" data-label="Number of Lessons">{u.numberOfHoursTheCourseTookPlace}</div>
-                    <div className="col col-3" data-label="Number of Attended Lessons">{u.numberOfHoursTheStudentAttendedTheCourse}</div>
-                    <div className="col col-4" data-label="%">{parseInt((100 / u.numberOfHoursTheCourseTookPlace) * u.numberOfHoursTheStudentAttendedTheCourse)}</div>
-                    <div className="col col-5" data-label="Passed">{(100 / u.numberOfHoursTheCourseTookPlace) * u.numberOfHoursTheStudentAttendedTheCourse < 85 ? 'Ⅹ' : ''}</div>
+                    <div className="col col-1" data-label="שם קורס">{u.courseName}</div>
+                    <div className="col col-2" data-label="מספר שיעורים">{u.numberOfHoursTheCourseTookPlace}</div>
+                    <div className="col col-3" data-label="מספר שיעורי נוכחות">{u.numberOfHoursTheStudentAttendedTheCourse}</div>
+                    <div className="col col-4" data-label="%">{u.numberOfHoursTheCourseTookPlace === 0 ? 0 : parseInt((100 / u.numberOfHoursTheCourseTookPlace) * u.numberOfHoursTheStudentAttendedTheCourse)}</div>
+                    <div className="col col-5" data-label="עברה">{(100 / u.numberOfHoursTheCourseTookPlace) * u.numberOfHoursTheStudentAttendedTheCourse < 85 ? 'Ⅹ' : ''}</div>
                 </li>
                 <div className="panel">
                     {/* <tr> */}
@@ -55,7 +57,7 @@ export const ShowExtraDetails = (props) => {
                                 !d.attendance &&
                                     <>
                                         <li className="tbs">
-                                            <div className="small" data-label="Date">{d.date.split('T')[0]}</div>
+                                        <div className="small" data-label="Date">{d.date ? d.date.split('T')[0] : ''}</div>
                                             <div className="small" data-label="LessonNumber">{d.lessonNumber}</div>
                                             <div className="small" data-label="Attendance">{'✕'}</div>
                                         </li>

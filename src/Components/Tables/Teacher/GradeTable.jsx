@@ -1,18 +1,18 @@
 // import { useEffect } from "react"
-// import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 // import { FillMajorData } from '../../../Redux/Actions/TableActions/Teacher/MajorTableActions';
 import '../../../Style/Tables/Teacher/GradeTableStyle.css'
 import { useNavigate } from "react-router-dom";
+import { FillCurrentGrade } from "../../../Redux/Actions/TableActions/Teacher/GradeTableActions";
 
 export const GradeTable = () => {
 
-    // let dispatch = useDispatch()
+    let dispatch = useDispatch()
     let navigate = useNavigate()
 
     // useEffect(() => {
     //     async function fetchData() {
     //         debugger
-    //         let currentUser = JSON.parse(localStorage.getItem("CurrentUser"))
     //         let s = await axios.get(`https://localhost:44367/api/Staff/GetStaffMemberByStaffID/${currentUser.userName}`)
     //         console.log(s.data);
     //         let m = await axios.get(`https://localhost:44367/api/Major/GetMajorsBySeminarAndTeacherCode/${currentUser.seminarCode}/${s.data.staffCode}`)
@@ -23,7 +23,7 @@ export const GradeTable = () => {
 
     const GoToCourse = (x) => {
         debugger
-        localStorage.setItem("Grade", JSON.stringify(x))
+        dispatch(FillCurrentGrade(x))
         navigate('../CourseTable')
     }
 

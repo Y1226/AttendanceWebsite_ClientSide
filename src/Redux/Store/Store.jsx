@@ -15,7 +15,10 @@ import PersonalAttendanceReportReducer from "../Reducers/TableReducers/Manager/P
 import AddCourseToMajorReducer from '../Reducers/WebSetupReducers/AddCourseToMjorReducer'
 import AddTeachersAndStudentsReducer from '../Reducers/WebSetupReducers/AddTeachersAndStudentsReducer'
 import MatchStudentAndMajorSelectReducer from '../Reducers/WebSetupReducers/MatchStudentAndMajorSelectReducer'
+import MatchStudentToMajorReducer from '../Reducers/WebSetupReducers/MatchStudentToMajorReducer'
 import AddMajorReducer from '../Reducers/WebSetupReducers/AddMajorReducer'
+import ManagerNavReducer from '../Reducers/NavBar/ManagerNavReducer'
+import UpdateReducer from '../Reducers/TableReducers/Manager/UpdateReducer'
 
 const reducers = combineReducers({
     // NavReducer,
@@ -34,7 +37,10 @@ const reducers = combineReducers({
     GradeTableReducer,
     AddTeachersAndStudentsReducer,
     MatchStudentAndMajorSelectReducer,
-    AddMajorReducer
+    MatchStudentToMajorReducer,
+    AddMajorReducer,
+    ManagerNavReducer,
+    UpdateReducer
 })
 
 const store = createStore(reducers)

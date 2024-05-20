@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import '../../Style/WebSetupStyle/VerificationStyle.css'
+import '../../Style/WebSetupStyle/VerificationStyle.scss'
 import { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addSeminar } from '../../Redux/Axios/SignInAxios'
@@ -11,14 +11,15 @@ export const Verification = () => {
     let navigate = useNavigate()
     const inputCode = useRef()
     const newSeminar = useSelector(x => x.SignInReducer.NewSeminar)
+    const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
 
     const Verify = async () => {
         debugger
         //if seminar was not added yet then add it
-        if (inputCode.current.value === newSeminar.seminarManagerPassword) {
+        if (currentSeminarCode === '' && inputCode.current.value === newSeminar.seminarManagerPassword) {
             await addSeminar(newSeminar).then(x => { dispatch(UpdateCurrentSeminarCode(x.data.seminarCode)) })    
-            navigate('../addTeachersAndStudents')
         }
+        navigate('../addTeachersAndStudents')
         //else update the existing seminar
         //axios.update()
     }

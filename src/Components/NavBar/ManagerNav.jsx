@@ -1,12 +1,26 @@
 // import { Link, Outlet } from "react-router-dom"
 import '../../Style/NavBarStyle/ManagerNavBarStyle.css'
 import $ from 'jquery'
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 // import TeacherTable from "../Tables/TeacherTable"
 import { Outlet, useNavigate } from 'react-router-dom';
+import { GetSeminarBySeminarCode } from '../../Redux/Axios/NavBar/ManagerNavAxios';
+import { FillCurrentSeminar } from '../../Redux/Actions/NavBar/ManagerNavActions';
 
 export const ManagerNav = () => {
 
 	let navigate = useNavigate()
+	let dispatch = useDispatch()
+	let currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
+	let CurrentSeminar = useSelector(x => x.ManagerNavReducer.CurrentSeminar)
+
+	useEffect(() => {
+		async function fetchData() {
+			await GetSeminarBySeminarCode(currentSeminarCode).then(x => dispatch(FillCurrentSeminar(x.data)))
+		}
+		fetchData()
+	},[currentSeminarCode, dispatch])
 
 	// $(document).ready(function () {
 
@@ -55,20 +69,23 @@ export const ManagerNav = () => {
 		<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css' />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
 
-		<header id='ManagerNavHeader' style={{ zIndex: '1' }}>
+		<header id='ManagerNavHeader' style={{ zIndex: '3' }}>
 			<div className="nav-modal">
 				<div className="blob"></div>
 				<nav id='ManagerNavNav'>
 					<ul id='ManagerNavUl'>
 						<li id='ManagerNavLi'><p className='ManagerNavA' onClick={() => { navigate('update') }}>הוספה ועדכון</p></li>
 						<li id='ManagerNavLi'><p className='ManagerNavA' onClick={() => { navigate('attendanceReport') }}>דוחות נוכחות</p></li>
-						<li id='ManagerNavLi'><p className='ManagerNavA' onClick={() => { navigate('managerStudentTable') }}>תלמידות</p></li>
+						<li id='ManagerNavLi'><p className='ManagerNavA' onClick={() => { navigate('managerStudentTableteacherTable') }}>תלמידות</p></li>
 						<li id='ManagerNavLi'><p className='ManagerNavA' onClick={() => { navigate('managerMajorTable') }}>מסלולים</p></li>
 						<li id='ManagerNavLi'><p className='ManagerNavA' onClick={() => { navigate('teacherTable') }}>צוות</p></li>						
-						<li id='ManagerNavLi'><p className='ManagerNavA' onClick={() => { navigate('../') }}>יציאה</p></li>
+						<li id='ManagerNavLi'><p className='ManagerNavA' onClick={() => { navigate('../'); window.location.reload() }}>יציאה</p></li>
 					</ul>
 				</nav>
 			</div>
+			{CurrentSeminar.seminarLogo !== '' && <img src={`https://localhost:44367/Logos/${CurrentSeminar.seminarLogo}`} alt="Logo" height='100%' />}
+			{/* <img src={`/Logos/${CurrentSeminar.seminarLogo}`} alt="Logo" height='100%'/> */}
+			{/* <img src="/SignInPictures/LogoSharansky.gif" alt="Logo" height='100%'/> */}
 			<div className="head">
 				<div className="tile burger">
 					<div className="meat">

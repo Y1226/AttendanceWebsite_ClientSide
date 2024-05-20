@@ -4,7 +4,7 @@ import '../../../Style/Tables/Manager/TeacherTableStyle.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 // import { GetFullStaffData } from '../../Redux/Axios/Tables/TeacherTableAxios.jsx';
-import { FillMajorData } from '../../../Redux/Actions/TableActions/Manager/ManagerMajorTableAction.jsx';
+import { FillMajorData } from '../../../Redux/Actions/TableActions/Teacher/MajorTableActions.jsx';
 import DownloadToExcel from './DownloadToExcel.jsx';
 import { GetTheMajorsWithMoreDetailsBySeminarCode } from '../../../Redux/Axios/Table/Manager/ManagerMajorTableAxios.jsx';
 
@@ -75,7 +75,8 @@ export const ManagerMajorTable = () => {
                         }}
                     >
                         <h3>קורסים: </h3>
-                        <p>{Object.keys(row.original.coursesInMajor).map(x => `${x}, `)}</p>
+                        <p>{row.original.coursesInMajor && Object.keys(row.original.coursesInMajor).map(x => `${x}, `)}</p>
+
                     </Box>
                 )}
             />

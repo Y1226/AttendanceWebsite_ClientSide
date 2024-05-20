@@ -2,11 +2,12 @@ import '../../Style/WebSetupStyle/AddMajorStyle.scss'
 import { React, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
+import { FillCurrentComponent, FillMajorsWithoutDistinct, FillSelectedMajorsData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
 import { FillStaffData } from "../../Redux/Actions/TableActions/Manager/TeacherTableAction"
 import Select from 'react-select'
 import { FillCoursesForMajors } from '../../Redux/Actions/WebSetupActions/AddCourseToMajorAction'
-import { GetAllMajors, GetFullStaffDataBySeminarCode } from '../../Redux/Axios/WebSetupAxios/AddMajorAxios'
+import { GetAllMajors, GetAllMajorsWithoutDistinct, GetFullStaffDataBySeminarCode } from '../../Redux/Axios/WebSetupAxios/AddMajorAxios'
+import { FillMajorData } from '../../Redux/Actions/TableActions/Teacher/MajorTableActions'
 
 export const AddMajor = () => {
     let initialMajors = useSelector(x => x.ManagerMajorTableReducer.MajorsToSelect)
@@ -17,7 +18,7 @@ export const AddMajor = () => {
     let other = useRef()
     let [isOtherChecked, setIsOtherChecked] = useState(false)
     const listSelectStaff = []
-
+    // const majorsWithoutDistinct = useSelector(x => x.AddMajorReducer.MajorsWithoutDistinct)
     const [majors, setMajors] = useState([])
 
     staff.forEach(e => {
@@ -27,8 +28,10 @@ export const AddMajor = () => {
 
     useEffect(() => {
         async function fetchData() {
-            await GetAllMajors().then(x => dispatch(FillMajorData(x.data)) );
-            await GetFullStaffDataBySeminarCode(currentSeminarCode).then(x => dispatch(FillStaffData(x.data)) )
+            await GetAllMajors().then(x => dispatch(FillMajorData(x.data)));
+            await GetFullStaffDataBySeminarCode(currentSeminarCode).then(x => dispatch(FillStaffData(x.data)))
+            await GetAllMajorsWithoutDistinct().then(x => dispatch(FillMajorsWithoutDistinct(x.data)))
+            debugger
         }
         fetchData()
     }, [dispatch, currentSeminarCode])
@@ -51,6 +54,7 @@ export const AddMajor = () => {
     const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
 
     const handleCheckboxChange = (index) => {
+        debugger
         if (selectedCheckboxes.includes(index)) {
             setSelectedCheckboxes(selectedCheckboxes.filter((checkbox) => checkbox !== index));
         } else {
@@ -59,6 +63,7 @@ export const AddMajor = () => {
     };
 
     const handleChange = (index, selectedOption) => {
+        debugger
         const updatedMajors = [...majors];
         updatedMajors[index].routeCoordinator = selectedOption;
         setMajors(updatedMajors);
@@ -68,22 +73,26 @@ export const AddMajor = () => {
     const [selectValues, setSelectValues] = useState([{ majorName: '', routeCoordinator: null }]);
 
     const handleAnothersChange = (index, selectedOption) => {
+        debugger
         const updatedValues = [...selectValues];
         updatedValues[index] = { ...updatedValues[index], routeCoordinator: selectedOption };
         setSelectValues(updatedValues);
     };
 
     const handleInputChange = (index, majorName) => {
+        debugger
         const updatedValues = [...selectValues];
         updatedValues[index] = { ...updatedValues[index], majorName };
         setSelectValues(updatedValues);
     };
 
     const handleAddSelect = () => {
+        debugger
         setSelectValues([...selectValues, { majorName: '', routeCoordinator: null }]);
     };
 
     const handleDeleteSelect = (index) => {
+        debugger
         const updatedValues = selectValues.filter((_, i) => i !== index);
         setSelectValues(updatedValues);
     };
@@ -108,9 +117,10 @@ export const AddMajor = () => {
         selectedItems.sort((a, b) => a.majorName > b.majorName ? 1 : -1)
         console.log(selectedItems);
 
-        localStorage.setItem('selectedMajors', JSON.stringify(selectedItems))
+        dispatch(FillSelectedMajorsData(selectedItems))
         dispatch(FillCoursesForMajors([...Array(selectedItems.length * 2)].map(() => null)))
-        navigate('../addCourseToMajor')
+        window.location.href === 'http://localhost:3000/managerNav/update' ?
+            dispatch(FillCurrentComponent('Courses')) : navigate('../addCourseToMajor')
     };
 
     return <>
@@ -120,13 +130,15 @@ export const AddMajor = () => {
             </div>
             <hr style={{ background: '#607d8b', height: '1px' }} />
             <br />
-            <div>
+            {  window.location.href !== 'http://localhost:3000/managerNav/update' &&
+                <div>
                 {majors.map((value, index) => (
                     <div key={index} className='divCheckbox'>
                         <input
                             className="checkbox"
                             type="checkbox"
                             checked={selectedCheckboxes.includes(index)}
+                            // checked={majorsWithoutDistinct[value.majorName]?.includes(currentSeminarCode) }
                             onChange={() => handleCheckboxChange(index)}
                         />
                         <label className="label">{value.majorName}</label>
@@ -136,6 +148,7 @@ export const AddMajor = () => {
                                 <Select
                                     placeholder="בחר מורה"
                                     maxMenuHeight={130}
+                                    menuPosition='fixed'
                                     value={value.routeCoordinator}
                                     onChange={(selectedOption) => handleChange(index, selectedOption)}
                                     options={listSelectStaff}
@@ -144,16 +157,16 @@ export const AddMajor = () => {
                         )}
                     </div>
                 ))}
-            </div>
+            </div>}
             <div className='divCheckbox'>
-                <input className="checkbox" type="checkbox" ref={other} onChange={() => { setIsOtherChecked(other.current.checked); if (!isOtherChecked) setSelectValues([{ majorName: '', routeCoordinator: null }]) }} />
+                <input className="checkbox" type="checkbox" ref={other} onChange={() => { debugger; setIsOtherChecked(other.current.checked); if (!isOtherChecked) setSelectValues([{ majorName: '', routeCoordinator: null }]) }} />
                 <label className='label'>אחר</label>
             </div>
         </div>
         <div>
             {isOtherChecked && selectValues.map((value, index) => (
                 <div key={index} className='spaces'>
-                    <div className="col-3 input-effect">
+                    <div className="col-3c input-effect">
                         <input
                             className="effect-19"
                             type="text"
@@ -172,6 +185,7 @@ export const AddMajor = () => {
                         <Select
                             placeholder="בחר מורה"
                             maxMenuHeight={130}
+                            menuPosition='fixed'
                             value={value.routeCoordinator}
                             onChange={(selectedOption) => handleAnothersChange(index, selectedOption)}
                             options={listSelectStaff}

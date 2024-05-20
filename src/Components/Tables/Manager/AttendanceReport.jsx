@@ -6,33 +6,35 @@ import { FillAttendanceForAllStudents } from '../../../Redux/Actions/TableAction
 import { GetTheAttendanceForAllStudentsWithMoreDetailsBySeminarCode, GetTheMaxNumberOfClassesInSeminarBySeminarCode } from '../../../Redux/Axios/Table/Manager/AttendanceReportAxios'
 import Select from 'react-select';
 import { getMajorBySeminarCode } from '../../../Redux/Axios/WebSetupAxios/AddCourseToMajorAxios'
+import { FillMajorData } from '../../../Redux/Actions/TableActions/Manager/ManagerMajorTableAction'
 
 
 export const AttendanceReport = () => {
-    
-    const compare = (a, b) => {
-        let firtsName = a.studentFirstName + " " + a.studentLastName;
-        let secondName = b.studentFirstName + " " + b.studentLastName;
-        if (firtsName === secondName) return 0;
-        return firtsName > secondName ? 1 : -1;
-    }
 
     let dispatch = useDispatch()
-    let studentsAttendance = useSelector(x => x.AttendanceReportReducer.AttendanceStudentList)
-    studentsAttendance.sort((a, b) => compare(a, b))
+    const studentsAttendance = useSelector(x => x.AttendanceReportReducer.AttendanceStudentList)
+    // studentsAttendance.sort((a, b) => compare(a, b))
     const [featuredStudents, setFeaturedStudents] = useState(studentsAttendance)
-    const currentUser = useSelector(x => x.SignInReducer.CurrentUser)
-    const [majors, setMajors] = useState([])
-    getMajorBySeminarCode(useSelector(x => x.SignInReducer.CurrentSeminarCode)).then(x => setMajors(x.data))
-    const [numberOfClasses, setNumberOfClasses] = useState(3)
+    // const currentUser = useSelector(x => x.SignInReducer.CurrentUser)
+    const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
+    const majors = useSelector(x => x.ManagerMajorTableReducer.MajorList)
+    // getMajorBySeminarCode(currentSeminarCode).then(x => setMajors(x.data))   ?????????
+    const [numberOfClasses, setNumberOfClasses] = useState(0)
     const [options, setOptions] = useState([])
+    const [selectedOptions, setSelectedOptions] = useState([])
 
     useEffect(() => {
         async function fetchData() {
-            await GetTheAttendanceForAllStudentsWithMoreDetailsBySeminarCode(currentUser.seminarCode).then(x => dispatch(FillAttendanceForAllStudents(x.data)))
+            let attendanceDetails = await GetTheAttendanceForAllStudentsWithMoreDetailsBySeminarCode(currentSeminarCode)
+            let sortedAttendanceDetails = attendanceDetails.data.sort(compare)
+            dispatch(FillAttendanceForAllStudents(sortedAttendanceDetails))
+
+            let majors = await getMajorBySeminarCode(currentSeminarCode)
+            dispatch(FillMajorData(majors.data))
         }
         fetchData()
-    }, [dispatch, currentUser])
+        setFeaturedStudents(featuredStudents.slice(0,10))
+    }, [dispatch, currentSeminarCode])
 
     useEffect(() => {
         const cycleClasses = [{ type: "grade", value: 'שנתון', label: 'שנתון', isDisabled: true }]
@@ -47,7 +49,7 @@ export const AttendanceReport = () => {
             key: index
         }))];
 
-        GetTheMaxNumberOfClassesInSeminarBySeminarCode(currentUser.seminarCode).then(x => { setNumberOfClasses(x.data) })
+        GetTheMaxNumberOfClassesInSeminarBySeminarCode(currentSeminarCode).then(x => { setNumberOfClasses(x.data) })
         debugger
 
         const numberClasses = [{ type: "classNumber", value: 'מספר כיתה', label: 'מספר כיתה', isDisabled: true }, ...Array(numberOfClasses).fill(0).map((item, index) => ({
@@ -58,22 +60,31 @@ export const AttendanceReport = () => {
         }))];
 
         setOptions([...cycleClasses, ...numberClasses, ...derivedArray])
-    }, [majors, currentUser.seminarCode, numberOfClasses])
+    }, [majors, currentSeminarCode, numberOfClasses])
+
+    const compare = (a, b) => {
+        let firtsName = a.studentFirstName + " " + a.studentLastName;
+        let secondName = b.studentFirstName + " " + b.studentLastName;
+        if (firtsName === secondName) return 0;
+        return firtsName > secondName ? 1 : -1;
+    }
 
     const filteringSuitableStudents = (selectedOptions) => {
         debugger
+
+        setSelectedOptions(selectedOptions)
 
         let selectGrade = selectedOptions.filter(x => x.type === 'grade')
         let selectClassNumber = selectedOptions.filter(x => x.type === 'classNumber')
         let selectMajor = selectedOptions.filter(x => x.type === 'major')
 
         const setStudent = new Set()
-        let arrayStudents = new Array()
+        let arrayStudents = [] //new Array()
 
         if (selectGrade.length !== 0) {
             for (let index = 0; index < selectGrade.length; index++) {
                 const element = selectGrade[index];
-                studentsAttendance.filter(x => { if (x.studentGrade === element.value) setStudent.add(x) })
+                studentsAttendance.filter(x => x.studentGrade === element.value ? setStudent.add(x) : '')
             }
             arrayStudents = Array.from(setStudent)
         }
@@ -81,7 +92,7 @@ export const AttendanceReport = () => {
         if (setStudent.size === 0 && selectClassNumber.length !== 0) {
             for (let index = 0; index < selectClassNumber.length; index++) {
                 const element = selectClassNumber[index];
-                studentsAttendance.filter(x => { if (x.studentClassNumber === element.value) setStudent.add(x) })
+                studentsAttendance.filter(x => x.studentClassNumber === element.value ? setStudent.add(x) : '')
                 arrayStudents = Array.from(setStudent)
             }
         }
@@ -95,7 +106,7 @@ export const AttendanceReport = () => {
         if (setStudent.size === 0 && selectMajor.length !== 0) {
             for (let index = 0; index < selectMajor.length; index++) {
                 const element = selectMajor[index];
-                studentsAttendance.filter(x => { if (x.firstMajorName === element.value || x.secondMajorName === element.value) setStudent.add(x) })
+                studentsAttendance.filter(x => x.firstMajorName === element.value || x.secondMajorName === element.value ? setStudent.add(x) : '')
                 arrayStudents = Array.from(setStudent)
             }
         }
@@ -111,69 +122,78 @@ export const AttendanceReport = () => {
 
     const openPersonalReport = (x) => {
         localStorage.setItem('currentStudentAttendance', JSON.stringify(x))
+        localStorage.setItem('currentSeminarCode', JSON.stringify(currentSeminarCode))
         // dispatch(FillAttendanceForCurrentStudent(x))
         window.open('/ChangingReport')
         // window.open('/PersonalAttendanceReport')
     }
-    
-    return <div className='cardWrapper'>
-        <Select
-            isMulti
-            closeMenuOnSelect={false}
-            options={options}
-            onChange={filteringSuitableStudents}
-        />
-        {
-            featuredStudents.map((x, y) =>
-                <article className="card">
-                    <div key={y} className="thumb"></div>
-                    <div key={`${y}0`} className="infos">
-                        <h2 key={`${y}1`} className="title">{x.studentFirstName} {x.studentLastName}<span className="flag"></span></h2>
-                        <h3 key={`${y}2`} className="date">מחזור: {x.studentGrade}</h3>
-                        <h3 key={`${y}3`} className="major date">מסלול #1: {x.firstMajorName}</h3>
-                        <h3 key={`${y}4`} className="major date">|</h3>
-                        <h3 key={`${y}5`} className="major date">מסלול #2: {x.secondMajorName}</h3>
-                        <div key={`${y}6`} className="txt">
-                            <div className="table-container">
-                                <div className="table-horizontal-container">
-                                    <table className="unfixed-table">
-                                        <thead className="attendanceThead">
-                                            <tr>
-                                                <th className="attendanceTh">שם קורס</th>
-                                                <th className="attendanceTh">שם מורה</th>
-                                                <th className="attendanceTh">מספר שעורים</th>
-                                                <th className="attendanceTh">מספר שעורים שנכחה</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                x.detailsForTheFirstMajor.map(u =>
-                                                    <tr>
-                                                        <td className="attendanceTd">{u.courseName}</td>
-                                                        <td className="attendanceTd">{u.courseTeacherFirstName} {u.courseTeacherLastName}</td>
-                                                        <td className="attendanceTd">{u.numberOfHoursTheCourseTookPlace}</td>
-                                                        <td className="attendanceTd">{u.numberOfHoursTheStudentAttendedTheCourse}</td>
-                                                    </tr>
-                                                )
-                                            }
-                                            {
-                                                x.detailsForTheSecondMajor.map(u =>
-                                                    <tr>
-                                                        <td className="attendanceTd">{u.courseName}</td>
-                                                        <td className="attendanceTd">{u.courseTeacherFirstName} {u.courseTeacherLastName}</td>
-                                                        <td className="attendanceTd">{u.numberOfHoursTheCourseTookPlace}</td>
-                                                        <td className="attendanceTd">{u.numberOfHoursTheStudentAttendedTheCourse}</td>
-                                                    </tr>
-                                                )
-                                            }
-                                        </tbody>
-                                    </table>
+
+    return <div>
+        <div className='SelectComponentFilter'>
+            <Select
+                isMulti
+                placeholder='מיין לפי...'
+                menuPosition='fixed'
+                closeMenuOnSelect={true}
+                options={options}
+                onChange={filteringSuitableStudents}
+            />
+        </div>
+        <div className='cardWrapper'>
+            {
+                featuredStudents.length === 0 && selectedOptions.length > 0 ? <h1 className='emptySelectTitle'>אין תלמידות התואמות את המיון.</h1> :
+                featuredStudents.length === 0 ? <h1 className='emptySelectTitle'>לא נבחרו אפשרויות מיון. נא לבחור שדה למיון.</h1> :
+                featuredStudents.map((x, y) =>
+                    <article className="card">
+                        <div key={y} className="thumb"></div>
+                        <div key={`${y}0`} className="infos">
+                            <h2 key={`${y}1`} className="title">{x.studentFirstName} {x.studentLastName}<span className="flag"></span></h2>
+                            <h3 key={`${y}2`} className="date">כיתה: {x.studentGrade === 'A' ? 'יג' : 'יד'}{x.studentClassNumber}</h3>
+                            <h3 key={`${y}3`} className="major date">מסלול #1: {x.firstMajorName}</h3>
+                            <h3 key={`${y}4`} className="major date">|</h3>
+                            <h3 key={`${y}5`} className="major date">מסלול #2: {x.secondMajorName}</h3>
+                            <div key={`${y}6`} className="txt">
+                                <div className="table-container">
+                                    <div className="table-horizontal-container">
+                                        <table className="unfixed-table">
+                                            <thead className="attendanceThead">
+                                                <tr>
+                                                    <th className="attendanceTh">שם קורס</th>
+                                                    <th className="attendanceTh">שם מורה</th>
+                                                    <th className="attendanceTh">מספר שעורים</th>
+                                                    <th className="attendanceTh">מספר שעורים שנכחה</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    x.detailsForTheFirstMajor.map(u =>
+                                                        <tr>
+                                                            <td className="attendanceTd">{u.courseName}</td>
+                                                            <td className="attendanceTd">{u.courseTeacherFirstName} {u.courseTeacherLastName}</td>
+                                                            <td className="attendanceTd">{u.numberOfHoursTheCourseTookPlace}</td>
+                                                            <td className="attendanceTd">{u.numberOfHoursTheStudentAttendedTheCourse}</td>
+                                                        </tr>
+                                                    )
+                                                }
+                                                {
+                                                    x.detailsForTheSecondMajor.map(u =>
+                                                        <tr>
+                                                            <td className="attendanceTd">{u.courseName}</td>
+                                                            <td className="attendanceTd">{u.courseTeacherFirstName} {u.courseTeacherLastName}</td>
+                                                            <td className="attendanceTd">{u.numberOfHoursTheCourseTookPlace}</td>
+                                                            <td className="attendanceTd">{u.numberOfHoursTheStudentAttendedTheCourse}</td>
+                                                        </tr>
+                                                    )
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
+                            <h3 className="details" onClick={() => openPersonalReport(x)}>הצג והדפס ⇾</h3>
                         </div>
-                        <h3 className="details" onClick={() => openPersonalReport(x)}>הצג והדפס ⇾</h3>
-                    </div>
-                </article>
-            )}
+                    </article>
+                )}
+        </div>
     </div>
 }

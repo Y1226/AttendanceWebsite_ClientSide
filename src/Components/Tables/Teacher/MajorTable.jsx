@@ -1,8 +1,8 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { FillMajorData } from '../../../Redux/Actions/TableActions/Teacher/MajorTableActions';
+import { FillCurrentMajor, FillMajorData } from '../../../Redux/Actions/TableActions/Teacher/MajorTableActions';
 import { useNavigate } from "react-router-dom";
-import { getMajorsBySeminarAndTeacherCode, getStaffMemberByStaffID } from "../../../Redux/Axios/Table/Teacher/MajorTableAxios";
+import { getMajorsBySeminarAndTeacherCode, getStaffMemberByStaffIDAndSeminarCode } from "../../../Redux/Axios/Table/Teacher/MajorTableAxios";
 
 export const MajorTable = () => {
 
@@ -10,18 +10,21 @@ export const MajorTable = () => {
     let navigate = useNavigate()
     let majors = useSelector(x => x.MajorTableReducer.MajorList)
     const currentUser = useSelector(x => x.SignInReducer.CurrentUser)
+    const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
 
     useEffect(() => {
         async function fetchData() {
-            let s = await getStaffMemberByStaffID(currentUser.userName)
-            await getMajorsBySeminarAndTeacherCode(currentUser.seminarCode, s.data.staffCode).then(dispatch(x => FillMajorData(x.data)))
+            let s = await getStaffMemberByStaffIDAndSeminarCode(currentUser.userName, currentSeminarCode)
+            await getMajorsBySeminarAndTeacherCode(currentUser.seminarCode, s.data.staffCode).then(x => {dispatch(FillMajorData(x.data)); debugger})
         }
         fetchData()
-    },[dispatch, currentUser])
+        // debugger
+        // console.log(majors);
+    },[dispatch, currentUser, currentSeminarCode])
 
     const GoToGrades = (x) => {
         debugger
-        localStorage.setItem("CurrentMajor", JSON.stringify(x))
+        dispatch(FillCurrentMajor(x))
         navigate('../GradeTable')
     }
 

@@ -29,6 +29,7 @@ import { MatchStudentToMajor } from "../WebSetup/MatchStudentToMajor"
 import { AddMajor } from "../WebSetup/AddMajor"
 import { AddTeachersAndStudents } from "../WebSetup/AddTeachersAndStudents"
 import { AddCourseToMajor } from "../WebSetup/AddCourseToMajor"
+import { MatchStudentToMajorCopy } from "../WebSetup/MatchStudentToMajor copy"
 
 export const LoadRoutes = () => {
     return <Routes>
@@ -42,7 +43,7 @@ export const LoadRoutes = () => {
         </Route> */}
         <Route path="/" element={<SignInForm></SignInForm>}></Route>
         <Route path="/managerNav" element={<ManagerNav></ManagerNav>}>
-            <Route path="" element={<TeacherTable></TeacherTable>}></Route>
+            <Route path="teacherTable" element={<TeacherTable></TeacherTable>}></Route>
             <Route path="attendanceReport" element={<AttendanceReport></AttendanceReport>}></Route>
             <Route path="managerMajorTable" element={<ManagerMajorTable></ManagerMajorTable>}></Route>
             <Route path="managerStudentTableteacherTable" element={<ManagerStudentTable></ManagerStudentTable>}></Route>
@@ -62,6 +63,7 @@ export const LoadRoutes = () => {
             <Route path="remainingDetails" element={<RemainingDetails></RemainingDetails>}></Route>
             <Route path="verification" element={<Verification></Verification>}></Route>
             <Route path="matchStudentToMajor" element={<MatchStudentToMajor></MatchStudentToMajor>}></Route>
+            {/* <Route path="matchStudentToMajorCopy" element={<MatchStudentToMajorCopy></MatchStudentToMajorCopy>}></Route> */}
             <Route path="addMajor" element={<AddMajor></AddMajor>}></Route>
             <Route path="addCourseToMajor" element={<AddCourseToMajor></AddCourseToMajor>}></Route>
             <Route path="addTeachersAndStudents" element={<AddTeachersAndStudents></AddTeachersAndStudents>}></Route>

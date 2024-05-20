@@ -37,7 +37,7 @@ export const ManagerStudentTable = () => {
                 header: 'תעודת זהות',
             },
             {
-                accessorFn: (row) => (row.userEnglishDateOfBirth).toString().split('T')[0],
+                accessorFn: (row) => (row.userEnglishDateOfBirth?.toString()?.split('T')[0] ?? ''),
                 id: 'userEnglishDateOfBirth',
                 header: 'תאריך לידה לועזי',
             },
@@ -70,6 +70,7 @@ export const ManagerStudentTable = () => {
                 header: 'פלאפון',
             },
             {
+                accessorFn: (row) => (row.studentGrade === 'A' ? 'יג' : row.studentGrade === 'B' ? 'יד' : 'שנה ג'),
                 accessorKey: 'studentGrade',
                 header: 'שנתון',
             },

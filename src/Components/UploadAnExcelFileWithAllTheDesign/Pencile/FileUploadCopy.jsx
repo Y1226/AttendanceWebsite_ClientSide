@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pencile } from './Pencile'
 import '../../UploadAnExcelFileWithAllTheDesign/SelectFile/SelectFile.css'
 // import '../../UploadAnExcelFileWithAllTheDesign/Pencile/FileUpload.scss'
@@ -9,6 +9,8 @@ import '../../File Upload/FileUpload.css'
 import { UploadFileExcel } from "../../../Redux/Axios/FileUpload/FileUploadAxios";
 import { useDispatch, useSelector } from "react-redux";
 import { FillFileCounter } from "../../../Redux/Actions/WebSetupActions/AddTeachersAndStudentsActions";
+import { GetSeminarGradeLastUpdatedBySeminarCode, UpStudentGradeBySeminarCode } from "../../../Redux/Axios/Table/Manager/UpdateAxios";
+import { FillGradeLastUpdated } from "../../../Redux/Actions/TableActions/Manager/UpdateActions";
 // import '../../File Upload/FileUpload.css'
 
 
@@ -22,6 +24,15 @@ export const FileUploadCopy = (props) => {
     const [fileName, setFileName] = useState('')
     const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
     const fileCounter = useSelector(x => x.AddTeachersAndStudentsReducer.FileCounter)
+    const seminarGradeLastUpdated = useSelector(x => x.UpdateReducer.SeminarGradeLastUpdated)
+    // const newSeminar = useSelector(x => x.SignInReducer.NewSeminar)
+
+    useEffect(() => {
+        async function fetchData() {
+            await GetSeminarGradeLastUpdatedBySeminarCode(currentSeminarCode).then(x => dispatch(FillGradeLastUpdated(x.data)))
+        }
+        fetchData()
+    },[currentSeminarCode, dispatch])
 
     const importFile = async (e) => {
         debugger
@@ -56,6 +67,18 @@ export const FileUploadCopy = (props) => {
         }
     };
 
+    const UpStudentGrade = () => {
+        debugger
+        let sepFirst = new Date().getMonth() + 1 >= 9 ? new Date(new Date().getFullYear(), 8, 1) : new Date(new Date().getFullYear() - 1, 8, 1)
+        if (seminarGradeLastUpdated < sepFirst.toISOString().split('T')[0]) {
+            UpStudentGradeBySeminarCode(currentSeminarCode)
+            dispatch(FillGradeLastUpdated(new Date().toISOString().split('T')[0]))
+        }
+        else {
+            alert('השנתונים כבר הועלו השנה')
+        }
+    }
+
     return (
         <>
             <div className="FileUploadMain">
@@ -79,6 +102,12 @@ export const FileUploadCopy = (props) => {
                 {props.id === "Staff" ? <StaffTable></StaffTable> : <StudentTable></StudentTable>}
                 <h4>בהצלחה רבה והמון סיעתא דשמיא!</h4>
             </div>
+            {/* {(props.id === "Students" && fileCounter !== 3) ? */}
+            {props.id === "Students" && window.location.href !== 'http://localhost:3000/moreInfoNav/addTeachersAndStudents' ? 
+                <div className="instructionDiv">
+                    <button className="FileUploadButton" onClick={() => UpStudentGrade()}>עדכון שנתון תלמידות</button>
+                </div>
+            : ''}
         </>
     );
 };

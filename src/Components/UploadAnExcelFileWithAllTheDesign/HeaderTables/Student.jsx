@@ -17,9 +17,9 @@ export const StudentTable = () => {
         'userCellPhoneNumber',
         'studentGrade',
         'studentClassNumber',
-        'studentFirstMajorName',
-        'studentSecondMajorName',
-        'userPassword',
+        // 'studentFirstMajorName',
+        // 'studentSecondMajorName',
+        // 'userPassword',
     ];
 
     return <DownloadToExcel selectedColumns={selectedColumns} table={selectedColumns} type={'studentData.xlsx'}></DownloadToExcel>

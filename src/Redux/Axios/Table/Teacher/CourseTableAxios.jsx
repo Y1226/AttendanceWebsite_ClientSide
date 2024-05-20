@@ -1,5 +1,5 @@
 import axios from "axios"
 
-export const GetCoursesByMajorCodeAndCourseGrade = (majorCode, grade) => {
-    return (axios.get(`https://localhost:44367/api/Courses/GetCoursesByMajorCodeAndCourseGrade/${majorCode}/${grade}`))
+export const GetCoursesByMajorCodeAndByCourseGradeAndByTeacherCode = (majorCode, grade, teacherCode) => {
+    return (axios.get(`https://localhost:44367/api/Courses/GetCoursesByMajorCodeAndByCourseGradeAndByTeacherCode/${majorCode}/${grade}/${teacherCode}`))
 }

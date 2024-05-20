@@ -1,8 +1,9 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { FillCourseData } from '../../../Redux/Actions/TableActions/Teacher/CourseTableAction';
+import { FillCourseData, FillCurrentCourseData } from '../../../Redux/Actions/TableActions/Teacher/CourseTableAction';
 import { useNavigate } from "react-router-dom";
-import { GetCoursesByMajorCodeAndCourseGrade } from "../../../Redux/Axios/Table/Teacher/CourseTableAxios";
+import { GetCoursesByMajorCodeAndByCourseGradeAndByTeacherCode } from "../../../Redux/Axios/Table/Teacher/CourseTableAxios";
+import { getStaffMemberByStaffIDAndSeminarCode } from "../../../Redux/Axios/Table/Teacher/MajorTableAxios";
 
 export const CourseTable = () => {
 
@@ -11,22 +12,25 @@ export const CourseTable = () => {
     let courses = useSelector(x => x.CourseTableReducer.CourseList)
     const currentMajor = useSelector(x => x.MajorTableReducer.CurrentMajor)
     const currentGrade = useSelector(x => x.GradeTableReducer.CurrentGrade)
+    const currentUser = useSelector(x => x.SignInReducer.CurrentUser)
+    const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
 
     useEffect(() => {
         async function fetchData() {
+            let s = await getStaffMemberByStaffIDAndSeminarCode(currentUser.userName, currentSeminarCode)
             let m
             if (currentGrade === 'A')
-                m = await GetCoursesByMajorCodeAndCourseGrade(currentMajor.majorCode, 'A')
+                m = await GetCoursesByMajorCodeAndByCourseGradeAndByTeacherCode(currentMajor.majorCode, 'A', s.data.staffCode)
             else
-                m = await GetCoursesByMajorCodeAndCourseGrade(currentMajor.majorCode, 'B')
+                m = await GetCoursesByMajorCodeAndByCourseGradeAndByTeacherCode(currentMajor.majorCode, 'B', s.data.staffCode)
             dispatch(FillCourseData(m.data))
         }
         fetchData()
-    }, [dispatch, currentMajor, currentGrade])
+    }, [dispatch, currentMajor, currentGrade, currentSeminarCode, currentUser.userName])
 
     const GetStudents = (x) => {
-        debugger
-        localStorage.setItem("CurrentCourse", JSON.stringify(x))
+        // debugger
+        dispatch(FillCurrentCourseData(x))
         navigate('../studentTable')
     }
 
@@ -35,7 +39,7 @@ export const CourseTable = () => {
             <div className="frame">
                 <div className="list">
                     <div className="headStudentTable">
-                        <div className="title" style={{ textDecorationLine: 'underline' }}>{JSON.parse(localStorage.getItem('CurrentMajor')).majorName}</div>
+                        <div className="title" style={{ textDecorationLine: 'underline' }}>{currentMajor.majorName}</div>
                         <div className="title" style={{ fontSize: '2rem' }}>:בחר קורס</div>
                         {/* <div className="title" style={{ fontSize: '2rem' }}>Choose a course:</div> */}
                     </div>

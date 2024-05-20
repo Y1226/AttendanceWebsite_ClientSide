@@ -141,6 +141,7 @@
   .verify:hover,.verify:focus {
     color: var(--white);
     background: var(--night-rider);
+    cursor: pointer;
   }
   
   .clear {
@@ -158,6 +159,7 @@
   }
   
   .clear:hover,.clear:focus {
+    cursor: pointer;
     color: var(--tomato);
     background-color: var(--white);
     border: 1px solid var(--tomato);

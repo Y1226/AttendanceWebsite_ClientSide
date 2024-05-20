@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction";
 import { FillStaffData } from "../../Redux/Actions/TableActions/Manager/TeacherTableAction";
 import Select from 'react-select'
 import '../../Style/WebSetupStyle/AddMajorStyle.scss'
@@ -8,6 +7,7 @@ import './InputAndSelect.scss'
 import { FillCoursesForMajorsByIndex } from "../../Redux/Actions/WebSetupActions/AddCourseToMajorAction";
 import { GetAllMajors } from "../../Redux/Axios/Table/Manager/ManagerMajorTableAxios";
 import { GetFullStaffDataBySeminarCode } from "../../Redux/Axios/Table/Manager/TeacherTableAxios";
+import { FillMajorData } from "../../Redux/Actions/TableActions/Teacher/MajorTableActions";
 
 export const InputAndSelect = (props) => {
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
@@ -67,7 +67,7 @@ export const InputAndSelect = (props) => {
             <div key={index} className='spaces'>
                 
                 {/* Enter a course name */}
-                <div className="col-3 input-effect">
+                <div className="col-3c input-effect">
                     <input
                         className="effect-19"
                         type="text"
@@ -88,6 +88,7 @@ export const InputAndSelect = (props) => {
                     <Select
                         placeholder="בחר מורה"
                         maxMenuHeight={130}
+                        menuPosition='fixed'
                         value={value.routeCoordinator}
                         onChange={(selectedOption) => handleAnothersChange(index, selectedOption)}
                         options={listSelectStaff}

@@ -1,10 +1,10 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { FillStudentUserData } from '../../../Redux/Actions/TableActions/Teacher/StudentTableAction';
+import { FillStudentMajorData, FillStudentUserData } from '../../../Redux/Actions/TableActions/Teacher/StudentTableAction';
 import { FillStudentData } from '../../../Redux/Actions/TableActions/Teacher/StudentTableAction';
 import "../../../Style/Tables/Teacher/StudentTableStyle.scss"
 import { useNavigate } from "react-router-dom";
-import { addingAttendanceToTheCourse, getAllStudentsByStudentMajorCode, getUsersByUserIDAndMajorCode } from "../../../Redux/Axios/Table/Teacher/StudentTableAxios";
+import { GetAllStudentsByStudentMajorCodeAndStudentGradeAndSeminarCode, addingAttendanceToTheCourse, getUsersByUserIDAndMajorCode } from "../../../Redux/Axios/Table/Teacher/StudentTableAxios";
 // import { AddToClass } from "../../Classes/AddToClass";
 // import { useNavigate } from "react-router-dom";
 
@@ -15,6 +15,10 @@ export const StudentTable = () => {
     let users = useSelector(x => x.StudentTableReducer.StudentUserList)
     let students = useSelector(x => x.StudentTableReducer.StudentList)
     const currentMajor = useSelector(x => x.MajorTableReducer.CurrentMajor)
+    const currentCourse = useSelector(x => x.CourseTableReducer.CurrentCourse)
+    const currentGrade = useSelector(x => x.GradeTableReducer.CurrentGrade)
+    const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
+    const studentMajorData = useSelector(x => x.StudentTableReducer.StudentMajorData)
     let studentCodes = []
     let studentAttendance = []
 
@@ -24,17 +28,17 @@ export const StudentTable = () => {
     useEffect(() => {
         async function fetchData() {
             await getUsersByUserIDAndMajorCode(currentMajor.majorCode).then(x => dispatch(FillStudentUserData(x.data)))
-            await getAllStudentsByStudentMajorCode(currentMajor.majorCode).then(x => dispatch(FillStudentData(x.data)))
+            await GetAllStudentsByStudentMajorCodeAndStudentGradeAndSeminarCode(currentMajor.majorCode, currentGrade, currentSeminarCode).then(x => {dispatch(FillStudentMajorData(x.data));debugger})
         }
         fetchData()
     }, [dispatch, currentMajor])
 
 
-    for (let i = 0; i < students.length; i++) {
+    for (let i = 0; i < studentMajorData.length; i++) {
         debugger
-        studentCodes.push(students[i].studentCode)
+        studentCodes.push(studentMajorData[i].student.studentCode)
     }
-    for (let i = 0; i < users.length; i++) {
+    for (let i = 0; i < studentMajorData.length; i++) {
         studentAttendance.push(false)
     }
 
@@ -42,8 +46,9 @@ export const StudentTable = () => {
 
     const SubmitAttendance = async () => {
         let object = {
-            SeminarCode: currentMajor.seminarCode,
+            SeminarCode: currentSeminarCode,
             MajorCode: currentMajor.majorCode,
+            CourseCode: currentCourse.courseCode,
             ListStudentCodes: studentCodes,
             ListAttendanceOfStudents: studentAttendance,
             LessonDate: document.getElementById('lessonDate').value,
@@ -53,12 +58,13 @@ export const StudentTable = () => {
         navigate('../majorTable')
     }
 
-    const AddAttendance = (y) => {
+    const AddAttendance = (index, value) => {
         debugger
-        if (studentAttendance[y])
-            studentAttendance[y] = false
-        else
-            studentAttendance[y] = true
+        studentAttendance[index] = value
+        // if (studentAttendance[y])
+        //     studentAttendance[y] = false
+        // else
+        //     studentAttendance[y] = true
     }
 
     return <>
@@ -66,7 +72,7 @@ export const StudentTable = () => {
             <div className="frame">
                 <div className="list">
                     <div className="headStudentTable">
-                        <div className="title" style={{ textDecorationLine: 'underline' }}>{JSON.parse(localStorage.getItem('CurrentCourse')).courseName}</div>
+                        <div className="title" style={{ textDecorationLine: 'underline' }}>{currentCourse.courseName}</div>
                         <input type="date" id="lessonDate" className="subtitle" onKeyDown={(e) => e.preventDefault()}
                             defaultValue={new Date().toISOString().split("T")[0]}
                             min={`${minDate}-09-01`} max={new Date().toISOString().split("T")[0]}></input>
@@ -85,10 +91,10 @@ export const StudentTable = () => {
                     </div>
                     <ul className="StudentTableUl">
                         {
-                            users.map((x, y) => <li className="StudentTableLi" key={y}>
-                                <input className="StudentTableInput" type="checkbox" id={y} name={x.userId} />
-                                <label htmlFor={y} className="text">{x.userFirstName} {x.userLastName} </label>
-                                <label htmlFor={y} className="button" value={false} onClick={() => AddAttendance(y)}></label>
+                            studentMajorData.map((x, y) => <li className="StudentTableLi" key={y}>
+                                <input className="StudentTableInput" type="checkbox" id={y} name={x.student.studentId}  onClick={(e) => AddAttendance(y, e.target.checked)}/>
+                                <label htmlFor={y} className="text">{x.fullName} </label>
+                                <label htmlFor={y} className="button" value={false}></label>
                                 <div className="wrapper">
                                     <svg version="1.1" id={y} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                         viewBox="0 0 98.5 98.5" enableBackground="new 0 0 98.5 98.5" xmlSpace="preserve">
@@ -100,7 +106,7 @@ export const StudentTable = () => {
                             )
                         }
                     </ul>
-                    <input type="button" value="SUBMIT" className="StudentTableButton" name="submit" onClick={() => SubmitAttendance()}></input>
+                    <input type="button" value="אישור" className="StudentTableButton" name="submit" onClick={() => SubmitAttendance()}></input>
                 </div>
 
             </div>

@@ -62,7 +62,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    float: left;
+    float: right;
+}
+
+.imgDiv {
+    text-align: right;
 }
 
 .img {

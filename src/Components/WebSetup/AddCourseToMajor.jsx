@@ -1,28 +1,28 @@
 // import { useCallback } from "react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { FillMajorData } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
 // import '../../Style/WebSetupStyle/AddCourseToMajorStyle.scss'
 import { InputAndSelect } from "../InputAndSelect/InputAndSelect"
 // import 'font-awesome/css/font-awesome.min.css';
-import { addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode, addMajor, getMajorByMajorName, getMajorBySeminarCode } from "../../Redux/Axios/WebSetupAxios/AddCourseToMajorAxios"
+import { addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode, addMajor, getMajorBySeminarCode } from "../../Redux/Axios/WebSetupAxios/AddCourseToMajorAxios"
 import { useNavigate } from "react-router-dom"
+import { FillMajorData } from "../../Redux/Actions/TableActions/Teacher/MajorTableActions"
+import { FillCurrentComponent } from "../../Redux/Actions/WebSetupActions/AddMajorAction"
 
 
 export const AddCourseToMajor = () => {
 
     let dispatch = useDispatch()
-    let majors = []//JSON.parse(localStorage.getItem('chosenExistingMajor'))
-    let majorsNew = []//Object.keys(JSON.parse(localStorage.getItem('chosenNewMajor')))
-    let selectedMajors = JSON.parse(localStorage.getItem('selectedMajors'))
+    let majors = []
+    let majorsNew = []
+    let selectedMajors = useSelector(x => x.AddMajorReducer.SelectedMajors)
     let arrayCourses = useSelector(x => x.AddCourseToMajorReducer.CoursesForMajorsAccordingToYearbooks)
     let navigate = useNavigate()
 
     // console.log("selectedMajors: ", selectedMajors);
 
     let staff = useSelector(x => x.TeacherTableReducer.StaffList)
-    const currentSeminarCode = useSelector(x => x.SignInReducer.currentSeminarCode)
-    //let currentSeminar = JSON.parse(localStorage.getItem('newSeminar')).seminarManagerPassword
+    const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
     //currentSeminar = axios.get(`getseminarbypassword/${currentSeminar}`).then(x => x.data) //fix to use the store with useSelector.
 
     //const [major, setMajor] = useState()
@@ -99,24 +99,25 @@ export const AddCourseToMajor = () => {
     }, [dispatch, currentSeminarCode])
 
     const handleSubmit = async () => {
+        debugger
         for (let index = 0; index < selectedMajors.length; index++) {
             let element = selectedMajors[index];
-            let currentMajor = await getMajorByMajorName(element.majorName).then(x => x.data)
-            if (currentMajor === '') {
-                let majorToAdd = {
-                    // "majorCode": 0,
-                    "majorName": element.majorName,
-                    "majorCodeCoordinator": element.routeCoordinator.code,
-                    "seminarCode": 1 //need to check what seminar code
-                }
-                currentMajor = await addMajor(majorToAdd).then(x => x.data);
+            // let currentMajor = await getMajorByMajorName(element.majorName).then(x => x.data)
+            // if (currentMajor === '') {
+            let majorToAdd = {
+                // "majorCode": 0,
+                "majorName": element.majorName,
+                "majorCodeCoordinator": element.routeCoordinator.code,
+                "seminarCode": currentSeminarCode
             }
+            let currentMajor = await addMajor(majorToAdd).then(x => x.data);
+            // }
 
             //Year A 
             if (arrayCourses[index * 2] !== null)
                 for (let x = 0; x < arrayCourses[index * 2].length; x++) {
                     let currentCourse = arrayCourses[index * 2][x];
-                    await addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode(currentMajor.majorCode, 'A',currentCourse.courseName, currentCourse.routeCoordinator.code)
+                    await addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode(currentMajor.majorCode, 'A', currentCourse.courseName, currentCourse.routeCoordinator.code)
                 }
 
             //Year B
@@ -126,34 +127,9 @@ export const AddCourseToMajor = () => {
                     await addAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode(currentMajor.majorCode, 'B', currentCourse.courseName, currentCourse.routeCoordinator.code)
                 }
         };
-        navigate('../matchStudentToMajor')
+        window.location.href === 'http://localhost:3000/managerNav/update' ?
+        dispatch(FillCurrentComponent('Majors')) && navigate('../teacherTable') : navigate('../matchStudentToMajor')
     }
-
-    // const AddMajorToDatabase = () => {
-    //     let majorsToAdd = document.getElementsByClassName('majorToAdd')
-    //     // fetch('http://localhost:8080/posts')
-    //     // .then(function(response){ return response.json(); })
-    //     // .then(function(data) {
-    //     //     const items = data;
-    //     //     console.log(items)
-    //     // })
-    //     for (let i = 0; i < majorsToAdd.length; i++) {
-    //         axios.get(`https://localhost:44367/api/Major/GetMajorByMajorName/${majorsToAdd[i].classList[1]}`)
-    //             .then(x => {
-    //                 let major = x.data;
-    //                 console.log(major);
-    //             })
-
-    //     }
-
-    //     //https://localhost:44367/api/MajorCourses/AddAMajorCoursesByMajorCodeAndCourseGradeAndCourseNameAndCourseTeacherCode/{MajorCode}/{CourseGrade}/{CourseName}/{CourseTeacherCode}
-
-    //     // let inputs = document.getElementsByClassName("newMajor")
-    //     // inputs.forEach(element => {
-    //     //     major: {element.value, null, JSON.parse(localStorage.getItem())}
-    //     //     axios.post('https://localhost:44367/api/Major/AddMajor')
-    //     // });
-    // }
 
     return <>
         <div className="titleAddCourse">

@@ -165,7 +165,16 @@ export const SignInForm = () => {
         //0 - user does not exist.
         //1 - user exists as regular user.
         //2 - user exists as manager.
-        await loginToTheSystem(password, parseInt(seminarCode), username)
+
+        let convertedPassword = '';
+        for (let i = 0; i < password.length; i++) {
+            let charCode = password.charCodeAt(i);
+            convertedPassword += '%' + charCode.toString(16);
+        }
+
+        debugger
+
+        await loginToTheSystem(convertedPassword, parseInt(seminarCode), username)
             .then(x => x.data === 1 ? navigate('/teacherNav/majorTable') : x.data === 2 ? navigate('/managerNav/teacherTable') : alert("does not exist"));
     }
 
@@ -235,7 +244,7 @@ export const SignInForm = () => {
                                             return <option className='SignInFormOption' id='seminarKey' key={x.seminarCode} value={x.seminarCode}>{x.seminarName}</option>
                                         })}
                                     </select>
-                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordManager' onInput={(e) => { setCorrectnessPasswordManager(IsThePasswordCorrect(e.target.value)); setDoShowTheErrorOfPasswordOfManager(true) }} />
+                                    <input className='SignInFormInput' type="password" maxLength={6} placeholder="סיסמא" id='passwordManager' onInput={(e) => { setCorrectnessPasswordManager(IsThePasswordCorrect(e.target.value)); setDoShowTheErrorOfPasswordOfManager(true) }} />
                                     {doShowTheErrorOfPasswordOfManager && !correctnessPasswordManager &&
                                         <>
                                             <br />
@@ -250,13 +259,13 @@ export const SignInForm = () => {
                                 <div className="cont_form_loginGuest">
                                     <p className='SignInFormA' onClick={() => hidden_login_and_sign_up()}><i className='SignInFormI'>«</i></p>
                                     <h2 className='SignInFormH2'>התחברות</h2>
-                                    <input className='SignInFormInput' type="text" placeholder="תעודת זהות" id='username' onInput={(e) => { setCorrectnessIdUser(IsTheIDCorrect(e.target.value)); setDoShowTheErrorOfIdOfUser(true) }} />
+                                    <input className='SignInFormInput' type="text" maxLength={9} placeholder="תעודת זהות" id='username' onInput={(e) => { setCorrectnessIdUser(IsTheIDCorrect(e.target.value)); setDoShowTheErrorOfIdOfUser(true) }} />
                                     {doShowTheErrorOfIdOfUser && !correctnessIdUser &&
                                         <>
                                             <br />
                                             <small className='error'>תעודת הזהות אינה תקינה</small>
                                         </>}
-                                    <input className='SignInFormInput' type="password" placeholder="סיסמא" id='passwordUser' onInput={(e) => { setCorrectnessPasswordUser(IsThePasswordCorrect(e.target.value)); setDoShowTheErrorOfPasswordOfUser(true) }} />
+                                    <input className='SignInFormInput' type="password" maxLength={6} placeholder="סיסמא" id='passwordUser' onInput={(e) => { setCorrectnessPasswordUser(IsThePasswordCorrect(e.target.value)); setDoShowTheErrorOfPasswordOfUser(true) }} />
                                     {doShowTheErrorOfPasswordOfUser && !correctnessPasswordUser &&
                                         <>
                                             <br />

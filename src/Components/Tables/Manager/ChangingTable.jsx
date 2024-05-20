@@ -3,10 +3,18 @@ import '../../../Style/Tables/Manager/ChangingTable.scss'
 import { useReactToPrint } from 'react-to-print'
 import { ShowExtraDetails } from './ShowExtraDetails'
 import $ from 'jquery'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { FillCurrentSeminar } from '../../../Redux/Actions/NavBar/ManagerNavActions';
+import { GetSeminarBySeminarCode } from '../../../Redux/Axios/NavBar/ManagerNavAxios'
 
 export const ChangingTable = () => {
 
   let x = JSON.parse(localStorage.getItem('currentStudentAttendance'))
+  let currentSeminarCode = JSON.parse(localStorage.getItem('currentSeminarCode'))
+  let CurrentSeminar = useSelector(x => x.ManagerNavReducer.CurrentSeminar)
+  let dispatch = useDispatch()
+  // let currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
 
   const componentRef = useRef()
   const handlePrint = useReactToPrint({
@@ -16,6 +24,11 @@ export const ChangingTable = () => {
   })
 
   useEffect(() => {
+    async function fetchData() {
+			await GetSeminarBySeminarCode(currentSeminarCode).then(x => dispatch(FillCurrentSeminar(x.data)))
+		}
+		fetchData()
+    debugger
     var acc = document.getElementsByClassName("table-row");
     var i;
 
@@ -31,26 +44,30 @@ export const ChangingTable = () => {
         }
       })
     }
-  }, [])
+  }, [dispatch, currentSeminarCode])
 
 
   return <>
     <div className="letter">
-      <button className='printButton fa-print' onClick={handlePrint}>
-        <svg width="36" height="36" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+      <button className='printButton' onClick={handlePrint}>
+        <svg width="36" height="36" fill="currentColor" className="bi bi-printer" viewBox="0 0 16 16">
           <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
           <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
         </svg>
       </button>
       <div ref={componentRef}>
-      <div className='imgDiv'>
-				<img className='img' src="https://localhost:44367/Logos/LogoSharansky.gif" alt="LogoSharansky" />
-			</div>
-        <h2 className="title mtp tableh2">{x.studentFirstName} {x.studentLastName}<span className="flag"></span></h2>
-        <h3 className="date mtp">מחזור: {x.studentGrade}</h3>
-        <h3 className="major date mtp">מסלול #1: {x.firstMajorName}</h3>
-        <h3 className="major date mtp">|</h3>
-        <h3 className="major date mtp">מסלול #2: {x.secondMajorName}</h3>
+        <div className='imgDiv'>
+        {CurrentSeminar.seminarLogo !== '' && <img className='img' src={`https://localhost:44367/Logos/${CurrentSeminar.seminarLogo}`} alt="Logo" />}
+        {/* {CurrentSeminar.seminarLogo !== '' && <img src={`https://localhost:44367/Logos/${CurrentSeminar.seminarLogo}`} alt="Logo" height='100%' />} */}
+        {/* {<img src={`https://localhost:44367/Logos/LogoSharansky.gif`} alt="Logo" height='100px' />} */}
+        </div>
+        <div className='personalDetails'>
+          <h2 className="title mtp tableh2">{x.studentFirstName} {x.studentLastName}<span className="flag"></span></h2>
+          <h3 className="date mtp">כיתה: {x.studentGrade === 'A' ? 'יג' : 'יד'}{x.studentClassNumber}</h3>
+          <h3 className="major date mtp">מסלול #1: {x.firstMajorName}</h3>
+          <h3 className="major date mtp">|</h3>
+          <h3 className="major date mtp">מסלול #2: {x.secondMajorName}</h3>
+        </div>
         {/* Table */}
         <div className="container">
           <ul className="responsive-table">

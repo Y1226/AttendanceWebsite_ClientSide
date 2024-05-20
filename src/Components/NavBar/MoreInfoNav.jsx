@@ -16,7 +16,6 @@ export const MoreInfoNav = () => {
 	return <>
 		<header id='ManagerNavHeader'>
 			<div className="head">
-				<p id="backButton" className="tile socialmedia" onClick={()=>window.history.back(1)}>»</p>
 			</div>
 		</header>
 		<Outlet></Outlet>

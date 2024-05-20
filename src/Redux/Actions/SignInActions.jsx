@@ -10,8 +10,12 @@ export const FillNewSeminar = (seminarName, seminarEmailAddress, seminarLocation
     return { type: 'Fill_New_Seminar', payload: {seminarName:seminarName, seminarEmailAddress:seminarEmailAddress, seminarLocationCity:seminarLocationCity}}
 }
 
-export const FinishFillingOutTheDataForANewSeminar = (seminarAddress, seminarPhoneNumber, seminarFaxNumber, seminarLogo, seminarManagerPassword, seminarStatus) => {
-    return { type: 'Finish_Filling_Out_The_Data_For_A_New_Seminar', payload: { seminarAddress: seminarAddress, seminarPhoneNumber: seminarPhoneNumber, seminarFaxNumber: seminarFaxNumber, seminarLogo:seminarLogo, seminarManagerPassword: seminarManagerPassword, seminarStatus: seminarStatus }};
+export const FillNewSeminarManagerPassword = (seminarManagerPassword) => {
+    return { type: 'Fill_New_Seminar_Manager_Password', payload: {seminarManagerPassword: seminarManagerPassword, }}
+}
+
+export const FinishFillingOutTheDataForANewSeminar = (seminarAddress, seminarPhoneNumber, seminarFaxNumber, seminarLogo, seminarStatus) => {
+    return { type: 'Finish_Filling_Out_The_Data_For_A_New_Seminar', payload: { seminarAddress: seminarAddress, seminarPhoneNumber: seminarPhoneNumber, seminarFaxNumber: seminarFaxNumber, seminarLogo:seminarLogo, seminarStatus: seminarStatus }};
 }
 
 export const UpdateCurrentSeminarCode = (seminarCode) => {

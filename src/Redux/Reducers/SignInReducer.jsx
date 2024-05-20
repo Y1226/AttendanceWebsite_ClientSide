@@ -18,7 +18,7 @@ const SignInState = {
         seminarManagerPassword: '',
         seminarStatus: ''
     },
-    CurrentSeminarCode: 1
+    CurrentSeminarCode: ''
 }
 
 export const SignInReducer = produce(
@@ -39,12 +39,14 @@ export const SignInReducer = produce(
                 s.NewSeminar.seminarEmailAddress = a.payload.seminarEmailAddress;
                 s.NewSeminar.seminarLocationCity = a.payload.seminarLocationCity;
                 break;
+            case 'Fill_New_Seminar_Manager_Password':
+                s.NewSeminar.seminarManagerPassword = a.payload.seminarManagerPassword;
+                break;
             case 'Finish_Filling_Out_The_Data_For_A_New_Seminar':
                 s.NewSeminar.seminarAddress = a.payload.seminarAddress;
                 s.NewSeminar.seminarPhoneNumber = a.payload.seminarPhoneNumber;
                 s.NewSeminar.seminarFaxNumber = a.payload.seminarFaxNumber;
                 s.NewSeminar.seminarLogo = a.payload.seminarLogo;
-                s.NewSeminar.seminarManagerPassword = a.payload.seminarManagerPassword;
                 s.NewSeminar.seminarStatus = a.payload.seminarStatus;
                 break;
             case 'Update_Current_Seminar_Code':

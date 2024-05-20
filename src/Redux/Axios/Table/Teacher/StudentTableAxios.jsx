@@ -4,8 +4,8 @@ export const getUsersByUserIDAndMajorCode = (majorCode) => {
     return (axios.get(`https://localhost:44367/api/User/GetUsersByUserIDAndMajorCode/${majorCode}`))
 }
 
-export const getAllStudentsByStudentMajorCode = (majorCode) => {
-    return (axios.get(`https://localhost:44367/api/Students/GetAllStudentsByStudentMajorCode/${majorCode}`))
+export const GetAllStudentsByStudentMajorCodeAndStudentGradeAndSeminarCode = (majorCode, studentGrade, seminarCode) => {
+    return (axios.get(`https://localhost:44367/api/Students/GetAllStudentsByStudentMajorCodeAndStudentGradeAndSeminarCode/${majorCode}/${studentGrade}/${seminarCode}`))
 }
 
 export const addingAttendanceToTheCourse = (object) => {

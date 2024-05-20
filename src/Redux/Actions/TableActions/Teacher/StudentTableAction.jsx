@@ -5,3 +5,7 @@ export const FillStudentData = (value) => {
 export const FillStudentUserData = (value) => {
     return {type: 'Fill-StudentUser-Data', payload: value}
 }
+
+export const FillStudentMajorData = (value) => {
+    return {type: 'Fill-StudentMajor-Data', payload: value}
+}

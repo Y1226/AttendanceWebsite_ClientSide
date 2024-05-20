@@ -7,3 +7,7 @@ export const GetAllMajors = () => {
 export const GetFullStaffDataBySeminarCode = (seminarCode) => {
     return (axios.get(`https://localhost:44367/api/Staff/GetFullStaffDataBySeminarCode/${seminarCode}`))
 }
+
+export const GetAllMajorsWithoutDistinct = () => {
+    return (axios.get(`https://localhost:44367/api/Major/GetAllMajorsWithoutDistinct`))
+}

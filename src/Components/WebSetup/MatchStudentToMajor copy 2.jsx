@@ -1,65 +1,84 @@
-import { useEffect, React, Fragment } from 'react';
+// import { useCallback } from "react"
+import { useEffect, useState, React, Fragment } from 'react';
 import '../../Style/WebSetupStyle/AddCourseToMajorStyle.scss';
 import '../../Style/WebSetupStyle/MatchStudentToMajor.scss';
 import 'font-awesome/css/font-awesome.min.css';
+// import { GetTheMaxNumberOfClassesInSeminarBySeminarCode } from '../../Redux/Axios/Table/Manager/AttendanceReportAxios';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetTheDataOfTheStudentsMajorsBySeminarCode, MatchingStudentToMajors } from '../../Redux/Axios/WebSetupAxios/MatchStudentAndMajorSelectAxios';
+import { GetTheDataOfTheStudentsMajorsBySeminarCode } from '../../Redux/Axios/WebSetupAxios/MatchStudentAndMajorSelectAxios';
+// import { MatchStudentAndMajorSelect } from '../InputAndSelect/MatchStudentAndMajorSelect';
 import Select from 'react-select'
 import { getMajorBySeminarCode } from '../../Redux/Axios/WebSetupAxios/AddCourseToMajorAxios';
-import { FillMajorData } from '../../Redux/Actions/TableActions/Teacher/MajorTableActions';
+import { FillMajorData } from '../../Redux/Actions/WebSetupActions/AddMajorAction';
 import { FillListOfStudentsAndTheirMajors, UpdateStudentsMajorInTheState } from '../../Redux/Actions/WebSetupActions/MatchStudentAndMajorSelectActions';
-import { useNavigate } from 'react-router-dom';
 
-export const MatchStudentToMajor = () => {
-    const navigate = useNavigate()
-    const dispatch = useDispatch();
-    const currentSeminarCode = useSelector((x) => x.SignInReducer.CurrentSeminarCode);
-    const dataWithChanges = useSelector((x) => x.MatchStudentToMajorReducer.listOfStudentsAndTheirMajors);
-    const initialMajors = useSelector((x) => x.AddMajorReducer.MajorList);
-    const majors = initialMajors.map((e) => ({ code: e.majorCode, value: e.majorName, label: e.majorName }));
+export const MatchStudentToMajorCopyCopy = () => {
+
+    let dispatch = useDispatch()
+    const currentSeminarCode = useSelector(x => x.SignInReducer.CurrentSeminarCode)
+    const [data, setData] = useState({})
+    const dataWithChanges = useSelector(x => x.MatchStudentToMajorReducer.listOfStudentsAndTheirMajors)
+    // const [dataWithChanges, setDataWithChanges] = useState({})
+    const initialMajors = useSelector(x => x.AddMajorReducer.MajorList)
+    const majors = []
+    initialMajors.forEach(e => {
+        majors.push({ code: e.majorCode, value: e.majorName, label: e.majorName })
+    })
 
     useEffect(() => {
         async function fetchData() {
-            const [majorData, studentData] = await Promise.all([
-                getMajorBySeminarCode(currentSeminarCode),
-                GetTheDataOfTheStudentsMajorsBySeminarCode(currentSeminarCode),
-            ]);
-            dispatch(FillMajorData(majorData.data));
-            dispatch(FillListOfStudentsAndTheirMajors(studentData.data));
+            await getMajorBySeminarCode(currentSeminarCode).then(x => dispatch(FillMajorData(x.data)))
         }
-        fetchData();
+        fetchData()
+        // debugger
+        GetTheDataOfTheStudentsMajorsBySeminarCode(currentSeminarCode).then(x => { dispatch(FillListOfStudentsAndTheirMajors(data)); setData(x.data) })
+        // setDataWithChanges(data)
+        // let maxNumberOfClassesA = GetTheMaxNumberOfClassesInSeminarByGradeAndSeminarCode('A', currentSeminarCode).then(x => x.data)
+        // let maxNumberOfClassesB = GetTheMaxNumberOfClassesInSeminarByGradeAndSeminarCode('B', currentSeminarCode).then(x => x.data)
 
         //{A: {1: {{id:32156, userFirstName:'Yocheved',userLastName:'Pollack',major1:null},{}},2: []}}
         //{A: {1:[], 2:[]}}
         /*
-            id:
-            fullName:
-            codeMajor1:
-            codeMajor2:
-        */
+        id:
+        fullName:
+        codeMajor1:
+        codeMajor2:
+         */
+    }, [dispatch, currentSeminarCode, data])
 
+    useEffect(() => {
+        async function fetchData() {
+            await getMajorBySeminarCode(currentSeminarCode).then(x => dispatch(FillMajorData(x.data)))
+        }
+        fetchData()
     }, [dispatch, currentSeminarCode]);
 
+    // const majors = useSelector(state => state.AddMajorReducer.MajorList);
+    // const majors = [{ value: 'AAA', label: 'aaa' }, { value: 'BBB', label: 'bbb' }, { value: 'CCC', label: 'ccc' }]
     const changeAndSaveChanges = (e, key, valueKey, studentIndex, isFirstMajor) => {
+        console.log("e: ", e);
+        console.log("key: ", key);
+        console.log("valueKey: ", valueKey);
+        console.log("studentIndex: ", studentIndex);
         debugger
-        dispatch(UpdateStudentsMajorInTheState(e, key, valueKey, studentIndex, isFirstMajor));
-        // console.log(dataWithChanges);
-    };
-
-    const SaveAndNext = async () => {
-        // console.log(dataWithChanges);
-        
-        for (const [, value] of Object.entries(dataWithChanges)) {
-            for (const [, valueValue] of Object.entries(value)) {
-                for (const student of valueValue) {
-                    const { studentId, studentFirstMajorCode, studentSecondMajorCode } = student;
-                    debugger
-                    await MatchingStudentToMajors(studentId, studentFirstMajorCode === null ? 0 : studentFirstMajorCode, studentSecondMajorCode === null ? 0 : studentSecondMajorCode, currentSeminarCode);
-                }
-            }
-        }
-        navigate('../../managerNav/teacherTable')
+        dispatch(UpdateStudentsMajorInTheState(e, key, valueKey, studentIndex, isFirstMajor))
+        console.log(dataWithChanges);
+        // console.log("dataWithChanges: ", dataWithChanges);
+        // console.log(dataWithChanges[key][valueKey][studentIndex]);
+        // if (isFirstMajor === true)
+        //     dataWithChanges[key][valueKey][studentIndex].studentFirstMajorCode = e.code
+        // else
+        //     dataWithChanges[key][valueKey][studentIndex].studentSecondMajorCode = e.code
+        // setDataWithChanges(dataWithChanges)
+        // console.log("dataWithChanges: ", dataWithChanges);
+        debugger
     }
+
+
+    // const changeAndSaveChanges = () => {
+    //     console.log(dataWithChanges);
+    //     debugger
+    // }
 
     return <>
         <div className="titleAddCourse">
@@ -69,11 +88,11 @@ export const MatchStudentToMajor = () => {
         <br />
         <div>
             <section className="container">
-                {Object.entries(dataWithChanges).map(([key, value]) =>
+                {Object.entries(data).map(([key, value]) =>
                     Object.entries(value).map(([valueKey, valueValue], valueIndex) =>
                         <div key={valueIndex} className="ac">
-                            <input className="ac-input" id={`ac-1${key}${valueIndex}`} name={`ac-1${key}${valueIndex}`} type="checkbox" />
-                            <label className="ac-label" htmlFor={`ac-1${key}${valueIndex}`}>{key === 'A' ? 'יג' : 'יד'} {valueKey}</label>
+                            <input className="ac-input" id={`ac-1${valueIndex}`} name={`ac-1${valueIndex}`} type="checkbox" />
+                            <label className="ac-label" htmlFor={`ac-1${valueIndex}`}>{key} {valueKey}</label>
                             <article className="ac-text">
                                 <div className="ac-sub specificClass">
                                     {valueValue.map((student, studentIndex) =>
@@ -102,7 +121,8 @@ export const MatchStudentToMajor = () => {
                                                 </div>
                                                 <label className='titleMajor'>מסלול שני:</label>
                                                 <div className='selectMajor'>
-                                                    <Select placeholder='בחר מסלול שני'
+                                                    <Select 
+                                                        placeholder='בחר מסלול שני'
                                                         maxMenuHeight={150}
                                                         options={majors}
                                                         menuPosition='fixed'
@@ -122,7 +142,7 @@ export const MatchStudentToMajor = () => {
 
 
         </div>
-        <div className="plusButton div_next" style={{ marginBottom: '50px' }} onClick={() => SaveAndNext()}>
+        <div className="plusButton div_next" style={{ marginBottom: '50px' }}>
             <svg className="arrow" viewBox="0 0 20 20">
                 <path d="M18.271,9.212H3.615l4.184-4.184c0.306-0.306,0.306-0.801,0-1.107c-0.306-0.306-0.801-0.306-1.107,0
                             L1.21,9.403C1.194,9.417,1.174,9.421,1.158,9.437c-0.181,0.181-0.242,0.425-0.209,0.66c0.005,0.038,0.012,0.071,0.022,0.109

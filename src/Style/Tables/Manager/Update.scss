@@ -16,7 +16,7 @@
   /* margin-left: 10%; */
   margin-top: 2%;
   padding: 15px;
-  
+
   font-size: 16px;
   font-family: 'Abel', sans-serif;
   color: #5E6472;
@@ -26,7 +26,7 @@
 
   border-radius: 0px 5px 5px 0px;
   transition: 0.2s linear;
-  
+
 }
 
 // .textarea{
@@ -36,7 +36,7 @@
 //   /* margin-left: 10%; */
 //   margin-top: 2%;
 //   padding: 15px;
-  
+
 //   font-size: 16px;
 //   font-family: 'Abel', sans-serif;
 //   color: #5E6472;
@@ -46,7 +46,7 @@
 
 //   border-radius: 0px 5px 5px 0px;
 //   transition: 0.2s linear;
-  
+
 // }
 // .getImage{
 //   width: 92%;
@@ -55,7 +55,7 @@
 //   /* margin-left: 10%; */
 //   margin-top: 2%;
 //   padding: 15px;
-  
+
 //   font-size: 16px;
 //   font-family: 'Abel', sans-serif;
 //   color: #5E6472;
@@ -65,7 +65,7 @@
 
 //   border-radius: 5px 5px 5px 5px;
 //   transition: 0.2s linear;
-  
+
 // }
 
 // header {
@@ -114,11 +114,12 @@
   overflow: hidden;
   border: 1px solid #ccc;
   background-color: #f1f1f1;
-  
+
 }
 
 .updateButton:disabled {
   opacity: 25%;
+
   &:hover {
     transform: translatey(0px);
     animation: none;
@@ -142,6 +143,7 @@
 /* Change background color of buttons on hover */
 .tab .updateButton:hover {
   background-color: #ddd;
+
   &:disabled {
     background-color: transparent;
   }
@@ -197,12 +199,14 @@
 .updateButton:hover {
   animation: ani9 0.4s ease-in-out infinite alternate;
 }
+
 @keyframes ani9 {
   0% {
-      transform: translateY(3px);
+    transform: translateY(3px);
   }
+
   100% {
-      transform: translateY(5px);
+    transform: translateY(5px);
   }
 }
 
@@ -220,14 +224,14 @@
 //   /* padding: 0 20px; */
 //   /* background: #fff; */
 //   border-radius: 5px;
-  
+
 //   outline: none;
 //   border: none;
 
 //   cursor: pointer;
 //   text-align: center;
 //   transition: all 0.2s linear;
-  
+
 //   margin: 7% auto;
 //   letter-spacing: 0.05em;
 
@@ -392,13 +396,21 @@ body {
 //   right: 0;
 // }
 
-.tabcontent {
+.xl {
   width: fit-content;
-  font-family: 'Abel', sans-serif;
   text-align: center;
+}
+
+.component {
+  width: 75%;
+  text-align: right;
+}
+
+.tabcontent {
+  font-family: 'Abel', sans-serif;
   direction: rtl;
   display: none;
   margin: 1% auto;
   -webkit-animation: fadeEffect 1s;
-  animation: fadeEffect 1s; 
+  animation: fadeEffect 1s;
 }

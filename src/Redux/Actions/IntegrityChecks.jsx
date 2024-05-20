@@ -16,7 +16,7 @@ export const IsTheIDCorrect = (id) => {
             sum += temp
         }
     }
-    if (sum % 10 === 0 && sum > 0)
+    if (sum % 10 === 0 && sum > 0 && id.length === 9)
         return true
     else return false
 }
